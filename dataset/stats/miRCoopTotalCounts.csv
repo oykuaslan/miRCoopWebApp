@@ -1,4 +1,4 @@
-Cancer Type;# Triplets;# mRNAs;# miRNA Pairs;# miRNAs
+CancerType;N.Triplets;N.mRNAs;N.miRNAPairs;N.miRNAs
 ACC;304;233;290;181
 BLCA;299;168;292;189
 BRCA;19;18;19;36

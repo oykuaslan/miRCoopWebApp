@@ -25,6 +25,11 @@ library(formattable)
 library(spsComps)
 library(bsplus)
 library(readr)
+library(reshape)
+library(data.table)
+library(readxl)
+library(heatmaply)
+library(plotly)
 
 
 
@@ -244,6 +249,21 @@ TCGA_abbreviations <- read.table("dataset/TCGA_abbreviations.csv", header = T, s
 miRCoopTotalCounts <- read_delim("dataset/stats/miRCoopTotalCounts.csv", 
                                  delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
+commonMrnaAbove20 <- read_excel("dataset/stats/commonMrnaAbove20NormalizedForRHeatMap.xlsx")
+commonMrnaAbove20 <- as.data.frame(commonMrnaAbove20)
+
+commonMirnaAbove50 <- read_excel("dataset/stats/commonMirnaAbove50NormalizedForRHeatMap.xlsx")
+commonMirnaAbove50 <- as.data.frame(commonMirnaAbove50)
+
+miRCoopTotalCounts <- read_delim("dataset/stats/miRCoopTotalCounts.csv", 
+                                 delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+mRNACountsScatter <- read_delim("dataset/stats/mRNACountsScatter.csv", 
+                                delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+miRNACountsScatter <- read_delim("dataset/stats/miRNACountsScatter.csv", 
+                                 delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
 ####################################################################################################
 bslib_mircooptriplet_theme <- bs_theme(
     #version = 5, 
@@ -426,12 +446,32 @@ ui <- fluidPage(
                ),
                
                tabPanel("Statistics", value = "Statistics", fluid= TRUE, icon = icon("bar-chart",lib = "font-awesome"),
-                        tabsetPanel(type = "tabs",
-                                    tabPanel("Counts", br()
-                                             ),
-                                    
-                                    tabPanel("Heatmaps")
-                        )
+                        tags$div(
+                          tags$br(),
+                           plotlyOutput("totalCountsPlot"),
+                          tags$hr()
+                          
+                        ),
+                        tags$br(),
+                        tags$div(
+                          column(12,plotlyOutput("commonMrnaHeatmap"))
+
+                        ),
+                        tags$br(),
+                        tags$div(
+                          plotlyOutput("commonMirnaHeatmap"),
+                          tags$hr()
+                          
+                        ),
+                        tags$br(),
+                        tags$div(
+                          tags$div(style="float: left; width:100%; height:auto; max-width:45vw; margin-bottom:15px; margin-top:15px ",
+                            plotlyOutput("MrnaScatterPlot")),
+                          tags$div(style="float: right ; width:100%; height:auto; max-width:45vw; margin-bottom:15px; margin-top:15px ",
+                            plotlyOutput("MirnaScatterPlot")),
+                 
+                        ),
+                        tags$br()
                         ),
                
                tabPanel("About",value="About",fluid = TRUE,icon = icon("info-circle"),
@@ -985,7 +1025,94 @@ output$TCGAAbbrv <- renderTable({
     TCGA_abbreviations
 })
 
+output$totalCountsPlot <- renderPlotly({
+  
+  t <- list(
+    family = "Ubuntu",
+    size = 13)
+  
+  fig <- plot_ly(miRCoopTotalCounts, x = ~CancerType, y = ~N.Triplets, type = 'bar', name = '# Triplets')
+  fig <- fig %>% add_trace(y = ~N.mRNAs, name = '# mRNAs')
+  fig <- fig %>% add_trace(y = ~N.miRNAPairs, name = '# miRNA Pairs')
+  fig <- fig %>% add_trace(y = ~N.miRNAs, name = '# miRNAs')
+  fig <- fig %>% layout(title = 'Counts Across All Cancer Types',yaxis = list(title = 'Count'), barmode = 'group', xaxis = list(title = 'Cancer Type'),font=t)
+  
+})
+
+output$MrnaScatterPlot <- renderPlotly({
+  t <- list(
+    family = "Ubuntu",
+    size = 13)
+  
+  fig <- plot_ly(
+    mRNACountsScatter,
+    y = ~mRNAinTriplets,
+    x = ~TargetInteractionsofthemRNA, 
+    marker = list(color="rgba(7, 68, 135, 1)",size=5),
+    text = ~paste('mRNA:', mRNA)
+  ) %>% layout(title = 'mRNA Distributions', yaxis = list(title = '# mRNA in Triplets'), 
+               xaxis = list(title = '# Target Interactions of the mRNA'),font=t)
+  
+})
+
+output$MirnaScatterPlot <- renderPlotly({
+  fig <- plot_ly(
+    miRNACountsScatter, 
+    y = ~miRNAinTriplets,
+    x = ~miRNATargets,
+    marker = list(color="rgba(7, 68, 135, 1)",size=5),
+    text = ~paste('miRNA:', miRNA)
+  ) %>% layout(title = 'miRNA Distributions', yaxis = list(title = '# miRNA in Triplets'), 
+               xaxis = list(title = '# miRNA Targets'),font=t)
+})
+
+output$commonMrnaHeatmap <- renderPlotly({
+
+  p <- heatmaply::heatmaply(as.matrix(as.data.table(commonMrnaAbove20),rownames = 1),
+                       margins = c(60,100,40,20),
+                       grid_color = "white",
+                       grid_width = 0.0001,
+                       fontsize_row = 8, fontsize_col = 8,
+                       branches_lwd = 0.08,
+                       xlab = "Cancer Type", ylab = "mRNA",
+                       #color= colorRampPalette(brewer.pal(3, "Greys"))(256),
+                       scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
+                         low = "white",
+                         high = "black"
+                       ))
+  
+
+
+})
+
+output$commonMirnaHeatmap <- renderPlotly({
+  
+  heatmaply::heatmaply(as.matrix(as.data.table(commonMirnaAbove50),rownames = 1),
+                            margins = c(60,100,40,20),
+                            grid_color = "white",
+                            grid_width = 0.0001,
+                            #plot_method= "plotly",
+                            fontsize_row = 8, fontsize_col = 8,
+                            branches_lwd = 0.08,
+                            xlab = "Cancer Type", ylab = "miRNA",
+                            #color= colorRampPalette(brewer.pal(3, "Greys"))(256)
+                            scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
+                              low = "white",
+                              high = "black"
+                            ),
+                            )
+                            #%>% layout(height="500px")
+  
+  
+  
+})
+
+
+
 }
+##################################################################################################    
+
+
 
 
 # Run the application 
