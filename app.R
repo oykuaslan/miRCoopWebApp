@@ -241,9 +241,75 @@ UVM_source_target <- read.table("networkData/UVM_source_target.csv", header=TRUE
 UVM_node_attr <- read.table("networkData/UVM_generalNetwork_default_node.csv", header = T, sep = ",")
 
 ####################################################################################################
+ACCwMedian1 <- read_csv("dataset/medians/ACCwMedian1.csv")
+ACCwMedian2 <- read_csv("dataset/medians/ACCwMedian2.csv")
+BLCAwMedian1 <- read_csv("dataset/medians/BLCAwMedian1.csv")
+BLCAwMedian2 <- read_csv("dataset/medians/BLCAwMedian2.csv")
+# BRCAwMedian1 <- read_csv("dataset/medians/BRCAwMedian1.csv")
+# BRCAwMedian2 <- read_csv("dataset/medians/BRCAwMedian2.csv")
+CESCwMedian1 <- read_csv("dataset/medians/CESCwMedian1.csv")
+CESCwMedian2 <- read_csv("dataset/medians/CESCwMedian2.csv")
+CHOLwMedian1 <- read_csv("dataset/medians/CHOLwMedian1.csv")
+CHOLwMedian2 <- read_csv("dataset/medians/CHOLwMedian2.csv")
+COADwMedian1 <- read_csv("dataset/medians/COADwMedian1.csv")
+COADwMedian2 <- read_csv("dataset/medians/COADwMedian2.csv")
+DLBCwMedian1 <- read_csv("dataset/medians/DLBCwMedian1.csv")
+DLBCwMedian2 <- read_csv("dataset/medians/DLBCwMedian2.csv")
+ESCAwMedian1 <- read_csv("dataset/medians/ESCAwMedian1.csv")
+ESCAwMedian2 <- read_csv("dataset/medians/ESCAwMedian2.csv")
+HNSCwMedian1 <- read_csv("dataset/medians/HNSCwMedian1.csv")
+HNSCwMedian2 <- read_csv("dataset/medians/HNSCwMedian2.csv")
+KICHwMedian1 <- read_csv("dataset/medians/KICHwMedian1.csv")
+KICHwMedian2 <- read_csv("dataset/medians/KICHwMedian2.csv")
+KIRCwMedian1 <- read_csv("dataset/medians/KIRCwMedian1.csv")
+KIRCwMedian2 <- read_csv("dataset/medians/KIRCwMedian2.csv")
+KIRPwMedian1 <- read_csv("dataset/medians/KIRPwMedian1.csv")
+KIRPwMedian2 <- read_csv("dataset/medians/KIRPwMedian2.csv")
+LGGwMedian1 <- read_csv("dataset/medians/LGGwMedian1.csv")
+LGGwMedian2 <- read_csv("dataset/medians/LGGwMedian2.csv")
+LIHCwMedian1 <- read_csv("dataset/medians/LIHCwMedian1.csv")
+LIHCwMedian2 <- read_csv("dataset/medians/LIHCwMedian2.csv")
+LUADwMedian1 <- read_csv("dataset/medians/LUADwMedian1.csv")
+LUADwMedian2 <- read_csv("dataset/medians/LUADwMedian2.csv")
+LUSCwMedian1 <- read_csv("dataset/medians/LUSCwMedian1.csv")
+LUSCwMedian2 <- read_csv("dataset/medians/LUSCwMedian2.csv")
+MESOwMedian1 <- read_csv("dataset/medians/MESOwMedian1.csv")
+MESOwMedian2 <- read_csv("dataset/medians/MESOwMedian2.csv")
+OVwMedian1 <- read_csv("dataset/medians/OVwMedian1.csv")
+OVwMedian2 <- read_csv("dataset/medians/OVwMedian2.csv")
+PAADwMedian1 <- read_csv("dataset/medians/PAADwMedian1.csv")
+PAADwMedian2 <- read_csv("dataset/medians/PAADwMedian2.csv")
+PCPGwMedian1 <- read_csv("dataset/medians/PCPGwMedian1.csv")
+PCPGwMedian2 <- read_csv("dataset/medians/PCPGwMedian2.csv")
+PRADwMedian1 <- read_csv("dataset/medians/PRADwMedian1.csv")
+PRADwMedian2 <- read_csv("dataset/medians/PRADwMedian2.csv")
+READwMedian1 <- read_csv("dataset/medians/READwMedian1.csv")
+READwMedian2 <- read_csv("dataset/medians/READwMedian2.csv")
+SARCwMedian1 <- read_csv("dataset/medians/SARCwMedian1.csv")
+SARCwMedian2 <- read_csv("dataset/medians/SARCwMedian2.csv")
+SKCMwMedian1 <- read_csv("dataset/medians/SKCMwMedian1.csv")
+SKCMwMedian2 <- read_csv("dataset/medians/SKCMwMedian2.csv")
+STADwMedian1 <- read_csv("dataset/medians/STADwMedian1.csv")
+STADwMedian2 <- read_csv("dataset/medians/STADwMedian2.csv")
+TGCTwMedian1 <- read_csv("dataset/medians/TGCTwMedian1.csv")
+TGCTwMedian2 <- read_csv("dataset/medians/TGCTwMedian2.csv")
+THCAwMedian1 <- read_csv("dataset/medians/THCAwMedian1.csv")
+THCAwMedian2 <- read_csv("dataset/medians/THCAwMedian2.csv")
+THYMwMedian1 <- read_csv("dataset/medians/THYMwMedian1.csv")
+THYMwMedian2 <- read_csv("dataset/medians/THYMwMedian2.csv")
+UCECwMedian1 <- read_csv("dataset/medians/UCECwMedian1.csv")
+UCECwMedian2 <- read_csv("dataset/medians/UCECwMedian2.csv")
+UCSwMedian1 <- read_csv("dataset/medians/UCSwMedian1.csv")
+UCSwMedian2 <- read_csv("dataset/medians/UCSwMedian2.csv")
+UVMwMedian1 <- read_csv("dataset/medians/UVMwMedian1.csv")
+UVMwMedian2 <- read_csv("dataset/medians/UVMwMedian2.csv")
 
+####################################################################################################
 TripletsInWhichCancerWCount<- read_csv("dataset/commonTripletsFinalAfterReRun.csv")
+TripletsInWhichCancerWCount <-filter(TripletsInWhichCancerWCount, Count> 1)
+
 MirnaPairsInWhichCancerWCount <- read_csv("dataset/commonMirnaPairsFinalAfterReRun.csv")
+MirnaPairsInWhichCancerWCount <-filter(MirnaPairsInWhichCancerWCount, Count> 1)
 
 TCGA_abbreviations <- read.table("dataset/TCGA_abbreviations.csv", header = T, sep = ";")
 miRCoopTotalCounts <- read_delim("dataset/stats/miRCoopTotalCounts.csv", 
@@ -425,6 +491,7 @@ ui <- fluidPage(
                tabPanel("Common Triplets", value="CommonTriplets",fluid = TRUE,icon = icon("file-alt"),
                         sidebarLayout(
                             sidebarPanel(
+                                
                                 checkboxGroupInput(inputId = "CommonCancer", 
                                                    label = "Select Cancer Names",
                                                    choices = cancerNames,
@@ -435,7 +502,9 @@ ui <- fluidPage(
                             ),
                             
                             mainPanel(
+                                useShinyalert(),
                                 tabsetPanel(type = "tabs",
+                                            
                                             tabPanel("Common Triplet Table", DT::dataTableOutput("tableCommonTriplet")),
                                             tabPanel("Common miRNA Pair Table", DT::dataTableOutput("tableCommonmiRNAPair"))
                                             
@@ -452,15 +521,22 @@ ui <- fluidPage(
                           tags$hr()
                           
                         ),
-                        tags$br(),
+                        # tags$br(),
+                        # tags$div(
+                        #   column(12,plotlyOutput("commonMrnaHeatmap"))
+                        # 
+                        # ),
+                        # tags$br(),
+                        # tags$div(
+                        #   plotlyOutput("commonMirnaHeatmap"),
+                        #   tags$hr()
+                        #   
+                        # ),
                         tags$div(
-                          column(12,plotlyOutput("commonMrnaHeatmap"))
-
-                        ),
-                        tags$br(),
-                        tags$div(
-                          plotlyOutput("commonMirnaHeatmap"),
-                          tags$hr()
+                          tags$div(style="float: left; max-width:45vw; width:100%; height: 100vh ",
+                                   plotlyOutput("commonMrnaHeatmap")),
+                          tags$div(style="float: right; max-width:45vw; width:100%; height: 100vh",
+                                   plotlyOutput("commonMirnaHeatmap"))
                           
                         ),
                         tags$br(),
@@ -597,7 +673,7 @@ server <- function(input, output, session) {
     
     
     datasetInput2 <- reactive({
-        
+      
         filteredWithTests <-filter(datasetInput(),
                                    Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2],
                                    tolower(is_mrna_tf) %in% tolower(input$is_mrna_tf)
@@ -608,11 +684,11 @@ server <- function(input, output, session) {
         else{
             filteredWithMrna <- filteredWithTests
         }
-        
+
         if(length(input$mirnaFilter) > 0){
             filteredWithMirna <-filter(filteredWithMrna, mirna1 %in% input$mirnaFilter | mirna2 %in% input$mirnaFilter)
         }
-        
+
         else{
             filteredWithMirna <- filteredWithMrna
         }
@@ -621,11 +697,15 @@ server <- function(input, output, session) {
     
     
     DatasetRoundDigits <-reactive({
+      
         dataset <-datasetInput2()
-        dataset$mirna1 <- stringr::str_remove(dataset$mirna1, "hsa-")
-        dataset$mirna2 <- stringr::str_remove(dataset$mirna2, "hsa-")
-        dataset %>% 
+        if(nrow(dataset)>0){
+          dataset$mirna1 <- stringr::str_remove(dataset$mirna1, "hsa-")
+          dataset$mirna2 <- stringr::str_remove(dataset$mirna2, "hsa-")
+          dataset %>% 
             dplyr::mutate(across(where(is.numeric),round,3))
+        }
+      
         
     })
     
@@ -648,16 +728,12 @@ server <- function(input, output, session) {
     
 
 output$table <- DT::renderDataTable({
-    print(input$dataset)
+
     DT1 <- DatasetRoundDigits()
     DT <- cbind(DT1,
                 button = sapply(1:nrow(DT1), button("table")),
                 stringsAsFactors = FALSE)
-    
-    DT2<- cbind(DT1,
-                button = sapply(1:nrow(DT1), button("table")),
-                stringsAsFactors = FALSE)
-    
+
 
     hideList1 <- c(7,8,9,10,11)
     hideList2 <- c(7,8,9,10,11,12,13,14,15,16,17)
@@ -750,18 +826,17 @@ output$table <- DT::renderDataTable({
     
     icon_formatter <- function() {
         formatter("span", 
-                  style = x ~ style(color = ifelse(x, "#179E93", "red")), x ~ icontext(ifelse(x, "ok", "remove"), "")
+                  style = x ~ formattable::style(color = ifelse(x, "#179E93", "red")), x ~ icontext(ifelse(x, "ok", "remove"), "")
         )	 	 
     }
     
     significant_bold <- formatter("span", 
-                                style = x ~ style("font-weight" = ifelse(x <0.05, "bold", NA)))
+                                style = x ~ formattable::style("font-weight" = ifelse(x <0.05, "bold", NA)))
     
     sign_formatter <- formatter("span", 
-                                style = x ~ style(color = ifelse(x > 0, "red", 
+                                style = x ~ formattable::style(color = ifelse(x > 0, "red", 
                                                                  ifelse(x < 0, "#074487", "black"))))
     
-
 
     as.datatable(formattable(DT, list(
         Lancaster_XY_Z = color_tile("transparent", "lightpink"),
@@ -770,7 +845,7 @@ output$table <- DT::renderDataTable({
         miRNA2_logFC = sign_formatter,
         miRNA1_pvalue = significant_bold,
         miRNA2_pvalue = significant_bold
-    
+
     )),escape = F, fillContainer = TRUE,
     colnames=columnNameList,
     extensions = 'Buttons',
@@ -779,7 +854,7 @@ output$table <- DT::renderDataTable({
                    columnDefs = list(list(visible=FALSE, targets=columnHideList)
                    )))
     
-    # DT::datatable(DT  %>% rename(!!hp_text:=mirna1),escape = F, fillContainer = TRUE,
+    # DT::datatable(DT,escape = F, fillContainer = TRUE,
     #               rownames=T,
     #               colnames=columnNameList,
     #               extensions = 'Buttons',
@@ -787,10 +862,274 @@ output$table <- DT::renderDataTable({
     #                              buttons=list(list(extend = 'colvis', columns = c(5:ncol(DT)))),
     #                              columnDefs = list(list(visible=FALSE, targets=columnHideList))
     #                              #headerCallback = JS(headerCallback)
-    #                              
+    # 
     #                              )
     # )
 
+})
+
+observeEvent(input$button, {
+  splitID <- strsplit(input$button, "_")[[1]]
+  DT <- DatasetRoundDigits()
+  tbl <- splitID[2]
+  row <- splitID[3]
+
+
+  #############################################################################################################################################
+  ACCwMedian1JustMedians <- as.double(ACCwMedian1[strtoi(row),15:ncol(ACCwMedian1)][grepl("[0-9]+",ACCwMedian1[strtoi(row),15:ncol(ACCwMedian1)])])
+  ACCwMedian2JustMedians <- as.double(ACCwMedian2[strtoi(row),15:ncol(ACCwMedian2)][grepl("[0-9]+",ACCwMedian2[strtoi(row),15:ncol(ACCwMedian2)])])
+  
+  BLCAwMedian1JustMedians <- as.double(BLCAwMedian1[strtoi(row),21:ncol(BLCAwMedian1)][grepl("[0-9]+",BLCAwMedian1[strtoi(row),21:ncol(BLCAwMedian1)])])
+  BLCAwMedian2JustMedians <- as.double(BLCAwMedian2[strtoi(row),21:ncol(BLCAwMedian2)][grepl("[0-9]+",BLCAwMedian2[strtoi(row),21:ncol(BLCAwMedian2)])])
+
+  # BRCAwMedian1JustMedians <- as.double(BRCAwMedian1[strtoi(row),15:ncol(BRCAwMedian1)][grepl("[0-9]+",BRCAwMedian1[strtoi(row),15:ncol(BRCAwMedian1)])])
+  # BRCAwMedian2JustMedians <- as.double(BRCAwMedian2[strtoi(row),15:ncol(BRCAwMedian2)][grepl("[0-9]+",BRCAwMedian2[strtoi(row),15:ncol(BRCAwMedian2)])])
+  
+  CESCwMedian1JustMedians <- as.double(CESCwMedian1[strtoi(row),21:ncol(CESCwMedian1)][grepl("[0-9]+",CESCwMedian1[strtoi(row),21:ncol(CESCwMedian1)])])
+  CESCwMedian2JustMedians <- as.double(CESCwMedian2[strtoi(row),21:ncol(CESCwMedian2)][grepl("[0-9]+",CESCwMedian2[strtoi(row),21:ncol(CESCwMedian2)])])
+  
+  CHOLwMedian1JustMedians <- as.double(CHOLwMedian1[strtoi(row),21:ncol(CHOLwMedian1)][grepl("[0-9]+",CHOLwMedian1[strtoi(row),21:ncol(CHOLwMedian1)])])
+  CHOLwMedian2JustMedians <- as.double(CHOLwMedian2[strtoi(row),21:ncol(CHOLwMedian2)][grepl("[0-9]+",CHOLwMedian2[strtoi(row),21:ncol(CHOLwMedian2)])])
+  
+  COADwMedian1JustMedians <- as.double(COADwMedian1[strtoi(row),17:ncol(COADwMedian1)][grepl("[0-9]+",COADwMedian1[strtoi(row),17:ncol(COADwMedian1)])])
+  COADwMedian2JustMedians <- as.double(COADwMedian2[strtoi(row),17:ncol(COADwMedian2)][grepl("[0-9]+",COADwMedian2[strtoi(row),17:ncol(COADwMedian2)])])
+  
+  DLBCwMedian1JustMedians <- as.double(DLBCwMedian1[strtoi(row),15:ncol(DLBCwMedian1)][grepl("[0-9]+",DLBCwMedian1[strtoi(row),15:ncol(DLBCwMedian1)])])
+  DLBCwMedian2JustMedians <- as.double(DLBCwMedian2[strtoi(row),15:ncol(DLBCwMedian2)][grepl("[0-9]+",DLBCwMedian2[strtoi(row),15:ncol(DLBCwMedian2)])])
+  
+  ESCAwMedian1JustMedians <- as.double(ESCAwMedian1[strtoi(row),21:ncol(ESCAwMedian1)][grepl("[0-9]+",ESCAwMedian1[strtoi(row),21:ncol(ESCAwMedian1)])])
+  ESCAwMedian2JustMedians <- as.double(ESCAwMedian2[strtoi(row),21:ncol(ESCAwMedian2)][grepl("[0-9]+",ESCAwMedian2[strtoi(row),21:ncol(ESCAwMedian2)])])
+  
+  HNSCwMedian1JustMedians <- as.double(HNSCwMedian1[strtoi(row),21:ncol(HNSCwMedian1)][grepl("[0-9]+",HNSCwMedian1[strtoi(row),21:ncol(HNSCwMedian1)])])
+  HNSCwMedian2JustMedians <- as.double(HNSCwMedian2[strtoi(row),21:ncol(HNSCwMedian2)][grepl("[0-9]+",HNSCwMedian2[strtoi(row),21:ncol(HNSCwMedian2)])])
+  
+  KICHwMedian1JustMedians <- as.double(KICHwMedian1[strtoi(row),21:ncol(KICHwMedian1)][grepl("[0-9]+",KICHwMedian1[strtoi(row),21:ncol(KICHwMedian1)])])
+  KICHwMedian2JustMedians <- as.double(KICHwMedian2[strtoi(row),21:ncol(KICHwMedian2)][grepl("[0-9]+",KICHwMedian2[strtoi(row),21:ncol(KICHwMedian2)])])
+  
+  KIRCwMedian1JustMedians <- as.double(KIRCwMedian1[strtoi(row),21:ncol(KIRCwMedian1)][grepl("[0-9]+",KIRCwMedian1[strtoi(row),21:ncol(KIRCwMedian1)])])
+  KIRCwMedian2JustMedians <- as.double(KIRCwMedian2[strtoi(row),21:ncol(KIRCwMedian2)][grepl("[0-9]+",KIRCwMedian2[strtoi(row),21:ncol(KIRCwMedian2)])])
+  
+  KIRPwMedian1JustMedians <- as.double(KIRPwMedian1[strtoi(row),21:ncol(KIRPwMedian1)][grepl("[0-9]+",KIRPwMedian1[strtoi(row),21:ncol(KIRPwMedian1)])])
+  KIRPwMedian2JustMedians <- as.double(KIRPwMedian2[strtoi(row),21:ncol(KIRPwMedian2)][grepl("[0-9]+",KIRPwMedian2[strtoi(row),21:ncol(KIRPwMedian2)])])
+  
+  LGGwMedian1JustMedians <- as.double(LGGwMedian1[strtoi(row),15:ncol(LGGwMedian1)][grepl("[0-9]+",LGGwMedian1[strtoi(row),15:ncol(LGGwMedian1)])])
+  LGGwMedian2JustMedians <- as.double(LGGwMedian2[strtoi(row),15:ncol(LGGwMedian2)][grepl("[0-9]+",LGGwMedian2[strtoi(row),15:ncol(LGGwMedian2)])])
+  
+  LIHCwMedian1JustMedians <- as.double(LIHCwMedian1[strtoi(row),21:ncol(LIHCwMedian1)][grepl("[0-9]+",LIHCwMedian1[strtoi(row),21:ncol(LIHCwMedian1)])])
+  LIHCwMedian2JustMedians <- as.double(LIHCwMedian2[strtoi(row),21:ncol(LIHCwMedian2)][grepl("[0-9]+",LIHCwMedian2[strtoi(row),21:ncol(LIHCwMedian2)])])
+  
+  LUADwMedian1JustMedians <- as.double(LUADwMedian1[strtoi(row),21:ncol(LUADwMedian1)][grepl("[0-9]+",LUADwMedian1[strtoi(row),21:ncol(LUADwMedian1)])])
+  LUADwMedian2JustMedians <- as.double(LUADwMedian2[strtoi(row),21:ncol(LUADwMedian2)][grepl("[0-9]+",LUADwMedian2[strtoi(row),21:ncol(LUADwMedian2)])])
+  
+  LUSCwMedian1JustMedians <- as.double(LUSCwMedian1[strtoi(row),21:ncol(LUSCwMedian1)][grepl("[0-9]+",LUSCwMedian1[strtoi(row),21:ncol(LUSCwMedian1)])])
+  LUSCwMedian2JustMedians <- as.double(LUSCwMedian2[strtoi(row),21:ncol(LUSCwMedian2)][grepl("[0-9]+",LUSCwMedian2[strtoi(row),21:ncol(LUSCwMedian2)])])
+  
+  MESOwMedian1JustMedians <- as.double(MESOwMedian1[strtoi(row),15:ncol(MESOwMedian1)][grepl("[0-9]+",MESOwMedian1[strtoi(row),15:ncol(MESOwMedian1)])])
+  MESOwMedian2JustMedians <- as.double(MESOwMedian2[strtoi(row),15:ncol(MESOwMedian2)][grepl("[0-9]+",MESOwMedian2[strtoi(row),15:ncol(MESOwMedian2)])])
+  
+  OVwMedian1JustMedians <- as.double(OVwMedian1[strtoi(row),15:ncol(OVwMedian1)][grepl("[0-9]+",OVwMedian1[strtoi(row),15:ncol(OVwMedian1)])])
+  OVwMedian2JustMedians <- as.double(OVwMedian2[strtoi(row),15:ncol(OVwMedian2)][grepl("[0-9]+",OVwMedian2[strtoi(row),15:ncol(OVwMedian2)])])
+  
+  PAADwMedian1JustMedians <- as.double(PAADwMedian1[strtoi(row),21:ncol(PAADwMedian1)][grepl("[0-9]+",PAADwMedian1[strtoi(row),21:ncol(PAADwMedian1)])])
+  PAADwMedian2JustMedians <- as.double(PAADwMedian2[strtoi(row),21:ncol(PAADwMedian2)][grepl("[0-9]+",PAADwMedian2[strtoi(row),21:ncol(PAADwMedian2)])])
+  
+  PCPGwMedian1JustMedians <- as.double(PCPGwMedian1[strtoi(row),21:ncol(PCPGwMedian1)][grepl("[0-9]+",PCPGwMedian1[strtoi(row),21:ncol(PCPGwMedian1)])])
+  PCPGwMedian2JustMedians <- as.double(PCPGwMedian2[strtoi(row),21:ncol(PCPGwMedian2)][grepl("[0-9]+",PCPGwMedian2[strtoi(row),21:ncol(PCPGwMedian2)])])
+  
+  PRADwMedian1JustMedians <- as.double(PRADwMedian1[strtoi(row),21:ncol(PRADwMedian1)][grepl("[0-9]+",PRADwMedian1[strtoi(row),21:ncol(PRADwMedian1)])])
+  PRADwMedian2JustMedians <- as.double(PRADwMedian2[strtoi(row),21:ncol(PRADwMedian2)][grepl("[0-9]+",PRADwMedian2[strtoi(row),21:ncol(PRADwMedian2)])])
+  
+  READwMedian1JustMedians <- as.double(READwMedian1[strtoi(row),17:ncol(READwMedian1)][grepl("[0-9]+",READwMedian1[strtoi(row),17:ncol(READwMedian1)])])
+  READwMedian2JustMedians <- as.double(READwMedian2[strtoi(row),17:ncol(READwMedian2)][grepl("[0-9]+",READwMedian2[strtoi(row),17:ncol(READwMedian2)])])
+  
+  SARCwMedian1JustMedians <- as.double(SARCwMedian1[strtoi(row),17:ncol(SARCwMedian1)][grepl("[0-9]+",SARCwMedian1[strtoi(row),17:ncol(SARCwMedian1)])])
+  SARCwMedian2JustMedians <- as.double(SARCwMedian2[strtoi(row),17:ncol(SARCwMedian2)][grepl("[0-9]+",SARCwMedian2[strtoi(row),17:ncol(SARCwMedian2)])])
+  
+  SKCMwMedian1JustMedians <- as.double(SKCMwMedian1[strtoi(row),21:ncol(SKCMwMedian1)][grepl("[0-9]+",SKCMwMedian1[strtoi(row),21:ncol(SKCMwMedian1)])])
+  SKCMwMedian2JustMedians <- as.double(SKCMwMedian2[strtoi(row),21:ncol(SKCMwMedian2)][grepl("[0-9]+",SKCMwMedian2[strtoi(row),21:ncol(SKCMwMedian2)])])
+  
+  STADwMedian1JustMedians <- as.double(STADwMedian1[strtoi(row),21:ncol(STADwMedian1)][grepl("[0-9]+",STADwMedian1[strtoi(row),21:ncol(STADwMedian1)])])
+  STADwMedian2JustMedians <- as.double(STADwMedian2[strtoi(row),21:ncol(STADwMedian2)][grepl("[0-9]+",STADwMedian2[strtoi(row),21:ncol(STADwMedian2)])])
+  
+  TGCTwMedian1JustMedians <- as.double(TGCTwMedian1[strtoi(row),13:ncol(TGCTwMedian1)][grepl("[0-9]+",TGCTwMedian1[strtoi(row),13:ncol(TGCTwMedian1)])])
+  TGCTwMedian2JustMedians <- as.double(TGCTwMedian2[strtoi(row),13:ncol(TGCTwMedian2)][grepl("[0-9]+",TGCTwMedian2[strtoi(row),13:ncol(TGCTwMedian2)])])
+  
+  THCAwMedian1JustMedians <- as.double(THCAwMedian1[strtoi(row),21:ncol(THCAwMedian1)][grepl("[0-9]+",THCAwMedian1[strtoi(row),21:ncol(THCAwMedian1)])])
+  THCAwMedian2JustMedians <- as.double(THCAwMedian2[strtoi(row),21:ncol(THCAwMedian2)][grepl("[0-9]+",THCAwMedian2[strtoi(row),21:ncol(THCAwMedian2)])])
+  
+  THYMwMedian1JustMedians <- as.double(THYMwMedian1[strtoi(row),19:ncol(THYMwMedian1)][grepl("[0-9]+",THYMwMedian1[strtoi(row),19:ncol(THYMwMedian1)])])
+  THYMwMedian2JustMedians <- as.double(THYMwMedian2[strtoi(row),19:ncol(THYMwMedian2)][grepl("[0-9]+",THYMwMedian2[strtoi(row),19:ncol(THYMwMedian2)])])
+  
+  UCECwMedian1JustMedians <- as.double(UCECwMedian1[strtoi(row),21:ncol(UCECwMedian1)][grepl("[0-9]+",UCECwMedian1[strtoi(row),21:ncol(UCECwMedian1)])])
+  UCECwMedian2JustMedians <- as.double(UCECwMedian2[strtoi(row),21:ncol(UCECwMedian2)][grepl("[0-9]+",UCECwMedian2[strtoi(row),21:ncol(UCECwMedian2)])])
+  
+  UCSwMedian1JustMedians <- as.double(UCSwMedian1[strtoi(row),15:ncol(UCSwMedian1)][grepl("[0-9]+",UCSwMedian1[strtoi(row),15:ncol(UCSwMedian1)])])
+  UCSwMedian2JustMedians <- as.double(UCSwMedian2[strtoi(row),15:ncol(UCSwMedian2)][grepl("[0-9]+",UCSwMedian2[strtoi(row),15:ncol(UCSwMedian2)])])
+  
+  UVMwMedian1JustMedians <- as.double(UVMwMedian1[strtoi(row),15:ncol(UVMwMedian1)][grepl("[0-9]+",UVMwMedian1[strtoi(row),15:ncol(UVMwMedian1)])])
+  UVMwMedian2JustMedians <- as.double(UVMwMedian2[strtoi(row),15:ncol(UVMwMedian2)][grepl("[0-9]+",UVMwMedian2[strtoi(row),15:ncol(UVMwMedian2)])])
+  
+  
+  #############################################################################################################################################
+
+
+  ifelse(input$dataset=="ACC", data <-data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(ACCwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(ACCwMedian2JustMedians))),
+    value=c(ACCwMedian1JustMedians,ACCwMedian2JustMedians)
+  ),
+  
+  ifelse(input$dataset=="BLCA", data <-data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(BLCAwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(BLCAwMedian2JustMedians))),
+    value=c(BLCAwMedian1JustMedians,BLCAwMedian2JustMedians)
+  ),
+  
+  # ifelse(input$dataset=="BRCA", data <-data.frame(
+  #   name=c(rep("Both miRNA's Downregulated",length(BRCAwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(BRCAwMedian2JustMedians))),
+  #   value=c(BRCAwMedian1JustMedians,BRCAwMedian2JustMedians)
+  # ),
+  # 
+  ifelse(input$dataset=="CESC", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(CESCwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(CESCwMedian2JustMedians))),
+    value=c(CESCwMedian1JustMedians,CESCwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="CHOL", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(CHOLwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(CHOLwMedian2JustMedians))),
+    value=c(CHOLwMedian1JustMedians,CHOLwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="COAD", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(COADwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(COADwMedian2JustMedians))),
+    value=c(COADwMedian1JustMedians,COADwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="DLBC", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(DLBCwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(DLBCwMedian2JustMedians))),
+    value=c(DLBCwMedian1JustMedians,DLBCwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="ESCA", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(ESCAwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(ESCAwMedian2JustMedians))),
+    value=c(ESCAwMedian1JustMedians,ESCAwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="HNSC", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(HNSCwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(HNSCwMedian2JustMedians))),
+    value=c(HNSCwMedian1JustMedians,HNSCwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="KICH", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(KICHwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(KICHwMedian2JustMedians))),
+    value=c(KICHwMedian1JustMedians,KICHwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="KIRC", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(KIRCwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(KIRCwMedian2JustMedians))),
+    value=c(KIRCwMedian1JustMedians,KIRCwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="KIRP", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(KIRPwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(KIRPwMedian2JustMedians))),
+    value=c(KIRPwMedian1JustMedians,KIRPwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="LGG", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(LGGwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(LGGwMedian2JustMedians))),
+    value=c(LGGwMedian1JustMedians,LGGwMedian2JustMedians)
+  ),
+
+  ifelse(input$dataset=="LIHC", data <- data.frame(
+  name=c(rep("Both miRNA's Downregulated",length(LIHCwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(LIHCwMedian2JustMedians))),
+  value=c(LIHCwMedian1JustMedians,LIHCwMedian2JustMedians)
+  ),
+
+  ifelse(input$dataset=="LUAD", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(LUADwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(LUADwMedian2JustMedians))),
+    value=c(LUADwMedian1JustMedians,LUADwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="LUSC", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(LUSCwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(LUSCwMedian2JustMedians))),
+    value=c(LUSCwMedian1JustMedians,LUSCwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="MESO", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(MESOwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(MESOwMedian2JustMedians))),
+    value=c(MESOwMedian1JustMedians,MESOwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="OV", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(OVwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(OVwMedian2JustMedians))),
+    value=c(OVwMedian1JustMedians,OVwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="PAAD", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(PAADwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(PAADwMedian2JustMedians))),
+    value=c(PAADwMedian1JustMedians,PAADwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="PCPG", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(PCPGwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(PCPGwMedian2JustMedians))),
+    value=c(PCPGwMedian1JustMedians,PCPGwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="PRAD", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(PRADwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(PRADwMedian2JustMedians))),
+    value=c(PRADwMedian1JustMedians,PRADwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="READ", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(READwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(READwMedian2JustMedians))),
+    value=c(READwMedian1JustMedians,READwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="SARC", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(SARCwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(SARCwMedian2JustMedians))),
+    value=c(SARCwMedian1JustMedians,SARCwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="SKCM", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(SKCMwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(SKCMwMedian2JustMedians))),
+    value=c(SKCMwMedian1JustMedians,SKCMwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="STAD", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(STADwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(STADwMedian2JustMedians))),
+    value=c(STADwMedian1JustMedians,STADwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="TGCT", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(TGCTwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(TGCTwMedian2JustMedians))),
+    value=c(TGCTwMedian1JustMedians,TGCTwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="THCA", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(THCAwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(THCAwMedian2JustMedians))),
+    value=c(THCAwMedian1JustMedians,THCAwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="THYM", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(THYMwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(THYMwMedian2JustMedians))),
+    value=c(THYMwMedian1JustMedians,THYMwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="UCEC", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(UCECwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(UCECwMedian2JustMedians))),
+    value=c(UCECwMedian1JustMedians,UCECwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="UCS", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(UCSwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(UCSwMedian2JustMedians))),
+    value=c(UCSwMedian1JustMedians,UCSwMedian2JustMedians)
+  ),
+  ifelse(input$dataset=="UVM", data <- data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(UVMwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(UVMwMedian2JustMedians))),
+    value=c(UVMwMedian1JustMedians,UVMwMedian2JustMedians)
+  ),
+  data <- data.frame(
+    name=c(),
+    value=c()
+  )
+  )))))))))))))))))))))))))))))
+  )
+
+
+  #############################################################################################################################################
+
+
+  showModal(modalDialog(
+    renderPlot({
+      data %>%
+        ggplot( aes(x=name,y=value, fill=name))+
+        geom_boxplot()+
+        geom_jitter(color="black", size=0.4, alpha=0.9)+
+        theme(
+          legend.position = "none",
+          axis.title.x = element_text(size = 14,face="bold")
+        )+
+        scale_fill_manual(name = c("Both miRNA's Downregulated", "Both miRNA's Upregulated"),
+                          values=c("#99ccff", "#ff6666"))+
+        xlab("")+
+        ylab("mRNA Expression Level")
+
+    })
+  ))
 })
 
 
@@ -810,7 +1149,7 @@ sourceTargetInput <- reactive({
             "KIRC"=KIRC_source_target,
             "KIRP"=KIRP_source_target,
             "LGG"=LGG_source_target,
-            #"LIHC"=LIHC_source_target,
+            "LIHC"=LIHC_source_target,
             "LUAD"=LUAD_source_target,
             "LUSC"=LUSC_source_target,
             "MESO"=MESO_source_target,
@@ -835,7 +1174,7 @@ sourceTargetInput <- reactive({
 nodeAttributeInput <- reactive({
     switch (input$dataset,
             "ACC" = ACC_node_attr,
-            #"BLCA" = BLCA_node_attr,
+            "BLCA" = BLCA_node_attr,
             "CESC"=CESC_node_attr,
             "CHOL"=CHOL_node_attr,
             "COAD"=COAD_node_attr,
@@ -846,7 +1185,7 @@ nodeAttributeInput <- reactive({
             "KIRC"=KIRC_node_attr,
             "KIRP"=KIRP_node_attr,
             "LGG"=LGG_node_attr,
-            #"LIHC"=LIHC_node_attr,
+            "LIHC"=LIHC_node_attr,
             "LUAD"=LUAD_node_attr,
             "LUSC"=LUSC_node_attr,
             "MESO"=MESO_node_attr,
@@ -904,42 +1243,44 @@ output$vNetwork <- renderVisNetwork({
     edges$color <- "rgb(153,153,153)"
     edges$length <- 3
     
-    if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){ 
+    nodes$color.background <- "rgb(153,153,153)"
+    nodes$color.border <- "rgb(153,153,153)"
+    
+
+
+    
+    if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){
+      
+        nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+                                    filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, 3,1)
+        
+        nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+                                              filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
+
         nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
                                          ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
                                                 "rgb(153,153,153)"))
-        
-        nodes$color.border <- ifelse((filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance !="" & 
-                                          filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05), "black",
-                                     ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-                                            ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-                                                   "rgb(153,153,153)")))
-        
-        nodes$borderWidth <- ifelse((filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance !="" & 
-                                         filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05), 3,1)
-        
+        nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+                                         ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+                                                "rgb(153,153,153)"))
+    
     }
     
-    else {
-        nodes$color.background <- "rgb(153,153,153)"
-        nodes$color.border <- "rgb(153,153,153)"
-        nodes$borderWidth <- 1
-    }
-    
-    if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)) > 0){ 
+   
+    if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)) > 0){
         nodes$shape <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)=="true","square",
                               ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna","diamond",
                                      ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mirna","dot",
                                             ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="dummy","dot","dot"))))
-        
-        
+
+
         nodes$size <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)=="true",20,
                              ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna",25,
                                     ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mirna",20,
                                            ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="dummy",3,3))))
-        
+
     }
-    
+
     else {
         nodes$shape <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna","diamond",
                               ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mirna","dot",
@@ -948,28 +1289,32 @@ output$vNetwork <- renderVisNetwork({
     
     
     if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){ 
-        lnodes <- data.frame(label=c("mRNA","mRNA is TF","miRNA","Up Regulated","Down Regulated","Significant"),
-                             shape=c("diamond","square","dot","box","box","dot"),
-                             size =c(25,20,25,25,15,25),
-                             color.background=c("rgb(153,153,153)",  "rgb(153,153,153)", "rgb(153,153,153)","rgb(255,102,102)","rgb(153,204,255)","white"),
-                             borderWidth=c(1,1,1,1,1,2),
-                             color.border=c("rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(255,102,102)","rgb(153,204,255)","black")
+        lnodes <- data.frame(label=c("Legend","mRNA","mRNA is TF","miRNA","Up Regulated","Down Regulated","Significant"),
+                             shape=c("text","diamond","square","dot","box","box","dot"),
+                             size =c(25,25,20,25,25,15,25),
+                             font.size=c(50,25,25,25,25,25,25),
+                             font.face=c("Ubuntu","Ubuntu","Ubuntu","Ubuntu","Ubuntu","Ubuntu","Ubuntu"),
+                             color.background=c("rgb(153,153,153)","rgb(153,153,153)",  "rgb(153,153,153)", "rgb(153,153,153)","rgb(255,102,102)","rgb(153,204,255)","white"),
+                             borderWidth=c(1,1,1,1,1,1,2),
+                             color.border=c("rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(255,102,102)","rgb(153,204,255)","black")
         )
         
         
         
         visNetwork(nodes, edges) %>%
-            visLegend(addNodes = lnodes,main = "Legend",width = 0.1, position = "right",zoom=F,stepY = 120,useGroups = F)
+            visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 180,useGroups = F)
     }
     else{
-        lnodes <- data.frame(label=c("mRNA","mRNA is TF","miRNA"),
-                             shape=c("diamond","square","dot"),
-                             size =c(30,30,25),
-                             color.background=c("rgb(153,153,153)"),
-                             color.border=c("rgb(153,153,153)", "rgb(153,153,153)","rgb(153,153,153)")
+        lnodes <- data.frame(label=c("Legend","mRNA","mRNA is TF","miRNA"),
+                             shape=c("text","diamond","square","dot"),
+                             size =c(25,30,30,25),
+                             font.size=c(50,25,25,25),
+                             font.face=c("Ubuntu","Ubuntu","Ubuntu","Ubuntu"),
+                             color.background=c("rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)"),
+                             color.border=c("rgb(153,153,153)", "rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)")
         )
         visNetwork(nodes, edges) %>%
-            visLegend(addNodes = lnodes,main = "Legend",width = 0.1, position = "right",zoom=F,stepY = 120,useGroups = F)
+            visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 120,useGroups = F)
     }
     
 })
@@ -979,23 +1324,26 @@ output$vNetwork <- renderVisNetwork({
 ##################################################################################################    
 
 TripletsInWhichCancerWCount2 <- reactive({
-    orListForCommonCancer <- rep("|",length(input$CommonCancer))
-    cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
+
     
     if(length(input$CommonCancer) >0 ){
-        TripletsInWhichCancerWCount%>%
-            filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))  
-        
+      orListForCommonCancer <- rep("|",length(input$CommonCancer))
+      cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
+
+      TripletsInWhichCancerWCount%>%
+            filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
+      
     }
-    else{ #BURAYA BİR DAHA BAK!
-        filter(TripletsInWhichCancerWCount, WhichCancer %in% input$CommonCancer) 
-    }                                                  
+  else{
+    shinyalert::shinyalert("Warning", "No Data Available!", type = "warning")
+    NULL
+  }
+                                          
 })
 
 output$tableCommonTriplet <- DT::renderDataTable({
     
-    filtered <-filter(TripletsInWhichCancerWCount2(), Count> 1)
-    DT::datatable(filtered,
+    DT::datatable(TripletsInWhichCancerWCount2(),
                   options = list(
                       columnDefs = list(
                           list(className = "dt-center", targets = "_all")
@@ -1004,16 +1352,23 @@ output$tableCommonTriplet <- DT::renderDataTable({
 })
 
 MirnaPairsInWhichCancerWCount2 <- reactive({
+  
+  if(length(input$CommonCancer) >0 ){
     orListForCommonCancer <- rep("|",length(input$CommonCancer))
     cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
     MirnaPairsInWhichCancerWCount %>%
-        filter(stringr::str_detect(CancerTypes, cancerListForCommonTripletAndPair))
+      filter(stringr::str_detect(CancerTypes, cancerListForCommonTripletAndPair))
+  }
+  else{
+    shinyalert::shinyalert("Warning", "No Data Available!", type = "warning")
+    NULL
+  }
+    
     
 })
 
 output$tableCommonmiRNAPair <- DT::renderDataTable({
-    filtered <-filter(MirnaPairsInWhichCancerWCount2(), Count> 1)
-    DT::datatable(filtered,
+    DT::datatable(MirnaPairsInWhichCancerWCount2(),
                   options = list(
                       columnDefs = list(
                           list(className = "dt-center", targets = "_all")
@@ -1021,9 +1376,14 @@ output$tableCommonmiRNAPair <- DT::renderDataTable({
                   ))
 })
 
+##################################################################################################    
+
 output$TCGAAbbrv <- renderTable({
     TCGA_abbreviations
 })
+
+##################################################################################################    
+
 
 output$totalCountsPlot <- renderPlotly({
   
@@ -1079,7 +1439,7 @@ output$commonMrnaHeatmap <- renderPlotly({
                        scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
                          low = "white",
                          high = "black"
-                       ))
+                       ))#%>% layout(width="400px")
   
 
 
@@ -1087,7 +1447,7 @@ output$commonMrnaHeatmap <- renderPlotly({
 
 output$commonMirnaHeatmap <- renderPlotly({
   
-  heatmaply::heatmaply(as.matrix(as.data.table(commonMirnaAbove50),rownames = 1),
+  p <- heatmaply::heatmaply(as.matrix(as.data.table(commonMirnaAbove50),rownames = 1),
                             margins = c(60,100,40,20),
                             grid_color = "white",
                             grid_width = 0.0001,
@@ -1099,9 +1459,7 @@ output$commonMirnaHeatmap <- renderPlotly({
                             scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
                               low = "white",
                               high = "black"
-                            ),
-                            )
-                            #%>% layout(height="500px")
+                            ))%>% layout(height="100vh",responsive= TRUE)
   
   
   
