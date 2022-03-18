@@ -678,63 +678,79 @@ server <- function(input, output, session) {
                                    Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2],
                                    tolower(is_mrna_tf) %in% tolower(input$is_mrna_tf)
         )
-        if(length(input$mrnaFilter) > 0){
+        if(nrow(filteredWithTests) >0){
+          if(length(input$mrnaFilter) > 0){
             filteredWithMrna <-filter(filteredWithTests,hgnc_symbol %in% input$mrnaFilter)
-        }
-        else{
+          }
+          else{
             filteredWithMrna <- filteredWithTests
-        }
-
-        if(length(input$mirnaFilter) > 0){
+          }
+          
+          if(length(input$mirnaFilter) > 0){
             filteredWithMirna <-filter(filteredWithMrna, mirna1 %in% input$mirnaFilter | mirna2 %in% input$mirnaFilter)
-        }
-
-        else{
+          }
+          
+          else{
             filteredWithMirna <- filteredWithMrna
+          }
+          
+          
+          
         }
         
+        
     })
+    
+    true_false_formatter <-
+      formatter("span",
+                style = x ~ style(
+                  font.weight = "bold",
+                  color = ifelse(x == 'true', "forestgreen", ifelse(x == 'false', "red", "black"))
+                ))
+    
+    
+    
+    button <- function(tbl){
+      function(i){
+        sprintf(
+          '<button id="button_%s_%d" type="button" onclick="%s">Box Plot</button>', tbl,
+          i, "Shiny.setInputValue('button', this.id);")
+      }
+    }
     
     
     DatasetRoundDigits <-reactive({
       
         dataset <-datasetInput2()
-        if(nrow(dataset)>0){
+        
+        if(!is.null(dataset)){
+          print(nrow(dataset)>0)
           dataset$mirna1 <- stringr::str_remove(dataset$mirna1, "hsa-")
           dataset$mirna2 <- stringr::str_remove(dataset$mirna2, "hsa-")
-          dataset %>% 
+          dataset <- dataset %>%
             dplyr::mutate(across(where(is.numeric),round,3))
+          
+        }
+        else{
+          shinyalert::shinyalert("Warning", "No Matching Records Based on Your Filter!", type = "info")
+          
+          NULL
         }
       
         
     })
     
-    true_false_formatter <-
-        formatter("span",
-                  style = x ~ style(
-                      font.weight = "bold",
-                      color = ifelse(x == 'true', "forestgreen", ifelse(x == 'false', "red", "black"))
-                  ))
     
-
-
-    button <- function(tbl){
-        function(i){
-            sprintf(
-                '<button id="button_%s_%d" type="button" onclick="%s">Box Plot</button>', tbl,
-                i, "Shiny.setInputValue('button', this.id);")
-        }
-    }
     
 
 output$table <- DT::renderDataTable({
-
+  
+  if(!is.null(DatasetRoundDigits())){
     DT1 <- DatasetRoundDigits()
     DT <- cbind(DT1,
                 button = sapply(1:nrow(DT1), button("table")),
                 stringsAsFactors = FALSE)
-
-
+    
     hideList1 <- c(7,8,9,10,11)
     hideList2 <- c(7,8,9,10,11,12,13,14,15,16,17)
     hideList3 <- c(7,8,9,10,11,12,13)
@@ -744,46 +760,46 @@ output$table <- DT::renderDataTable({
     
     
     ifelse(input$dataset=="ACC", columnHideList <-hideList1,
-    ifelse(input$dataset=="BLCA", columnHideList <-hideList2,
-    ifelse(input$dataset=="CESC", columnHideList <-hideList2,
-    ifelse(input$dataset=="CHOL", columnHideList <-hideList2,
-    ifelse(input$dataset=="COAD", columnHideList <-hideList3,
-    ifelse(input$dataset=="DLBC", columnHideList <-hideList1,
-    ifelse(input$dataset=="ESCA", columnHideList <-hideList2,
-    ifelse(input$dataset=="HNSC", columnHideList <-hideList2,
-    ifelse(input$dataset=="KICH", columnHideList <-hideList2,
-    ifelse(input$dataset=="KIRC", columnHideList <-hideList2,
-    ifelse(input$dataset=="KIRP", columnHideList <-hideList2,
-    ifelse(input$dataset=="LGG", columnHideList <-hideList1,
-    ifelse(input$dataset=="LIHC", columnHideList <-hideList2,
-    ifelse(input$dataset=="LUAD", columnHideList <-hideList2,
-    ifelse(input$dataset=="LUSC", columnHideList <-hideList2,
-    ifelse(input$dataset=="MESO", columnHideList <-hideList1,
-    ifelse(input$dataset=="OV", columnHideList <-hideList1,
-    ifelse(input$dataset=="PAAD", columnHideList <-hideList2,
-    ifelse(input$dataset=="PCPG",columnHideList <-hideList2,
-    ifelse(input$dataset=="PRAD", columnHideList <-hideList2,
-    ifelse(input$dataset=="READ", columnHideList <-hideList3,
-    ifelse(input$dataset=="SARC", columnHideList <-hideList3,
-    ifelse(input$dataset=="SKCM", columnHideList <-hideList2,
-    ifelse(input$dataset=="STAD", columnHideList <-hideList2,
-    ifelse(input$dataset=="TGCT", columnHideList <-hideList4,
-    ifelse(input$dataset=="THCA", columnHideList <-hideList2,
-    ifelse(input$dataset=="THYM", columnHideList <-hideList5,
-    ifelse(input$dataset=="UCEC", columnHideList <-hideList2,
-    ifelse(input$dataset=="UCS", columnHideList <-hideList6,
-    ifelse(input$dataset=="UVM", columnHideList <-hideList6,columnHideList <-c()))))))))))))))))))))))))))))))
-
+           ifelse(input$dataset=="BLCA", columnHideList <-hideList2,
+                  ifelse(input$dataset=="CESC", columnHideList <-hideList2,
+                         ifelse(input$dataset=="CHOL", columnHideList <-hideList2,
+                                ifelse(input$dataset=="COAD", columnHideList <-hideList3,
+                                       ifelse(input$dataset=="DLBC", columnHideList <-hideList1,
+                                              ifelse(input$dataset=="ESCA", columnHideList <-hideList2,
+                                                     ifelse(input$dataset=="HNSC", columnHideList <-hideList2,
+                                                            ifelse(input$dataset=="KICH", columnHideList <-hideList2,
+                                                                   ifelse(input$dataset=="KIRC", columnHideList <-hideList2,
+                                                                          ifelse(input$dataset=="KIRP", columnHideList <-hideList2,
+                                                                                 ifelse(input$dataset=="LGG", columnHideList <-hideList1,
+                                                                                        ifelse(input$dataset=="LIHC", columnHideList <-hideList2,
+                                                                                               ifelse(input$dataset=="LUAD", columnHideList <-hideList2,
+                                                                                                      ifelse(input$dataset=="LUSC", columnHideList <-hideList2,
+                                                                                                             ifelse(input$dataset=="MESO", columnHideList <-hideList1,
+                                                                                                                    ifelse(input$dataset=="OV", columnHideList <-hideList1,
+                                                                                                                           ifelse(input$dataset=="PAAD", columnHideList <-hideList2,
+                                                                                                                                  ifelse(input$dataset=="PCPG",columnHideList <-hideList2,
+                                                                                                                                         ifelse(input$dataset=="PRAD", columnHideList <-hideList2,
+                                                                                                                                                ifelse(input$dataset=="READ", columnHideList <-hideList3,
+                                                                                                                                                       ifelse(input$dataset=="SARC", columnHideList <-hideList3,
+                                                                                                                                                              ifelse(input$dataset=="SKCM", columnHideList <-hideList2,
+                                                                                                                                                                     ifelse(input$dataset=="STAD", columnHideList <-hideList2,
+                                                                                                                                                                            ifelse(input$dataset=="TGCT", columnHideList <-hideList4,
+                                                                                                                                                                                   ifelse(input$dataset=="THCA", columnHideList <-hideList2,
+                                                                                                                                                                                          ifelse(input$dataset=="THYM", columnHideList <-hideList5,
+                                                                                                                                                                                                 ifelse(input$dataset=="UCEC", columnHideList <-hideList2,
+                                                                                                                                                                                                        ifelse(input$dataset=="UCS", columnHideList <-hideList6,
+                                                                                                                                                                                                               ifelse(input$dataset=="UVM", columnHideList <-hideList6,columnHideList <-c()))))))))))))))))))))))))))))))
+    
     tripletvalue <- tags$span(
-        "Triplet pvalue",
-        infoBtn('notWorking')%>%
-            spsComps::bsTooltip(title = "Kernel Three-Variable Lancaster Interaction Test.",
-                                placement = "top",
-                                trigger = "hover")
-            
+      "Triplet pvalue",
+      infoBtn('notWorking')%>%
+        spsComps::bsTooltip(title = "Kernel Three-Variable Lancaster Interaction Test.",
+                            placement = "top",
+                            trigger = "hover")
+      
     ) %>% as.character()
     
-  
+    
     
     
     nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2",tripletvalue,"is mRNA TF" ,"miRNA1 Literature","miRNA2 Literature", "mRNA Literature","miRNA1-mRNA Database","miRNA2-mRNA Database","miRNA-mRNA Expressions")
@@ -793,59 +809,59 @@ output$table <- DT::renderDataTable({
     nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2",tripletvalue, " is mRNA TF", "mRNA Literature", "miRNA1-mRNA Database","miRNA2-mRNA Database", "miRNA1 pvalue","miRNA1 LogFC","miRNA2 pvalue","miRNA2 LogFC","mRNA pvalue","mRNA LogFC","miRNA-mRNA Expressions")
     
     ifelse(input$dataset=="ACC", columnNameList <-nameList1,
-    ifelse(input$dataset=="BLCA", columnNameList <-nameList2,
-    ifelse(input$dataset=="CESC", columnNameList <-nameList2,
-    ifelse(input$dataset=="CHOL", columnNameList <-nameList2,
-    ifelse(input$dataset=="COAD", columnNameList <-nameList3,
-    ifelse(input$dataset=="DLBC", columnNameList <-nameList1,
-    ifelse(input$dataset=="ESCA", columnNameList <-nameList2,
-    ifelse(input$dataset=="HNSC", columnNameList <-nameList2,
-    ifelse(input$dataset=="KICH", columnNameList <-nameList2,
-    ifelse(input$dataset=="KIRC", columnNameList <-nameList2,
-    ifelse(input$dataset=="KIRP", columnNameList <-nameList2,
-    ifelse(input$dataset=="LGG", columnNameList <-nameList1,
-    ifelse(input$dataset=="LIHC", columnNameList <-nameList2,
-    ifelse(input$dataset=="LUAD", columnNameList <-nameList2,
-    ifelse(input$dataset=="LUSC", columnNameList <-nameList2,
-    ifelse(input$dataset=="MESO", columnNameList <-nameList1,
-    ifelse(input$dataset=="OV", columnNameList <-nameList1,
-    ifelse(input$dataset=="PAAD", columnNameList <-nameList2,
-    ifelse(input$dataset=="PCPG",columnNameList <-nameList2,
-    ifelse(input$dataset=="PRAD", columnNameList <-nameList2,
-    ifelse(input$dataset=="READ", columnNameList <-nameList3,
-    ifelse(input$dataset=="SARC", columnNameList <-nameList3,
-    ifelse(input$dataset=="SKCM", columnNameList <-nameList2,
-    ifelse(input$dataset=="STAD", columnNameList <-nameList2,
-    ifelse(input$dataset=="TGCT", columnNameList <-nameList4,
-    ifelse(input$dataset=="THCA", columnNameList <-nameList2,
-    ifelse(input$dataset=="THYM", columnNameList <-nameList5,
-    ifelse(input$dataset=="UCEC", columnNameList <-nameList2,
-    ifelse(input$dataset=="UCS", columnNameList <-nameList1,
-    ifelse(input$dataset=="UVM", columnNameList <-nameList1,
-    columnNameList <-c()))))))))))))))))))))))))))))))
+           ifelse(input$dataset=="BLCA", columnNameList <-nameList2,
+                  ifelse(input$dataset=="CESC", columnNameList <-nameList2,
+                         ifelse(input$dataset=="CHOL", columnNameList <-nameList2,
+                                ifelse(input$dataset=="COAD", columnNameList <-nameList3,
+                                       ifelse(input$dataset=="DLBC", columnNameList <-nameList1,
+                                              ifelse(input$dataset=="ESCA", columnNameList <-nameList2,
+                                                     ifelse(input$dataset=="HNSC", columnNameList <-nameList2,
+                                                            ifelse(input$dataset=="KICH", columnNameList <-nameList2,
+                                                                   ifelse(input$dataset=="KIRC", columnNameList <-nameList2,
+                                                                          ifelse(input$dataset=="KIRP", columnNameList <-nameList2,
+                                                                                 ifelse(input$dataset=="LGG", columnNameList <-nameList1,
+                                                                                        ifelse(input$dataset=="LIHC", columnNameList <-nameList2,
+                                                                                               ifelse(input$dataset=="LUAD", columnNameList <-nameList2,
+                                                                                                      ifelse(input$dataset=="LUSC", columnNameList <-nameList2,
+                                                                                                             ifelse(input$dataset=="MESO", columnNameList <-nameList1,
+                                                                                                                    ifelse(input$dataset=="OV", columnNameList <-nameList1,
+                                                                                                                           ifelse(input$dataset=="PAAD", columnNameList <-nameList2,
+                                                                                                                                  ifelse(input$dataset=="PCPG",columnNameList <-nameList2,
+                                                                                                                                         ifelse(input$dataset=="PRAD", columnNameList <-nameList2,
+                                                                                                                                                ifelse(input$dataset=="READ", columnNameList <-nameList3,
+                                                                                                                                                       ifelse(input$dataset=="SARC", columnNameList <-nameList3,
+                                                                                                                                                              ifelse(input$dataset=="SKCM", columnNameList <-nameList2,
+                                                                                                                                                                     ifelse(input$dataset=="STAD", columnNameList <-nameList2,
+                                                                                                                                                                            ifelse(input$dataset=="TGCT", columnNameList <-nameList4,
+                                                                                                                                                                                   ifelse(input$dataset=="THCA", columnNameList <-nameList2,
+                                                                                                                                                                                          ifelse(input$dataset=="THYM", columnNameList <-nameList5,
+                                                                                                                                                                                                 ifelse(input$dataset=="UCEC", columnNameList <-nameList2,
+                                                                                                                                                                                                        ifelse(input$dataset=="UCS", columnNameList <-nameList1,
+                                                                                                                                                                                                               ifelse(input$dataset=="UVM", columnNameList <-nameList1,
+                                                                                                                                                                                                                      columnNameList <-c()))))))))))))))))))))))))))))))
     
     icon_formatter <- function() {
-        formatter("span", 
-                  style = x ~ formattable::style(color = ifelse(x, "#179E93", "red")), x ~ icontext(ifelse(x, "ok", "remove"), "")
-        )	 	 
+      formatter("span", 
+                style = x ~ formattable::style(color = ifelse(x, "#179E93", "red")), x ~ icontext(ifelse(x, "ok", "remove"), "")
+      )	 	 
     }
     
     significant_bold <- formatter("span", 
-                                style = x ~ formattable::style("font-weight" = ifelse(x <0.05, "bold", NA)))
+                                  style = x ~ formattable::style("font-weight" = ifelse(x <0.05, "bold", NA)))
     
     sign_formatter <- formatter("span", 
                                 style = x ~ formattable::style(color = ifelse(x > 0, "red", 
-                                                                 ifelse(x < 0, "#074487", "black"))))
+                                                                              ifelse(x < 0, "#074487", "black"))))
     
-
+    
     as.datatable(formattable(DT, list(
-        Lancaster_XY_Z = color_tile("transparent", "lightpink"),
-        is_mrna_tf = icon_formatter(),
-        miRNA1_logFC = sign_formatter,
-        miRNA2_logFC = sign_formatter,
-        miRNA1_pvalue = significant_bold,
-        miRNA2_pvalue = significant_bold
-
+      Lancaster_XY_Z = color_tile("transparent", "lightpink"),
+      is_mrna_tf = icon_formatter(),
+      miRNA1_logFC = sign_formatter,
+      miRNA2_logFC = sign_formatter,
+      miRNA1_pvalue = significant_bold,
+      miRNA2_pvalue = significant_bold
+      
     )),escape = F, fillContainer = TRUE,
     colnames=columnNameList,
     extensions = 'Buttons',
@@ -865,6 +881,14 @@ output$table <- DT::renderDataTable({
     # 
     #                              )
     # )
+    
+    
+  }
+
+      
+    
+
+    
 
 })
 
@@ -1208,7 +1232,8 @@ nodeAttributeInput <- reactive({
 })
 
 output$vNetwork <- renderVisNetwork({
-    
+  
+  if(!is.null(DatasetRoundDigits())){
     combmi1mi2mrna <- unique(c(gsub("hsa-", "",DatasetRoundDigits()$mirna1),gsub("hsa-", "",DatasetRoundDigits()$mirna2),DatasetRoundDigits()$hgnc_symbol))
     orListForNetworkFiltering <- rep("|",length(combmi1mi2mrna))
     networkFilteringList <- paste(c(rbind(orListForNetworkFiltering, matrix(combmi1mi2mrna,ncol = length(orListForNetworkFiltering)))[-1]),collapse = '')
@@ -1220,14 +1245,14 @@ output$vNetwork <- renderVisNetwork({
     splittedSourceTargetFilteringMIRNA2 <- sapply(splittedSourceTargetFiltering,'[',2)
     splittedSourceTargetFilteringDUMMY1_2 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA1,"/",splittedSourceTargetFilteringMIRNA2))
     splittedSourceTargetFilteringDUMMY2_1 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA2,"/",splittedSourceTargetFilteringMIRNA1))
-
+    
     
     for (i in 1:nrow(DatasetRoundDigits())){
-        concated <- rbind(concated, filter(sourceTargetInput(), ((sourceTargetInput()$source==splittedSourceTargetFilteringMIRNA1[i] & (sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY1_2[i] |sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY2_1[i] ))|
-                                                                     (sourceTargetInput()$source==splittedSourceTargetFilteringMIRNA2[i] & (sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY1_2[i] | sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY2_1[i]))|
-                                                                     ((sourceTargetInput()$source==splittedSourceTargetFilteringDUMMY1_2[i]| sourceTargetInput()$source==splittedSourceTargetFilteringDUMMY2_1[i]) & sourceTargetInput()$target == splittedSourceTargetFilteringMRNA[i])
-        )))
-        
+      concated <- rbind(concated, filter(sourceTargetInput(), ((sourceTargetInput()$source==splittedSourceTargetFilteringMIRNA1[i] & (sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY1_2[i] |sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY2_1[i] ))|
+                                                                 (sourceTargetInput()$source==splittedSourceTargetFilteringMIRNA2[i] & (sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY1_2[i] | sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY2_1[i]))|
+                                                                 ((sourceTargetInput()$source==splittedSourceTargetFilteringDUMMY1_2[i]| sourceTargetInput()$source==splittedSourceTargetFilteringDUMMY2_1[i]) & sourceTargetInput()$target == splittedSourceTargetFilteringMRNA[i])
+      )))
+      
     }
     
     concatedUnique <- unique(concated[,c("source","target")])
@@ -1246,76 +1271,80 @@ output$vNetwork <- renderVisNetwork({
     nodes$color.background <- "rgb(153,153,153)"
     nodes$color.border <- "rgb(153,153,153)"
     
-
-
+    
+    
     
     if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){
       
-        nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+      nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
                                     filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, 3,1)
-        
-        nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
-                                              filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
-
-        nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-                                         ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-                                                "rgb(153,153,153)"))
-        nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-                                         ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-                                                "rgb(153,153,153)"))
-    
+      
+      nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+                                     filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
+      
+      nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+                                       ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+                                              "rgb(153,153,153)"))
+      nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+                                   ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+                                          "rgb(153,153,153)"))
+      
     }
     
-   
+    
     if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)) > 0){
-        nodes$shape <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)=="true","square",
-                              ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna","diamond",
-                                     ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mirna","dot",
-                                            ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="dummy","dot","dot"))))
-
-
-        nodes$size <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)=="true",20,
-                             ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna",25,
-                                    ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mirna",20,
-                                           ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="dummy",3,3))))
-
+      nodes$shape <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)=="true","square",
+                            ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna","diamond",
+                                   ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mirna","dot",
+                                          ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="dummy","dot","dot"))))
+      
+      
+      nodes$size <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)=="true",20,
+                           ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna",25,
+                                  ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mirna",20,
+                                         ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="dummy",3,3))))
+      
     }
-
+    
     else {
-        nodes$shape <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna","diamond",
-                              ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mirna","dot",
-                                     ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="dummy","dot","dot")))
+      nodes$shape <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna","diamond",
+                            ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mirna","dot",
+                                   ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="dummy","dot","dot")))
     }
     
     
     if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){ 
-        lnodes <- data.frame(label=c("Legend","mRNA","mRNA is TF","miRNA","Up Regulated","Down Regulated","Significant"),
-                             shape=c("text","diamond","square","dot","box","box","dot"),
-                             size =c(25,25,20,25,25,15,25),
-                             font.size=c(50,25,25,25,25,25,25),
-                             font.face=c("Ubuntu","Ubuntu","Ubuntu","Ubuntu","Ubuntu","Ubuntu","Ubuntu"),
-                             color.background=c("rgb(153,153,153)","rgb(153,153,153)",  "rgb(153,153,153)", "rgb(153,153,153)","rgb(255,102,102)","rgb(153,204,255)","white"),
-                             borderWidth=c(1,1,1,1,1,1,2),
-                             color.border=c("rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(255,102,102)","rgb(153,204,255)","black")
-        )
-        
-        
-        
-        visNetwork(nodes, edges) %>%
-            visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 180,useGroups = F)
+      lnodes <- data.frame(label=c("Legend","mRNA","mRNA is TF","miRNA","Up Regulated","Down Regulated","Significant"),
+                           shape=c("text","diamond","square","dot","box","box","dot"),
+                           size =c(25,25,20,25,25,15,25),
+                           font.size=c(50,25,25,25,25,25,25),
+                           font.face=c("Ubuntu","Ubuntu","Ubuntu","Ubuntu","Ubuntu","Ubuntu","Ubuntu"),
+                           color.background=c("rgb(153,153,153)","rgb(153,153,153)",  "rgb(153,153,153)", "rgb(153,153,153)","rgb(255,102,102)","rgb(153,204,255)","white"),
+                           borderWidth=c(1,1,1,1,1,1,2),
+                           color.border=c("rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(255,102,102)","rgb(153,204,255)","black")
+      )
+      
+      
+      
+      visNetwork(nodes, edges) %>%
+        visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 180,useGroups = F)
     }
     else{
-        lnodes <- data.frame(label=c("Legend","mRNA","mRNA is TF","miRNA"),
-                             shape=c("text","diamond","square","dot"),
-                             size =c(25,30,30,25),
-                             font.size=c(50,25,25,25),
-                             font.face=c("Ubuntu","Ubuntu","Ubuntu","Ubuntu"),
-                             color.background=c("rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)"),
-                             color.border=c("rgb(153,153,153)", "rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)")
-        )
-        visNetwork(nodes, edges) %>%
-            visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 120,useGroups = F)
+      lnodes <- data.frame(label=c("Legend","mRNA","mRNA is TF","miRNA"),
+                           shape=c("text","diamond","square","dot"),
+                           size =c(25,30,30,25),
+                           font.size=c(50,25,25,25),
+                           font.face=c("Ubuntu","Ubuntu","Ubuntu","Ubuntu"),
+                           color.background=c("rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)"),
+                           color.border=c("rgb(153,153,153)", "rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)")
+      )
+      visNetwork(nodes, edges) %>%
+        visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 120,useGroups = F)
     }
+    
+  }
+    
+    
     
 })
 
@@ -1342,13 +1371,17 @@ TripletsInWhichCancerWCount2 <- reactive({
 })
 
 output$tableCommonTriplet <- DT::renderDataTable({
-    
+  
     DT::datatable(TripletsInWhichCancerWCount2(),
                   options = list(
-                      columnDefs = list(
-                          list(className = "dt-center", targets = "_all")
-                      )
+                    columnDefs = list(
+                      list(className = "dt-center", targets = "_all")
+                    )
                   ))
+    
+  
+    
+    
 })
 
 MirnaPairsInWhichCancerWCount2 <- reactive({
