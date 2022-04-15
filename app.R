@@ -445,7 +445,25 @@ ui <- fluidPage(
                                    tags$label(tags$style(HTML('#switch_statistics_tab{color:black; font-size: 18px;}'))),
                                    br(),br()),
                             br(),br(),
-                        )),
+                        ),
+                        hr(style=" width: 100%; height: 3px; margin-left: auto;  margin-right: auto; background-color: #074487; border: 0 none;"),
+                        
+                        tags$footer(tags$div(style="font-size:12px;",align="center",
+                                             
+                                             tags$a(href="https://www.sabanciuniv.edu/en/", target="_blank",
+                                                    tags$img(src="sabanci.png", style="width:10%; height:auto; float: left; margin: 8px")
+                                             ),
+                                             tags$a(href="https://w3.bilkent.edu.tr/bilkent/", target="_blank",
+                                                    tags$img(src="bilkent.png", style="width:15%; height:auto; float: right; margin: 8px")),
+                                             tags$div("miRCoop is a product of the collaboration between the Department of Computer Science and Engineering from Sabanci University and Department of Molecular Biology and Genetics from Bilkent University",align="center"),
+                                             tags$br(),
+                                             tags$div("The project was developed with the funding from TUSEB(Health Institutes of Turkey) through the project .............",align="center"),
+                                             tags$br(),
+                                             tags$div("For any enquiries or bug reports please send us an e-mail:", align="center"),
+                                             tags$a(href="mailto:xyz@xyz.com?subject=About_miRCoop", "xyz@xyz.com")
+                        )
+                        )
+                        ),
                tabPanel("Cancer Specific Triplets",value="CancerSpecificTriplets",fluid = TRUE, icon = icon("globe"),
                         sidebarLayout(
                             sidebarPanel(width = 3,
@@ -608,9 +626,9 @@ ui <- fluidPage(
                             #        tags$div(style="font-size:16px;",tableOutput("TCGAAbbrv"))
                             # )
                         ),
+                        
                         hr(style=" width: 100%; height: 3px; margin-left: auto;  margin-right: auto; background-color: #074487; border: 0 none;"),
 
-                        
                         tags$footer(tags$div(style="font-size:12px;",align="center",
                                              
                                              tags$a(href="https://www.sabanciuniv.edu/en/", target="_blank",
