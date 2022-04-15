@@ -354,7 +354,7 @@ bslib_mircooptriplet_theme <- bs_theme(
 )
 
 bslib_sabanci20_theme <- bs_theme(
-    #version = 5, 
+    #version = 5,  
     bg = "#FFFFFF",
     fg = "#000000",
     bootswatch = "united",
