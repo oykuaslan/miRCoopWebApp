@@ -316,9 +316,13 @@ UVMwMedian2 <- read_csv("dataset/medians/UVMwMedian2.csv",show_col_types = FALSE
 ####################################################################################################
 TripletsInWhichCancerWCount<- read_csv("dataset/commonTripletsFinalAfterReRun.csv",show_col_types = FALSE)
 TripletsInWhichCancerWCount <-filter(TripletsInWhichCancerWCount, Count> 1)
+mrnaFilterCommonTriplets <- filter(commonTriplets_node_attr, info %in% "mrna")
+mirnaFilterCommonTriplets <- filter(commonTriplets_node_attr, info %in% "mirna")
 
 MirnaPairsInWhichCancerWCount <- read_csv("dataset/commonMirnaPairsFinalAfterReRun.csv",show_col_types = FALSE)
 MirnaPairsInWhichCancerWCount <-filter(MirnaPairsInWhichCancerWCount, Count> 1)
+mirnaListCommonMirnaPairs <- unique(rbind(commonMirnaPair_source_target$source, commonMirnaPair_source_target$target))
+
 
 TCGA_abbreviations <- read.table("dataset/TCGA_abbreviations.csv", header = T, sep = ";")
 
@@ -500,9 +504,9 @@ ui <- fluidPage(
                                          uiOutput("dataset"),
                                          
                                          hr(),
-                                         selectizeInput("mrnaFilter", "mRNA Filter", choices=NULL,multiple=TRUE),
+                                         selectizeInput("mrnaFilter", "mRNA Filter", choices=NULL, multiple=TRUE),
                                          br(),
-                                         selectizeInput("mirnaFilter", "miRNA Filter", choices=NULL,multiple=TRUE),
+                                         selectizeInput("mirnaFilter", "miRNA Filter", choices=NULL, multiple=TRUE),
                                          hr(),
                                          
 
@@ -542,11 +546,18 @@ ui <- fluidPage(
                         sidebarLayout(
                             sidebarPanel(
                                 
-                                checkboxGroupInput(inputId = "CommonCancer", 
-                                                   label = "Select Cancer Names",
-                                                   choices = cancerNames,
-                                                   selected=cancerNames),
+                                # checkboxGroupInput(inputId = "CommonCancer", 
+                                #                    label = "Select Cancer Names",
+                                #                    choices = cancerNames,
+                                #                    selected=cancerNames),
+                                pickerInput(inputId = "CommonTripletCancer", label = "Select Cancer Names",choices = cancerNames, selected=cancerNames, multiple = TRUE),
                                 hr(),
+                                selectizeInput("mrnaCommonTriplet", "mRNA Filter", choices=unique(mrnaFilterCommonTriplets$name), multiple=TRUE),
+                                br(),
+                                selectizeInput("mirnaCommonTriplet", "miRNA Filter", choices=unique(mirnaFilterCommonTriplets$name), multiple=TRUE),
+                                hr(),
+                                br()
+                                
                               
                                 
                             ),
@@ -567,11 +578,16 @@ ui <- fluidPage(
                         sidebarLayout(
                           sidebarPanel(
                             
-                            checkboxGroupInput(inputId = "CommonCancer", 
-                                               label = "Select Cancer Names",
-                                               choices = cancerNames,
-                                               selected=cancerNames),
+                            # checkboxGroupInput(inputId = "CommonCancer", 
+                            #                    label = "Select Cancer Names",
+                            #                    choices = cancerNames,
+                            #                    selected=cancerNames),
+                            pickerInput(inputId = "CommonMirnaPairCancer", label = "Select Cancer Names",choices = cancerNames, selected=cancerNames, multiple = TRUE),
                             hr(),
+                            selectizeInput("mirnaCommonMirnaPair", "miRNA Filter", choices=mirnaListCommonMirnaPairs, multiple=TRUE),
+                            hr(),
+                            br(),
+                            br()
                             
                             
                           ),
@@ -1464,6 +1480,18 @@ output$vNetwork <- renderVisNetwork({
     splittedSourceTargetFilteringDUMMY1_2 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA1,"/",splittedSourceTargetFilteringMIRNA2))
     splittedSourceTargetFilteringDUMMY2_1 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA2,"/",splittedSourceTargetFilteringMIRNA1))
     
+    print(paste("combmi1mi2mrna", combmi1mi2mrna))
+    print(paste("orListForNetworkFiltering",orListForNetworkFiltering))
+    print(paste("networkFilteringList",networkFilteringList))
+    print(paste("sourceTargetFiltering",sourceTargetFiltering))
+    print(paste("splittedSourceTargetFiltering",splittedSourceTargetFiltering))
+    print(paste("splittedSourceTargetFilteringMRNA",splittedSourceTargetFilteringMRNA))
+    print(paste("splittedSourceTargetFilteringMIRNA1",splittedSourceTargetFilteringMIRNA1))
+    print(paste("splittedSourceTargetFilteringMIRNA2",splittedSourceTargetFilteringMIRNA2))
+    print(paste("splittedSourceTargetFilteringDUMMY1_2",splittedSourceTargetFilteringDUMMY1_2))
+    print(paste("splittedSourceTargetFilteringDUMMY2_1",splittedSourceTargetFilteringDUMMY2_1))
+    
+    
     
     for (i in 1:nrow(DatasetRoundDigits())){
       concated <- rbind(concated, filter(sourceTargetInput(), ((sourceTargetInput()$source==splittedSourceTargetFilteringMIRNA1[i] & (sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY1_2[i] |sourceTargetInput()$target == splittedSourceTargetFilteringDUMMY2_1[i] ))|
@@ -1473,11 +1501,18 @@ output$vNetwork <- renderVisNetwork({
       
     }
     
+    
     concatedUnique <- unique(concated[,c("source","target")])
     forNodeSharedName <- unique(c(concated$source,concated$target))
     forNodeName <- forNodeSharedName
     forNodeName[grepl("/",forNodeName)] <- " "
     intersectionSharedName <- intersect(filter(nodeAttributeInput(),stringr::str_detect(nodeAttributeInput()$shared.name,networkFilteringList))$shared.name,forNodeSharedName)
+    
+    print(paste("concated",concated))
+    print(paste("concatedUnique",concatedUnique))
+    print(paste("forNodeSharedName",forNodeSharedName))
+    
+    
     
     nodes <- data.frame(id=intersectionSharedName, label=filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$name)
     edges <- data.frame(from= concatedUnique$source , to=concatedUnique$target)
@@ -1632,8 +1667,47 @@ TripletsInWhichCancerWCount2 <- reactive({
 })
 
 output$tableCommonTriplet <- DT::renderDataTable({
+    
+    if(length(input$mrnaCommonTriplet) >0){
+      orListForMrna <- rep("|",length(input$mrnaCommonTriplet))
+      mrnaList <- paste(c(rbind(orListForMrna, matrix(input$mrnaCommonTriplet,ncol = length(orListForMrna)))[-1]),collapse = '')
+      filteredWithMrna <- TripletsInWhichCancerWCount%>%
+                          filter(stringr::str_detect(Triplet,mrnaList))
+    
+    }
+    else{
+      filteredWithMrna <- TripletsInWhichCancerWCount
+      
+    }
   
-    DT::datatable(TripletsInWhichCancerWCount2(),
+    if(length(input$mirnaCommonTriplet) >0){
+      orListForMirna <- rep("|",length(input$mirnaCommonTriplet))
+      mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonTriplet,ncol = length(orListForMirna)))[-1]),collapse = '')
+      filteredWithMirna <- filteredWithMrna%>%
+        filter(stringr::str_detect(Triplet,mirnaList))
+    
+    }
+    else{
+      filteredWithMirna <- filteredWithMrna
+    
+    }
+    
+    if(length(input$CommonTripletCancer) >0 ){
+      orListForCommonCancer <- rep("|",length(input$CommonTripletCancer))
+      cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonTripletCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
+      
+      filteredWithCancer <- filteredWithMirna%>%
+        filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
+      
+    }
+    else{
+      filteredWithCancer <- filteredWithMirna
+    
+    }
+    
+    
+  
+    DT::datatable(filteredWithCancer,
                   options = list(
                     columnDefs = list(
                       list(className = "dt-center", targets = "_all")
@@ -1644,6 +1718,7 @@ output$tableCommonTriplet <- DT::renderDataTable({
     
     
 })
+
 
 MirnaPairsInWhichCancerWCount2 <- reactive({
   
@@ -1662,7 +1737,34 @@ MirnaPairsInWhichCancerWCount2 <- reactive({
 })
 
 output$tableCommonmiRNAPair <- DT::renderDataTable({
-    DT::datatable(MirnaPairsInWhichCancerWCount2(),
+  
+    if(length(input$mirnaCommonMirnaPair) >0){
+      orListForMirna <- rep("|",length(input$mirnaCommonMirnaPair))
+      mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonMirnaPair,ncol = length(orListForMirna)))[-1]),collapse = '')
+      filteredWithMirna <- MirnaPairsInWhichCancerWCount%>%
+        filter(stringr::str_detect(miRNAPair,mirnaList))
+      
+    }
+    else{
+      filteredWithMirna <- MirnaPairsInWhichCancerWCount
+      
+    }
+    
+    if(length(input$CommonMirnaPairCancer) >0 ){
+      orListForCommonCancer <- rep("|",length(input$CommonMirnaPairCancer))
+      cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonMirnaPairCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
+      
+      filteredWithCancer <- filteredWithMirna%>%
+        filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
+      
+    }
+    else{
+      filteredWithCancer <- filteredWithMirna
+      
+    }
+  
+  
+    DT::datatable(filteredWithCancer,
                   options = list(
                       columnDefs = list(
                           list(className = "dt-center", targets = "_all")
