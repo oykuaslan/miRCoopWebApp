@@ -240,6 +240,15 @@ UCS_node_attr <- read.table("networkData/UCS_generalNetwork_default_node.csv", h
 UVM_source_target <- read.table("networkData/UVM_source_target.csv", header=TRUE, sep = ";" )
 UVM_node_attr <- read.table("networkData/UVM_generalNetwork_default_node.csv", header = T, sep = ",")
 
+
+commonMirnaPairs_node_attr <- read_csv("networkData/commonMirnaPairsAfterReRunNode.csv")
+commonTriplets_node_attr <- read_csv("networkData/commonTripletsAfterReRunNode.csv")
+
+commonTriplet_source_target <- read_delim("networkData/commonTriplet_source_target.csv", 
+                                          delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+commonMirnaPair_source_target <- read_delim("networkData/commonMirnaPair_source_target.csv", 
+                                            delim = ";", escape_double = FALSE, trim_ws = TRUE)
 ####################################################################################################
 ACCwMedian1 <- read_csv("dataset/medians/ACCwMedian1.csv",show_col_types = FALSE)
 ACCwMedian2 <- read_csv("dataset/medians/ACCwMedian2.csv",show_col_types = FALSE)
@@ -421,14 +430,14 @@ ui <- fluidPage(
                tabPanel('Home', icon = icon("home"),
                         includeHTML("miRCoop_Intro.html"), br(), br(), 
                         fluidRow(
-                            column(4, align = "center", #column width 
+                            column(3, align = "center", #column width 
                                    actionLink("switch_triplets_tab", icon = icon("globe", "fa-5x"), br(),br(),
                                               "Cancer Specific Triplets") ,
                                    tags$label(tags$style(HTML('#switch_triplets_tab{color:black; font-size: 18px;}'))),
                                    shinyBS::bsTooltip("switch_triplets_tab", "Shows results with the specific p-values.", placement = "top", trigger = "hover", options = NULL),
                                    tags$hr(),
                                    br(),br()),
-                            column(4,align = "center", #column width
+                            column(3,align = "center", #column width
                                    actionLink("switch_commontriplets_tab",icon = icon("th-list", "fa-5x"), br(),br(),
                                               "Pan-cancer Triplets"),
                                    tags$head(tags$style(HTML("#show{background-color: darkslategray2;display:block;height: 25px;width: 25px;border-radius: 50%;border:}"))),
@@ -436,7 +445,16 @@ ui <- fluidPage(
                                    tags$hr(),
                                    tags$label(tags$style(HTML('#switch_commontriplets_tab{color:black; font-size: 18px;}'))),
                                    br(),br()),
-                            column(4,align = "center", #column width
+                            column(3,align = "center", #column width
+                                   actionLink("switch_commonmirnapairs_tab",icon = icon("th-list", "fa-5x"), br(),br(),
+                                              "Pan-cancer miRNA Pairs"),
+                                   tags$head(tags$style(HTML("#show{background-color: darkslategray2;display:block;height: 25px;width: 25px;border-radius: 50%;border:}"))),
+                                   shinyBS::bsTooltip("switch_commonmirnapairs_tab", "Common miRNA Pairs found in more than one cancer.", placement = "top", trigger = "hover", options = NULL),
+                                   tags$hr(),
+                                   tags$label(tags$style(HTML('#switch_commonmirnapairs_tab{color:black; font-size: 18px;}'))),
+                                   br(),br()),
+                            
+                            column(3,align = "center", #column width
                                    actionLink("switch_statistics_tab",icon = icon("bar-chart","fa-5x",lib = "font-awesome"), br(),br(),
                                               "Statistics"),
                                    tags$head(tags$style(HTML("#show{background-color: darkslategray2;display:block;height: 25px;width: 25px;border-radius: 50%;border:}"))),
@@ -536,13 +554,38 @@ ui <- fluidPage(
                             mainPanel(
                                 useShinyalert(),
                                 tabsetPanel(type = "tabs",
-                                            
-                                            tabPanel("Common Triplet Table", DT::dataTableOutput("tableCommonTriplet")),
-                                            tabPanel("Common miRNA Pair Table", DT::dataTableOutput("tableCommonmiRNAPair"))
-                                            
+                                            tabPanel("Table", br(),
+                                                     DT::dataTableOutput("tableCommonTriplet")),
+                                            tabPanel("Network", shinycustomloader::withLoader(visNetworkOutput("commonTripletNetwork", height = "100vh"),type = "html",loader="loader3"))
                                 )
                             )
                             
+                        )
+               ),
+               
+               tabPanel("Pan-cancer miRNA Pairs", value="Pan-cancermiRNAPairs",fluid = TRUE,icon = icon("th-list"),
+                        sidebarLayout(
+                          sidebarPanel(
+                            
+                            checkboxGroupInput(inputId = "CommonCancer", 
+                                               label = "Select Cancer Names",
+                                               choices = cancerNames,
+                                               selected=cancerNames),
+                            hr(),
+                            
+                            
+                          ),
+                          
+                          mainPanel(
+                            useShinyalert(),
+                            tabsetPanel(type = "tabs",
+                                        tabPanel("Common miRNA Pair Table", DT::dataTableOutput("tableCommonmiRNAPair")),
+                                        tabPanel("Network", shinycustomloader::withLoader(visNetworkOutput("commonMirnaNetwork", height = "100vh"),type = "html",loader="loader3"))
+                                        
+                                        
+                            )
+                          )
+                          
                         )
                ),
                
@@ -701,6 +744,10 @@ server <- function(input, output, session) {
     
     observeEvent(input$switch_commontriplets_tab, {
         updateTabsetPanel(session, "mirCoop",selected = "Pan-cancerTriplets")
+    })
+    
+    observeEvent(input$switch_commonmirnapairs_tab, {
+      updateTabsetPanel(session, "mirCoop",selected = "Pan-cancermiRNAPairs")
     })
     
     observeEvent(input$switch_statistics_tab, {
@@ -866,15 +913,78 @@ output$table <- DT::renderDataTable({
     
     tripletvalue <- tags$span(
       "Triplet pvalue",
-      infoBtn('notWorking')
+      a(infoBtn('question'), onclick="customHref('Glossary')")
     ) %>% as.character()
+    # 
+    # mirna1Literature <- tags$span(
+    #   "miRNA1 Literature",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # mirna2Literature <- tags$span(
+    #   "miRNA2 Literature",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # mRNALiterature <- tags$span(
+    #   "mRNA Literature",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # miRNA1mRNADatabase <- tags$span(
+    #   "miRNA1-mRNA Database",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # miRNA2mRNADatabase <- tags$span(
+    #   "miRNA2-mRNA Database",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # miRNA1pvalue <- tags$span(
+    #   " miRNA1 pvalue",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # miRNA1LogFC <- tags$span(
+    #   "miRNA1 LogFC",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # miRNA2pvalue <- tags$span(
+    #   " miRNA2 pvalue",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # miRNA2LogFC <- tags$span(
+    #   "miRNA2 LogFC",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # mRNApvalue <- tags$span(
+    #   "mRNA pvalue",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
+    # 
+    # mRNALogFC <- tags$span(
+    #   "mRNA LogFC",
+    #   a(infoBtn('question'), onclick="customHref('Glossary')")
+    # ) %>% as.character()
     
     
-    nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2",tripletvalue,"is mRNA TF" ,"miRNA1 Literature","miRNA2 Literature", "mRNA Literature","miRNA1-mRNA Database","miRNA2-mRNA Database","miRNA-mRNA Expressions")
-    nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF","miRNA1 Literature","miRNA2 Literature", "mRNA Literature","miRNA1-mRNA Database","miRNA2-mRNA Database","miRNA1 pvalue","miRNA1 LogFC","miRNA2 pvalue","miRNA2 LogFC","mRNA pvalue","mRNA LogFC","miRNA-mRNA Expressions")
-    nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2",tripletvalue, " is mRNA TF","miRNA1 Literature","miRNA2 Literature", "mRNA Literature","miRNA1-mRNA Database","miRNA2-mRNA Database","mRNA pvalue","mRNA LogFC","miRNA-mRNA Expressions" )
-    nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2",tripletvalue, " is mRNA TF", "mRNA Literature", "miRNA1-mRNA Database","miRNA2-mRNA Database", "miRNA-mRNA Expressions")
-    nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2",tripletvalue, " is mRNA TF", "mRNA Literature", "miRNA1-mRNA Database","miRNA2-mRNA Database", "miRNA1 pvalue","miRNA1 LogFC","miRNA2 pvalue","miRNA2 LogFC","mRNA pvalue","mRNA LogFC","miRNA-mRNA Expressions")
+    # nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,"miRNA-mRNA Expressions")
+    # nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"miRNA-mRNA Expressions")
+    # nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,mRNApvalue,mRNALogFC,"miRNA-mRNA Expressions" )
+    # nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, "miRNA-mRNA Expressions")
+    # nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"miRNA-mRNA Expressions")
+    # 
+    nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase","miRNA-mRNA Expressions")
+    nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase", "miRNA1pvalue", "miRNA1LogFC", "miRNA2pvalue", "miRNA2LogFC", "mRNApvalue", "mRNALogFC","miRNA-mRNA Expressions")
+    nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase","mRNApvalue", "mRNALogFC","miRNA-mRNA Expressions" )
+    nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", "mirna1Literature", "miRNA1mRNADatabase", "miRNA2mRNADatabase", "miRNA-mRNA Expressions")
+    nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", "mirna1Literature", "miRNA1mRNADatabase", "miRNA2mRNADatabase", "miRNA1pvalue", "miRNA1LogFC", "miRNA2pvalue", "miRNA2LogFC", "mRNApvalue", "mRNALogFC","miRNA-mRNA Expressions")
+    
+    
     
     ifelse(input$dataset=="ACC" || input$dataset=="DLBC" || input$dataset=="LGG" || input$dataset=="MESO" || input$dataset=="OV" || input$dataset=="UCS" || input$dataset=="UVM", columnNameList <-nameList1,
            ifelse(input$dataset=="BLCA" || input$dataset=="CESC" || input$dataset=="CHOL" || input$dataset=="ESCA" || input$dataset=="HNSC" || input$dataset=="KICH" || input$dataset=="KIRC" || input$dataset=="KIRP" || input$dataset=="LIHC" || input$dataset=="LUAD" || input$dataset=="LUSC" || input$dataset=="PAAD" || input$dataset=="PCPG" || input$dataset=="PRAD" || input$dataset=="SKCM" || input$dataset=="STAD" || input$dataset=="THCA" || input$dataset=="UCEC", columnNameList <-nameList2,
@@ -882,69 +992,58 @@ output$table <- DT::renderDataTable({
                          ifelse(input$dataset=="TGCT", columnNameList <-nameList4,
                                 ifelse(input$dataset=="THYM", columnNameList <-nameList5, columnNameList <-c())))))
     
-    
-    headerCallback1 <- c(
-      "function(thead, data, start, end, display){",
-      "  var tooltips = ['Kernel Three-Variable Lancaster Interaction Test p-value'];",
-      "  for(var i=5; i<6; i++){",
-      "    $('th:eq('+i+')',thead).attr('title', tooltips[0]);",
-      "    $('th:eq('+i+')', thead).css('cursor', 'help');",
-      "  }",
-
-      "}"
-    )
-    
-    headerCallback2 <- c(
-      "function(thead, data, start, end, display){",
-      "  var tooltips = ['Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value'];",
-      "  var tooltips2 = ['Kernel Three-Variable Lancaster Interaction Test p-value'];",
-      "  for(var i=5; i<6; i++){",
-      "    $('th:eq('+i+')',thead).attr('title', tooltips2[0]);",
-      "  }",
-      "  for(var i=12; i<18; i++){",
-      "    $('th:eq('+i+')',thead).attr('title', tooltips[i-12]);",
-      "  }",
-      
-      "}"
-    )
-    
-    headerCallback3 <- c(
-      "function(thead, data, start, end, display){",
-      "  var tooltips = ['mirna1pvalue','mirna1pvalue'];",
-      "  for(var i=12; i<14; i++){",
-      "    $('th:eq('+i+')',thead).attr('title', tooltips[i-12]);",
-      "  }",
-      
-      "}"
-    )
-    
-    headerCallback4 <- c(
-      "function(thead, data, start, end, display){",
-      "  var tooltips = ['mirna1pvalue','mirna1pvalue','mirna1pvalue','mirna1pvalue','mirna1pvalue','mirna1pvalue'];",
-      "  for(var i=10; i<16; i++){",
-      "    $('th:eq('+i+')',thead).attr('title', tooltips[i-10]);",
-      "  }",
-      
-      "}"
-    )
-    
-    ifelse(input$dataset=="ACC" || input$dataset=="DLBC" || input$dataset=="LGG" || input$dataset=="MESO" || input$dataset=="OV" || input$dataset=="UCS" || input$dataset=="UVM" || input$dataset=="TGCT", headerCallback <-headerCallback1,
-           ifelse(input$dataset=="BLCA" || input$dataset=="CESC" || input$dataset=="CHOL" || input$dataset=="ESCA" || input$dataset=="HNSC" || input$dataset=="KICH" || input$dataset=="KIRC" || input$dataset=="KIRP" || input$dataset=="LIHC" || input$dataset=="LUAD" || input$dataset=="LUSC" || input$dataset=="PAAD" || input$dataset=="PCPG" || input$dataset=="PRAD" || input$dataset=="SKCM" || input$dataset=="STAD" || input$dataset=="THCA" || input$dataset=="UCEC", headerCallback <-headerCallback2,
-                  ifelse(input$dataset=="COAD" || input$dataset=="READ" || input$dataset=="SARC", headerCallback <-headerCallback3,
-                          ifelse(input$dataset=="THYM", headerCallback <-headerCallback4, headerCallback <-c()))))
-
-
-    
-    
-    
-    # headerCallback <- c(
+    # 
+    # headerCallback1 <- c(
     #   "function(thead, data, start, end, display){",
-    #   "  var tooltips = [''Kernel Three-Variable Lancaster Interaction Test p-value'];",
+    #   "  var tooltips = ['Kernel Three-Variable Lancaster Interaction Test p-value'];",
     #   "  for(var i=5; i<6; i++){",
     #   "    $('th:eq('+i+')',thead).attr('title', tooltips[0]);",
+    #   "    $('th:eq('+i+')', thead).css('cursor', 'help');",
     #   "  }",
+    # 
     #   "}"
     # )
+    # 
+    # headerCallback2 <- c(
+    #   "function(thead, data, start, end, display){",
+    #   "  var tooltips = ['Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value'];",
+    #   "  var tooltips2 = ['Kernel Three-Variable Lancaster Interaction Test p-value'];",
+    #   "  for(var i=5; i<6; i++){",
+    #   "    $('th:eq('+i+')',thead).attr('title', tooltips2[0]);",
+    #   "  }",
+    #   "  for(var i=12; i<18; i++){",
+    #   "    $('th:eq('+i+')',thead).attr('title', tooltips[i-12]);",
+    #   "  }",
+    #   
+    #   "}"
+    # )
+    # 
+    # headerCallback3 <- c(
+    #   "function(thead, data, start, end, display){",
+    #   "  var tooltips = ['mirna1pvalue','mirna1pvalue'];",
+    #   "  for(var i=12; i<14; i++){",
+    #   "    $('th:eq('+i+')',thead).attr('title', tooltips[i-12]);",
+    #   "  }",
+    #   
+    #   "}"
+    # )
+    # 
+    # headerCallback4 <- c(
+    #   "function(thead, data, start, end, display){",
+    #   "  var tooltips = ['mirna1pvalue','mirna1pvalue','mirna1pvalue','mirna1pvalue','mirna1pvalue','mirna1pvalue'];",
+    #   "  for(var i=10; i<16; i++){",
+    #   "    $('th:eq('+i+')',thead).attr('title', tooltips[i-10]);",
+    #   "  }",
+    #   
+    #   "}"
+    # )
+    # 
+    # ifelse(input$dataset=="ACC" || input$dataset=="DLBC" || input$dataset=="LGG" || input$dataset=="MESO" || input$dataset=="OV" || input$dataset=="UCS" || input$dataset=="UVM" || input$dataset=="TGCT", headerCallback <-headerCallback1,
+    #        ifelse(input$dataset=="BLCA" || input$dataset=="CESC" || input$dataset=="CHOL" || input$dataset=="ESCA" || input$dataset=="HNSC" || input$dataset=="KICH" || input$dataset=="KIRC" || input$dataset=="KIRP" || input$dataset=="LIHC" || input$dataset=="LUAD" || input$dataset=="LUSC" || input$dataset=="PAAD" || input$dataset=="PCPG" || input$dataset=="PRAD" || input$dataset=="SKCM" || input$dataset=="STAD" || input$dataset=="THCA" || input$dataset=="UCEC", headerCallback <-headerCallback2,
+    #               ifelse(input$dataset=="COAD" || input$dataset=="READ" || input$dataset=="SARC", headerCallback <-headerCallback3,
+    #                       ifelse(input$dataset=="THYM", headerCallback <-headerCallback4, headerCallback <-c()))))
+    # 
+
 
     icon_formatter <- function() {
       formatter("span", 
@@ -974,10 +1073,8 @@ output$table <- DT::renderDataTable({
     options = list(dom = 'Bfrtip',
                    buttons=list(list(extend = 'colvis', columns = c(5:ncol(DT)))),
                    columnDefs = list(list(visible=FALSE, targets=columnHideList)),
-                   headerCallback = JS(headerCallback),
-                   searching = FALSE,paging = FALSE,
-                   language = list(
-                     zeroRecords = "No records to display - custom text")
+                   #headerCallback = JS(headerCallback),
+                   searching=FALSE, paging=FALSE
                    ))
     
     # DT::datatable(DT,escape = F, fillContainer = TRUE,
@@ -1468,8 +1565,50 @@ output$vNetwork <- renderVisNetwork({
     
     
 })
+##################################################################################################
+
+output$commonTripletNetwork <- renderVisNetwork({
+  
+  nodes <- data.frame(id = commonTriplets_node_attr$name, label = commonTriplets_node_attr$visname)
+  edges <- data.frame(from = commonTriplet_source_target$source , to = commonTriplet_source_target$target, label = commonTriplet_source_target$whichcancer )
+  
+  nodes$shape <- ifelse(tolower(commonTriplets_node_attr$info)=="mrna","diamond",
+                               ifelse(tolower(commonTriplets_node_attr$info)=="mirna","dot",
+                                      ifelse(tolower(commonTriplets_node_attr$info)=="dummy","dot","dot")))
+  
+  nodes$size <- ifelse(tolower(commonTriplets_node_attr$info)=="mrna",25,
+                              ifelse(commonTriplets_node_attr$info=="mirna",20,
+                                     ifelse(commonTriplets_node_attr$info=="dummy",3,3)))
+  
+  nodes$color.background <- "rgb(153,153,153)"
+  nodes$color.border <- "rgb(153,153,153)"
+  
+  edges$color <- "rgb(153,153,153)"
+  edges$length <- 10
+  
+  visNetwork(nodes, edges)
+  
+  
+})
 
 
+
+output$commonMirnaNetwork <- renderVisNetwork({
+  
+  nodes <- data.frame(id=commonMirnaPairs_node_attr$name, label=commonMirnaPairs_node_attr$name)
+  edges <- data.frame(from= commonMirnaPair_source_target$source , to=commonMirnaPair_source_target$target)
+  
+  nodes$shape <- "dot"
+  nodes$size <- 20
+  nodes$color.background <- "rgb(153,153,153)"
+  nodes$color.border <- "rgb(153,153,153)"
+  
+  edges$color <- "rgb(153,153,153)"
+  edges$length <- 10
+  visNetwork(nodes, edges)
+ 
+  
+})
 
 ##################################################################################################    
 
