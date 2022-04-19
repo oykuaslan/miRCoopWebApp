@@ -468,9 +468,9 @@ ui <- fluidPage(
                                    br(),br()),
                             br(),br(),
                         ),
-                        hr(style=" width: 100%; height: 3px; margin-left: auto;  margin-right: auto; background-color: #074487; border: 0 none;"),
+                        hr(style=" width: 100%; height: 3px; margin-left: auto;  margin-right: auto; margin-top:27vh ;background-color: #074487; border: 0 none;"),
                         
-                        tags$footer(tags$div(style="font-size:12px;",align="center",
+                        tags$footer(tags$div(style="font-size:12px",align="center",
                                              
                                              tags$a(href="https://www.sabanciuniv.edu/en/", target="_blank",
                                                     tags$img(src="sabanci.png", style="width:10%; height:auto; float: left; margin: 8px")
@@ -1630,8 +1630,54 @@ output$commonTripletNetwork <- renderVisNetwork({
 
 output$commonMirnaNetwork <- renderVisNetwork({
   
-  nodes <- data.frame(id=commonMirnaPairs_node_attr$name, label=commonMirnaPairs_node_attr$name)
-  edges <- data.frame(from= commonMirnaPair_source_target$source , to=commonMirnaPair_source_target$target)
+  nodeList <- data.frame("name"= unique(c(commonMirnaPair_source_target$source,commonMirnaPair_source_target$target)))
+  
+  if(length(input$CommonMirnaPairCancer) >0 ){
+    orListForCommonCancer <- rep("|",length(input$CommonMirnaPairCancer))
+    cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonMirnaPairCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
+    
+    filteredWithCancer <- commonMirnaPair_source_target%>%
+      filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
+    combmi1mi2 <- unique(c(filteredWithCancer$source,filteredWithCancer$target))
+    orListForCombmi1mi2 <- rep("|",length(combmi1mi2))
+    mirnaListForCombmi1mi2 <- paste(c(rbind(orListForCombmi1mi2, matrix(combmi1mi2,ncol = length(orListForCombmi1mi2)))[-1]),collapse = '')
+    filteredWithCancerLabel <- nodeList%>%
+      filter(stringr::str_detect(name,mirnaListForCombmi1mi2))
+    
+    
+  }
+  else{
+    filteredWithCancer <- NULL
+    filteredWithCancerLabel <-NULL
+    
+  }
+  
+  if(length(input$mirnaCommonMirnaPair) >0){
+    
+    orListForMirna <- rep("|",length(input$mirnaCommonMirnaPair))
+    mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonMirnaPair,ncol = length(orListForMirna)))[-1]),collapse = '')
+    filteredWithMirnaSource <- filteredWithCancer%>%
+      filter(stringr::str_detect(source,mirnaList))
+    filteredWithMirnaTarget <- filteredWithCancer%>%
+      filter(stringr::str_detect(target,mirnaList))
+    
+    concat <- distinct(rbind(filteredWithMirnaSource, filteredWithMirnaTarget))
+
+    combmi1mi2 <- unique(c(concat$source,concat$target))
+    orListForCombmi1mi2 <- rep("|",length(combmi1mi2))
+    mirnaListForCombmi1mi2 <- paste(c(rbind(orListForCombmi1mi2, matrix(combmi1mi2,ncol = length(orListForCombmi1mi2)))[-1]),collapse = '')
+    filteredWithMirnaLabel <- filteredWithCancerLabel%>%
+      filter(stringr::str_detect(name,mirnaListForCombmi1mi2))
+    
+  }
+  else{
+    concat <- filteredWithCancer
+    filteredWithMirnaLabel <- filteredWithCancerLabel
+  }
+  
+  
+  nodes <- data.frame(id=filteredWithMirnaLabel$name, label=filteredWithMirnaLabel$name)
+  edges <- data.frame(from= concat$source , to=concat$target, label=concat$CancerTypes, font.size =8, length=50)
   
   nodes$shape <- "dot"
   nodes$size <- 20
@@ -1738,29 +1784,57 @@ MirnaPairsInWhichCancerWCount2 <- reactive({
 
 output$tableCommonmiRNAPair <- DT::renderDataTable({
   
+    # 
+    # if(length(input$CommonMirnaPairCancer) >0 ){
+    #   orListForCommonCancer <- rep("|",length(input$CommonMirnaPairCancer))
+    #   cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonMirnaPairCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
+    #   
+    #   filteredWithCancer <- MirnaPairsInWhichCancerWCount%>%
+    #     filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
+    #   
+    # }
+    # else{
+    #   filteredWithCancer <- NULL
+    #   
+    # }
+    # 
+    # if(length(input$mirnaCommonMirnaPair) >0){
+    #   orListForMirna <- rep("|",length(input$mirnaCommonMirnaPair))
+    #   mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonMirnaPair,ncol = length(orListForMirna)))[-1]),collapse = '')
+    #   filteredWithMirna <- filteredWithCancer%>%
+    #     filter(stringr::str_detect(miRNAPair,mirnaList))
+    #   
+    # }
+    # else{
+    #   filteredWithMirna <- filteredWithCancer
+    #   
+    # }
+    
+    
+
     if(length(input$mirnaCommonMirnaPair) >0){
       orListForMirna <- rep("|",length(input$mirnaCommonMirnaPair))
       mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonMirnaPair,ncol = length(orListForMirna)))[-1]),collapse = '')
       filteredWithMirna <- MirnaPairsInWhichCancerWCount%>%
         filter(stringr::str_detect(miRNAPair,mirnaList))
-      
+
     }
     else{
       filteredWithMirna <- MirnaPairsInWhichCancerWCount
-      
+
     }
-    
+
     if(length(input$CommonMirnaPairCancer) >0 ){
       orListForCommonCancer <- rep("|",length(input$CommonMirnaPairCancer))
       cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonMirnaPairCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
-      
+
       filteredWithCancer <- filteredWithMirna%>%
         filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
-      
+
     }
     else{
-      filteredWithCancer <- filteredWithMirna
-      
+      filteredWithCancer <- NULL
+
     }
   
   
