@@ -818,32 +818,67 @@ server <- function(input, output, session) {
     
     
     datasetInput2 <- reactive({
-      
-        filteredWithTests <-filter(datasetInput(),
-                                   Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2],
-                                   tolower(is_mrna_tf) %in% tolower(input$is_mrna_tf)
-        )
-        if(nrow(filteredWithTests) >0){
-          if(length(input$mrnaFilter) > 0){
-            filteredWithMrna <-filter(filteredWithTests,hgnc_symbol %in% input$mrnaFilter)
-          }
-          else{
-            filteredWithMrna <- filteredWithTests
-          }
-          
-          if(length(input$mirnaFilter) > 0){
-            filteredWithMirna <-filter(filteredWithMrna, mirna1 %in% tolower(input$mirnaFilter) | mirna2 %in% tolower(input$mirnaFilter))
-          }
-          
-          else{
-            filteredWithMirna <- filteredWithMrna
-          }
-          
-          
-          
+    
+        mirnaFilter <- NULL
+        mrnaFilter <- NULL
+        TFFilter <- NULL
+        
+        if(length(input$mirnaFilter) == 0 & length(input$mrnaFilter) == 0 ){
+          concated <- datasetInput()
+        }
+
+        if(length(input$mrnaFilter) > 0){
+          mrnaFilter <- filter(datasetInput(),hgnc_symbol %in% input$mrnaFilter)
         }
         
+        if(length(input$mirnaFilter) >0){
+          mirnaFilter <- filter(datasetInput(), mirna1 %in% tolower(input$mirnaFilter) | mirna2 %in% tolower(input$mirnaFilter))
+        }
         
+        if(length(input$mirnaFilter) != 0 || length(input$mrnaFilter) != 0){
+          concated <- distinct(rbind(mrnaFilter, mirnaFilter))
+        }
+        return (concated)
+      
+    })
+    
+    datasetInput3 <- reactive({
+      
+      
+        filteredWithTests <-filter(datasetInput2(),
+                                   Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2]
+        )
+
+        if(length(tolower(input$is_mrna_tf)) !=2){
+          filteredWithTests <- filter(datasetInput2(),tolower(is_mrna_tf) %in% tolower(input$is_mrna_tf))
+        }
+      
+        else{
+          filteredWithTests <- datasetInput2()
+        
+        }
+        print(filteredWithTests)
+        return (filteredWithTests)
+        
+
+      
+    })
+    
+    datasetInput4<- reactive({
+      
+      
+      if(nrow(datasetInput3())>0){
+        filteredWithTests <-filter(datasetInput3(),
+                                   Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2]
+        )
+        
+      }
+      else{
+        filteredWithTests <- NULL
+      }
+      
+      
+      
     })
     
     true_false_formatter <-
@@ -866,9 +901,9 @@ server <- function(input, output, session) {
     
     DatasetRoundDigits <-reactive({
       
-        dataset <-datasetInput2()
-        
-        if(!is.null(dataset)){
+        dataset <-datasetInput4()
+        print(nrow(dataset))
+        if(!is.null(dataset) || nrow(dataset) >0){
           dataset$mirna1 <- stringr::str_remove(dataset$mirna1, "hsa-")
           dataset$mirna2 <- stringr::str_remove(dataset$mirna2, "hsa-")
           dataset <- dataset %>%
@@ -876,12 +911,13 @@ server <- function(input, output, session) {
           
         }
         else{
+          print("girdi")
           #dataset <- datatable(data.frame(Nachricht = "Die ausgewählte Schnittstelle enthält hierfür keine Daten."))
           #shinyalert::shinyalert("Warning", "No Matching Records Based on Your Filter!", type = "info")
           showNotification(paste("Notification message"), duration = 60,type="message")
-          NULL
+          dataset <- NULL
         }
-      
+        return (dataset)
         
     })
     
@@ -890,7 +926,9 @@ server <- function(input, output, session) {
 
 output$table <- DT::renderDataTable({
   
-  if(!is.null(DatasetRoundDigits())){
+  print(is.null(DatasetRoundDigits()))
+  
+  if(!is.null(DatasetRoundDigits()) || nrow(DatasetRoundDigits()) >0){
     DT1 <- DatasetRoundDigits()
     
     DT1$mirna1 <- stringr::str_replace(DT1$mirna1,"mir","miR")
@@ -929,7 +967,7 @@ output$table <- DT::renderDataTable({
     
     tripletvalue <- tags$span(
       "Triplet pvalue",
-      a(infoBtn('question'), onclick="customHref('Glossary')")
+      infoBtn('question')
     ) %>% as.character()
     # 
     # mirna1Literature <- tags$span(
@@ -987,6 +1025,7 @@ output$table <- DT::renderDataTable({
     #   a(infoBtn('question'), onclick="customHref('Glossary')")
     # ) %>% as.character()
     
+    x<- paste('<a href="#", onclick=customHref("Glossary")>',tripletvalue, '</a>')
     
     # nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,"miRNA-mRNA Expressions")
     # nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"miRNA-mRNA Expressions")
@@ -994,7 +1033,7 @@ output$table <- DT::renderDataTable({
     # nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, "miRNA-mRNA Expressions")
     # nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"miRNA-mRNA Expressions")
     # 
-    nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase","miRNA-mRNA Expressions")
+    nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", x,"is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase","miRNA-mRNA Expressions")
     nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase", "miRNA1pvalue", "miRNA1LogFC", "miRNA2pvalue", "miRNA2LogFC", "mRNApvalue", "mRNALogFC","miRNA-mRNA Expressions")
     nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase","mRNApvalue", "mRNALogFC","miRNA-mRNA Expressions" )
     nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", "mirna1Literature", "miRNA1mRNADatabase", "miRNA2mRNADatabase", "miRNA-mRNA Expressions")
@@ -1020,40 +1059,7 @@ output$table <- DT::renderDataTable({
     #   "}"
     # )
     # 
-    # headerCallback2 <- c(
-    #   "function(thead, data, start, end, display){",
-    #   "  var tooltips = ['Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value','Kernel Three-Variable Lancaster Interaction Test p-value'];",
-    #   "  var tooltips2 = ['Kernel Three-Variable Lancaster Interaction Test p-value'];",
-    #   "  for(var i=5; i<6; i++){",
-    #   "    $('th:eq('+i+')',thead).attr('title', tooltips2[0]);",
-    #   "  }",
-    #   "  for(var i=12; i<18; i++){",
-    #   "    $('th:eq('+i+')',thead).attr('title', tooltips[i-12]);",
-    #   "  }",
-    #   
-    #   "}"
-    # )
-    # 
-    # headerCallback3 <- c(
-    #   "function(thead, data, start, end, display){",
-    #   "  var tooltips = ['mirna1pvalue','mirna1pvalue'];",
-    #   "  for(var i=12; i<14; i++){",
-    #   "    $('th:eq('+i+')',thead).attr('title', tooltips[i-12]);",
-    #   "  }",
-    #   
-    #   "}"
-    # )
-    # 
-    # headerCallback4 <- c(
-    #   "function(thead, data, start, end, display){",
-    #   "  var tooltips = ['mirna1pvalue','mirna1pvalue','mirna1pvalue','mirna1pvalue','mirna1pvalue','mirna1pvalue'];",
-    #   "  for(var i=10; i<16; i++){",
-    #   "    $('th:eq('+i+')',thead).attr('title', tooltips[i-10]);",
-    #   "  }",
-    #   
-    #   "}"
-    # )
-    # 
+   
     # ifelse(input$dataset=="ACC" || input$dataset=="DLBC" || input$dataset=="LGG" || input$dataset=="MESO" || input$dataset=="OV" || input$dataset=="UCS" || input$dataset=="UVM" || input$dataset=="TGCT", headerCallback <-headerCallback1,
     #        ifelse(input$dataset=="BLCA" || input$dataset=="CESC" || input$dataset=="CHOL" || input$dataset=="ESCA" || input$dataset=="HNSC" || input$dataset=="KICH" || input$dataset=="KIRC" || input$dataset=="KIRP" || input$dataset=="LIHC" || input$dataset=="LUAD" || input$dataset=="LUSC" || input$dataset=="PAAD" || input$dataset=="PCPG" || input$dataset=="PRAD" || input$dataset=="SKCM" || input$dataset=="STAD" || input$dataset=="THCA" || input$dataset=="UCEC", headerCallback <-headerCallback2,
     #               ifelse(input$dataset=="COAD" || input$dataset=="READ" || input$dataset=="SARC", headerCallback <-headerCallback3,
@@ -1090,7 +1096,7 @@ output$table <- DT::renderDataTable({
                    buttons=list(list(extend = 'colvis', columns = c(5:ncol(DT)))),
                    columnDefs = list(list(visible=FALSE, targets=columnHideList)),
                    #headerCallback = JS(headerCallback),
-                   searching=FALSE, paging=FALSE
+                   searching=FALSE, paging=TRUE
                    ))
     
     # DT::datatable(DT,escape = F, fillContainer = TRUE,
@@ -1604,6 +1610,22 @@ output$vNetwork <- renderVisNetwork({
 
 output$commonTripletNetwork <- renderVisNetwork({
   
+  
+  combmi1mi2mrna <- unique(c(DatasetRoundDigits()$mirna1),(DatasetRoundDigits()$mirna2),DatasetRoundDigits()$hgnc_symbol)
+  orListForNetworkFiltering <- rep("|",length(combmi1mi2mrna))
+  networkFilteringList <- paste(c(rbind(orListForNetworkFiltering, matrix(combmi1mi2mrna,ncol = length(orListForNetworkFiltering)))[-1]),collapse = '')
+  sourceTargetFiltering <- paste((DatasetRoundDigits()$mirna1),(DatasetRoundDigits()$mirna2),DatasetRoundDigits()$hgnc_symbol)
+  
+  splittedSourceTargetFiltering <- strsplit(sourceTargetFiltering,split = " ")
+  splittedSourceTargetFilteringMRNA <- sapply(splittedSourceTargetFiltering,'[',3)
+  splittedSourceTargetFilteringMIRNA1 <- sapply(splittedSourceTargetFiltering,'[',1)
+  splittedSourceTargetFilteringMIRNA2 <- sapply(splittedSourceTargetFiltering,'[',2)
+  splittedSourceTargetFilteringDUMMY1_2 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA1,"/",splittedSourceTargetFilteringMIRNA2))
+  splittedSourceTargetFilteringDUMMY2_1 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA2,"/",splittedSourceTargetFilteringMIRNA1))
+  
+  
+  
+  
   nodes <- data.frame(id = commonTriplets_node_attr$name, label = commonTriplets_node_attr$visname)
   edges <- data.frame(from = commonTriplet_source_target$source , to = commonTriplet_source_target$target, label = commonTriplet_source_target$whichcancer )
   
@@ -1662,6 +1684,7 @@ output$commonMirnaNetwork <- renderVisNetwork({
       filter(stringr::str_detect(target,mirnaList))
     
     concat <- distinct(rbind(filteredWithMirnaSource, filteredWithMirnaTarget))
+    print(concat)
 
     combmi1mi2 <- unique(c(concat$source,concat$target))
     orListForCombmi1mi2 <- rep("|",length(combmi1mi2))
@@ -1680,77 +1703,62 @@ output$commonMirnaNetwork <- renderVisNetwork({
   edges <- data.frame(from= concat$source , to=concat$target, label=concat$CancerTypes, font.size =8, length=50)
   
   nodes$shape <- "dot"
-  nodes$size <- 20
+  nodes$size <- 15
   nodes$color.background <- "rgb(153,153,153)"
   nodes$color.border <- "rgb(153,153,153)"
   
   edges$color <- "rgb(153,153,153)"
   edges$length <- 10
-  visNetwork(nodes, edges)
+  visNetwork(nodes, edges)%>%
+    visIgraphLayout() 
  
   
 })
 
 ##################################################################################################    
 
-TripletsInWhichCancerWCount2 <- reactive({
-
-    
-    if(length(input$CommonCancer) >0 ){
-      orListForCommonCancer <- rep("|",length(input$CommonCancer))
-      cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
-
-      TripletsInWhichCancerWCount%>%
-            filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
-      
-    }
-  else{
-    
-    shinyalert::shinyalert("Warning", "No Data Available!", type = "warning")
-    NULL
-  }
-                                          
-})
-
 output$tableCommonTriplet <- DT::renderDataTable({
     
-    if(length(input$mrnaCommonTriplet) >0){
-      orListForMrna <- rep("|",length(input$mrnaCommonTriplet))
-      mrnaList <- paste(c(rbind(orListForMrna, matrix(input$mrnaCommonTriplet,ncol = length(orListForMrna)))[-1]),collapse = '')
-      filteredWithMrna <- TripletsInWhichCancerWCount%>%
-                          filter(stringr::str_detect(Triplet,mrnaList))
     
-    }
-    else{
-      filteredWithMrna <- TripletsInWhichCancerWCount
+    dataset <- TripletsInWhichCancerWCount
+    filteredWithMrna <- NULL
+    filteredWithMirna <- NULL
+    concated <-  NULL
+    
+      if(length(input$mrnaCommonTriplet) == 0 && length(input$mirnaCommonTriplet) ==0 ){
+        concated <-  dataset
+      }
+      if(length(input$mrnaCommonTriplet) >0){
+        orListForMrna <- rep("|",length(input$mrnaCommonTriplet))
+        mrnaList <- paste(c(rbind(orListForMrna, matrix(input$mrnaCommonTriplet,ncol = length(orListForMrna)))[-1]),collapse = '')
+        filteredWithMrna <- dataset%>%
+          filter(stringr::str_detect(Triplet,mrnaList))
+        
+      }
+      if(length(input$mirnaCommonTriplet) >0){
+        orListForMirna <- rep("|",length(input$mirnaCommonTriplet))
+        mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonTriplet,ncol = length(orListForMirna)))[-1]),collapse = '')
+        filteredWithMirna <- dataset%>%
+          filter(stringr::str_detect(Triplet,mirnaList))
+        
+      }
+      if(length(input$mrnaCommonTriplet) != 0 || length(input$mirnaCommonTriplet) !=0 ){
+        concated <- distinct(rbind(filteredWithMrna, filteredWithMirna))
+      }
       
-    }
-  
-    if(length(input$mirnaCommonTriplet) >0){
-      orListForMirna <- rep("|",length(input$mirnaCommonTriplet))
-      mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonTriplet,ncol = length(orListForMirna)))[-1]),collapse = '')
-      filteredWithMirna <- filteredWithMrna%>%
-        filter(stringr::str_detect(Triplet,mirnaList))
-    
-    }
-    else{
-      filteredWithMirna <- filteredWithMrna
-    
-    }
-    
     if(length(input$CommonTripletCancer) >0 ){
       orListForCommonCancer <- rep("|",length(input$CommonTripletCancer))
       cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonTripletCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
-      
-      filteredWithCancer <- filteredWithMirna%>%
+
+      filteredWithCancer <- concated%>%
         filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
-      
+
     }
     else{
-      filteredWithCancer <- filteredWithMirna
-    
+      filteredWithCancer <- NULL
+
     }
-    
+
     
   
     DT::datatable(filteredWithCancer,
@@ -1766,61 +1774,20 @@ output$tableCommonTriplet <- DT::renderDataTable({
 })
 
 
-MirnaPairsInWhichCancerWCount2 <- reactive({
-  
-  if(length(input$CommonCancer) >0 ){
-    orListForCommonCancer <- rep("|",length(input$CommonCancer))
-    cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
-    MirnaPairsInWhichCancerWCount %>%
-      filter(stringr::str_detect(CancerTypes, cancerListForCommonTripletAndPair))
-  }
-  else{
-    shinyalert::shinyalert("Warning", "No Data Available!", type = "warning")
-    NULL
-  }
-    
-    
-})
-
 output$tableCommonmiRNAPair <- DT::renderDataTable({
   
-    # 
-    # if(length(input$CommonMirnaPairCancer) >0 ){
-    #   orListForCommonCancer <- rep("|",length(input$CommonMirnaPairCancer))
-    #   cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonMirnaPairCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
-    #   
-    #   filteredWithCancer <- MirnaPairsInWhichCancerWCount%>%
-    #     filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
-    #   
-    # }
-    # else{
-    #   filteredWithCancer <- NULL
-    #   
-    # }
-    # 
-    # if(length(input$mirnaCommonMirnaPair) >0){
-    #   orListForMirna <- rep("|",length(input$mirnaCommonMirnaPair))
-    #   mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonMirnaPair,ncol = length(orListForMirna)))[-1]),collapse = '')
-    #   filteredWithMirna <- filteredWithCancer%>%
-    #     filter(stringr::str_detect(miRNAPair,mirnaList))
-    #   
-    # }
-    # else{
-    #   filteredWithMirna <- filteredWithCancer
-    #   
-    # }
-    
+  dataset <-MirnaPairsInWhichCancerWCount
     
 
     if(length(input$mirnaCommonMirnaPair) >0){
       orListForMirna <- rep("|",length(input$mirnaCommonMirnaPair))
       mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonMirnaPair,ncol = length(orListForMirna)))[-1]),collapse = '')
-      filteredWithMirna <- MirnaPairsInWhichCancerWCount%>%
+      filteredWithMirna <- dataset%>%
         filter(stringr::str_detect(miRNAPair,mirnaList))
 
     }
     else{
-      filteredWithMirna <- MirnaPairsInWhichCancerWCount
+      filteredWithMirna <- dataset
 
     }
 
