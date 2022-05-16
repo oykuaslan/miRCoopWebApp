@@ -50,8 +50,15 @@ cancerNames <- c("ACC","BLCA","BRCA","CESC","CHOL","COAD","DLBC","ESCA","HNSC","
                  "LGG","LIHC","LUAD","LUSC","MESO","OV","PAAD","PCPG","PRAD","READ","SARC","SKCM",
                  "STAD","TGCT","THCA","THYM","UCEC","UCS","UVM")
 
+
+####################################################################################################
 ACC_allData <- read_csv("finalDTData/ACC.csv",show_col_types = FALSE)
-ACC <- ACC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+ACC_filtered <- ACC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+ACCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/ACCWBenjaminiHochbergCorrection.csv")
+ACC <- sqldf::sqldf("SELECT ACC_filtered.*, BH_rejected, BH_pvalues_adjusted from ACC_filtered LEFT JOIN ACCWBenjaminiHochbergCorrection ON 
+                          (ACC_filtered.entrezgene_id = ACCWBenjaminiHochbergCorrection.mrna AND ACC_filtered.mirna1 = ACCWBenjaminiHochbergCorrection.mirna1 AND ACC_filtered.mirna2 = ACCWBenjaminiHochbergCorrection.mirna2) 
+                          OR (ACC_filtered.entrezgene_id = ACCWBenjaminiHochbergCorrection.mrna AND ACC_filtered.mirna1 = ACCWBenjaminiHochbergCorrection.mirna2 AND ACC_filtered.mirna2 = ACCWBenjaminiHochbergCorrection.mirna1)")
+
 
 BLCA_allData <- read_csv("finalDTData/BLCA.csv",show_col_types = FALSE)
 BLCA <- BLCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
@@ -506,6 +513,12 @@ ui <- fluidPage(
                                          selectizeInput("mirnaFilter", "miRNA Filter", choices=NULL, multiple=TRUE),
                                          hr(),
                                          
+                                         # conditionalPanel(condition = "input.dataset == 'ACC'",
+                                         #                  sliderInput("breakCount", "Break Count", min=1, max=1000, value=10)),
+                                         # 
+                                         # conditionalPanel(condition = "input.dataset == 'PRAD'",
+                                         #                 sliderInput("breakCount", "Break Count", min=50, max=5000, value=500)),
+                                         
 
                                          sliderInput("Lancaster_XY_Z_range",
                                                      label = p("Triplet pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
@@ -583,6 +596,7 @@ ui <- fluidPage(
                             hr(),
                             selectizeInput("mirnaCommonMirnaPair", "miRNA Filter", choices=mirnaListCommonMirnaPairs, multiple=TRUE),
                             hr(),
+                            pickerInput(inputId = "CommonMirnaPairCancerCount", label = "Filter with Count",choices = c(1,2,3,4,5,6,7,8), selected=c(1,2,3,4,5,6,7,8), multiple = TRUE),
                             br(),
                             br()
                             
@@ -711,19 +725,6 @@ ui <- fluidPage(
                                  h4(p("Abbreviations and Full Names of TCGA Projects")),
                                  tags$div(style="font-size:16px;",tableOutput("TCGAAbbrv"))
                           )
-                          # tags$table(tags$tr(
-                          #   tags$th("Term"),
-                          #   tags$th("Description")
-                          # ),
-                          # tags$tr(
-                          #   tags$td("term1"),
-                          #   tags$td("Description1")
-                          # ),
-                          # tags$tr(
-                          #   tags$td("term2"),
-                          #   tags$td("Description2")
-                          # ),  
-                          #)
                         )
                         
                         )
@@ -819,43 +820,59 @@ server <- function(input, output, session) {
         mirnaFilter <- NULL
         mrnaFilter <- NULL
         TFFilter <- NULL
+        if(nrow(datasetInput()) >0 & !is.null(datasetInput())){
+          if(length(input$mirnaFilter) == 0 & length(input$mrnaFilter) == 0 ){
+            concated <- datasetInput()
+          }
+          
+          if(length(input$mrnaFilter) > 0){
+            mrnaFilter <- filter(datasetInput(),hgnc_symbol %in% input$mrnaFilter)
+          }
+          
+          if(length(input$mirnaFilter) >0){
+            mirnaFilter <- filter(datasetInput(), mirna1 %in% tolower(input$mirnaFilter) | mirna2 %in% tolower(input$mirnaFilter))
+          }
+          
+          if(length(input$mirnaFilter) != 0 || length(input$mrnaFilter) != 0){
+            concated <- distinct(rbind(mrnaFilter, mirnaFilter))
+          }
+          
+        }
         
-        if(length(input$mirnaFilter) == 0 & length(input$mrnaFilter) == 0 ){
-          concated <- datasetInput()
-        }
-
-        if(length(input$mrnaFilter) > 0){
-          mrnaFilter <- filter(datasetInput(),hgnc_symbol %in% input$mrnaFilter)
-        }
-        
-        if(length(input$mirnaFilter) >0){
-          mirnaFilter <- filter(datasetInput(), mirna1 %in% tolower(input$mirnaFilter) | mirna2 %in% tolower(input$mirnaFilter))
-        }
-        
-        if(length(input$mirnaFilter) != 0 || length(input$mrnaFilter) != 0){
-          concated <- distinct(rbind(mrnaFilter, mirnaFilter))
-        }
         return (concated)
       
     })
     
     datasetInput3 <- reactive({
       
+        minLanc = min(datasetInput2()$Lancaster_XY_Z)
+        maxLanc = max(datasetInput2()$Lancaster_XY_Z)
       
-        filteredWithTests <-filter(datasetInput2(),
-                                   Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2]
-        )
-
-        if(length(tolower(input$is_mrna_tf)) !=2){
-          filteredWithTests <- filter(datasetInput2(),tolower(is_mrna_tf) %in% tolower(input$is_mrna_tf))
-        }
-      
-        else{
-          filteredWithTests <- datasetInput2()
+        dataset <- datasetInput2()
         
+        # filteredWithTests <-filter(datasetInput2(),
+        #                            Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2]
+        # )
+        # 
+        #print(nrow(dataset))
+        
+        if(nrow(dataset >0) & !is.null(dataset)){
+          if(length(tolower(input$is_mrna_tf)) !=2){
+            dataset <- filter(datasetInput2(),tolower(is_mrna_tf) %in% tolower(input$is_mrna_tf))
+          }
+          
+          else{
+            dataset <- datasetInput2()
+            
+          }
+          
         }
-        print(filteredWithTests)
-        return (filteredWithTests)
+        else{
+          dataset <- NULL
+        }
+
+       
+        return (dataset)
         
 
       
@@ -863,9 +880,10 @@ server <- function(input, output, session) {
     
     datasetInput4<- reactive({
       
+      dataset <- datasetInput3()
       
-      if(nrow(datasetInput3())>0){
-        filteredWithTests <-filter(datasetInput3(),
+      if(nrow(dataset)>0 & !is.null(dataset)){
+        filteredWithTests <-filter(dataset,
                                    Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2]
         )
         
@@ -873,8 +891,7 @@ server <- function(input, output, session) {
       else{
         filteredWithTests <- NULL
       }
-      
-      
+      return(filteredWithTests)
       
     })
     
@@ -899,19 +916,20 @@ server <- function(input, output, session) {
     DatasetRoundDigits <-reactive({
       
         dataset <-datasetInput4()
-        if(!is.null(dataset) || nrow(dataset) >0){
+        
+        if(!is.null(dataset) & nrow(dataset) >0){
           dataset$mirna1 <- stringr::str_remove(dataset$mirna1, "hsa-")
           dataset$mirna2 <- stringr::str_remove(dataset$mirna2, "hsa-")
           dataset$mirna1 <- stringr::str_replace(dataset$mirna1,"mir","miR")
           dataset$mirna2 <- stringr::str_replace(dataset$mirna2,"mir","miR")
-          dataset <- dataset %>%
-            dplyr::mutate(across(where(is.numeric),round,3))
+          # dataset <- dataset %>%
+          #   dplyr::mutate(across(where(is.numeric),round,3))
           
         }
         else{
           #dataset <- datatable(data.frame(Nachricht = "Die ausgewählte Schnittstelle enthält hierfür keine Daten."))
           #shinyalert::shinyalert("Warning", "No Matching Records Based on Your Filter!", type = "info")
-          showNotification(paste("Notification message"), duration = 60,type="message")
+          #showNotification(paste("Notification message"), duration = 60,type="message")
           dataset <- NULL
         }
         return (dataset)
@@ -920,15 +938,14 @@ server <- function(input, output, session) {
     
     
     
-
 output$table <- DT::renderDataTable({
   
-  if(!is.null(DatasetRoundDigits()) || nrow(DatasetRoundDigits()) >0){
+  print(!is.null(DatasetRoundDigits()))
+  print(nrow(DatasetRoundDigits()) >0)
+  
+  if(!is.null(DatasetRoundDigits()) & nrow(DatasetRoundDigits()) >0){
+    print("GİRDİ")
     DT1 <- DatasetRoundDigits()
-    
-   
-    
-    
     DT <- cbind(DT1,
                 button = sapply(1:nrow(DT1), button("table")),
                 stringsAsFactors = FALSE)
@@ -941,7 +958,7 @@ output$table <- DT::renderDataTable({
     
     
     
-    hideList1 <- c(7,8,9,10,11)
+    hideList1 <- c(7,8,9,10,11,12,13)
     hideList2 <- c(7,8,9,10,11,12,13,14,15,16,17)
     hideList3 <- c(7,8,9,10,11,12,13)
     hideList4 <- c(7,8,9)
@@ -1026,7 +1043,7 @@ output$table <- DT::renderDataTable({
     ) %>% as.character()
     
 
-    nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,"miRNA-mRNA Expressions")
+    nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,"BH_rejected","BH_pvalues_adjusted", "miRNA-mRNA Expressions")
     nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"miRNA-mRNA Expressions")
     nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,mRNApvalue,mRNALogFC,"miRNA-mRNA Expressions" )
     nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, "miRNA-mRNA Expressions")
@@ -1081,7 +1098,7 @@ output$table <- DT::renderDataTable({
       miRNA2_logFC = sign_formatter,
       miRNA1_pvalue = significant_bold,
       miRNA2_pvalue = significant_bold
-      
+
     )),escape = F, fillContainer = TRUE,
     colnames=columnNameList,
     extensions = 'Buttons',
@@ -1093,18 +1110,23 @@ output$table <- DT::renderDataTable({
                    ))
     
     # DT::datatable(DT,escape = F, fillContainer = TRUE,
-    #               rownames=T,
-    #               colnames=columnNameList,
-    #               extensions = 'Buttons',
-    #               options = list(dom = 'Bfrtip',
-    #                              buttons=list(list(extend = 'colvis', columns = c(5:ncol(DT)))),
-    #                              columnDefs = list(list(visible=FALSE, targets=columnHideList))
-    #                              #headerCallback = JS(headerCallback)
-    # 
-    #                              )
+    #               rownames=T
+    #               # colnames=columnNameList,
+    #               # extensions = 'Buttons',
+    #               # options = list(dom = 'Bfrtip',
+    #               #                buttons=list(list(extend = 'colvis', columns = c(5:ncol(DT)))),
+    #               #                columnDefs = list(list(visible=FALSE, targets=columnHideList))
+    #               #                #headerCallback = JS(headerCallback)
+    #               # 
+    #               #                )
     # )
     
     
+  }
+  else{
+    dataset <- datatable(data.frame(Nachricht = "Die ausgewählte Schnittstelle enthält hierfür keine Daten."))
+    DT::datatable(dataset,escape = F, fillContainer = TRUE
+    )
   }
 
       
@@ -1504,9 +1526,6 @@ output$vNetwork <- renderVisNetwork({
     nodes$color.background <- "rgb(153,153,153)"
     nodes$color.border <- "rgb(153,153,153)"
     
-    
-    
-    
     if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){
       
       nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
@@ -1789,7 +1808,20 @@ commonMirnaPairFilter <- reactive({
     
   }
   
+  if(nrow(filteredWithCancer) >0 & !is.null(filteredWithCancer)){
+   orListForCommonMirnaPairCancerCount <- rep("|",length(input$CommonMirnaPairCancerCount))
+   countListForCommonTripletAndPair <- paste(c(rbind(orListForCommonMirnaPairCancerCount, matrix(input$CommonMirnaPairCancerCount,ncol = length(orListForCommonMirnaPairCancerCount)))[-1]),collapse = '')
+   filteredWithCount <- filteredWithMirna%>%
+     filter(stringr::str_detect(Count,countListForCommonTripletAndPair))
+    
+  }
+  else{
+    filteredWithCount <- NULL
+  }
+  
 })
+
+
 output$tableCommonTriplet <- DT::renderDataTable({
     
   
@@ -1804,7 +1836,6 @@ output$tableCommonTriplet <- DT::renderDataTable({
     
     
 })
-
 
 output$tableCommonmiRNAPair <- DT::renderDataTable({
   
