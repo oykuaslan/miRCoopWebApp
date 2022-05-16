@@ -1671,54 +1671,37 @@ output$commonTripletNetwork <- renderVisNetwork({
 
 output$commonMirnaNetwork <- renderVisNetwork({
   
-  nodeList <- data.frame("name"= unique(c(commonMirnaPair_source_target$source,commonMirnaPair_source_target$target)))
   
-  if(length(input$CommonMirnaPairCancer) >0 ){
-    orListForCommonCancer <- rep("|",length(input$CommonMirnaPairCancer))
-    cancerListForCommonTripletAndPair <- paste(c(rbind(orListForCommonCancer, matrix(input$CommonMirnaPairCancer,ncol = length(orListForCommonCancer)))[-1]),collapse = '')
-    
-    filteredWithCancer <- commonMirnaPair_source_target%>%
-      filter(stringr::str_detect(CancerTypes,cancerListForCommonTripletAndPair))
-    combmi1mi2 <- unique(c(filteredWithCancer$source,filteredWithCancer$target))
-    orListForCombmi1mi2 <- rep("|",length(combmi1mi2))
-    mirnaListForCombmi1mi2 <- paste(c(rbind(orListForCombmi1mi2, matrix(combmi1mi2,ncol = length(orListForCombmi1mi2)))[-1]),collapse = '')
-    filteredWithCancerLabel <- nodeList%>%
-      filter(stringr::str_detect(name,mirnaListForCombmi1mi2))
+  if(!is.null(commonMirnaPairFilter()) || nrow(commonMirnaPairFilter()) >0){
+    networkFilteringSplit <- unique(unlist(strsplit(commonMirnaPairFilter()$miRNAPair, split = "/")))
+    orListForNetworkFilteringSplit<- rep("|",length(networkFilteringSplit))
+    networkFilteringList <- paste(c(rbind(orListForNetworkFilteringSplit, matrix(networkFilteringSplit,ncol = length(orListForNetworkFilteringSplit)))[-1]),collapse = '')
     
     
-  }
-  else{
-    filteredWithCancer <- NULL
-    filteredWithCancerLabel <-NULL
-    
-  }
-  
-  if(length(input$mirnaCommonMirnaPair) >0){
-    
-    orListForMirna <- rep("|",length(input$mirnaCommonMirnaPair))
-    mirnaList <- paste(c(rbind(orListForMirna, matrix(input$mirnaCommonMirnaPair,ncol = length(orListForMirna)))[-1]),collapse = '')
-    filteredWithMirnaSource <- filteredWithCancer%>%
-      filter(stringr::str_detect(source,mirnaList))
-    filteredWithMirnaTarget <- filteredWithCancer%>%
-      filter(stringr::str_detect(target,mirnaList))
-    
-    concat <- distinct(rbind(filteredWithMirnaSource, filteredWithMirnaTarget))
+    splittedMrnaFilteredSource <- strsplit(commonMirnaPairFilter()$miRNAPair, split = "/")
+    splittedSourceTargetFilteringMIRNA1 <- sapply(splittedMrnaFilteredSource,'[',1)
+    splittedSourceTargetFilteringMIRNA2 <- sapply(splittedMrnaFilteredSource,'[',2)
 
-    combmi1mi2 <- unique(c(concat$source,concat$target))
-    orListForCombmi1mi2 <- rep("|",length(combmi1mi2))
-    mirnaListForCombmi1mi2 <- paste(c(rbind(orListForCombmi1mi2, matrix(combmi1mi2,ncol = length(orListForCombmi1mi2)))[-1]),collapse = '')
-    filteredWithMirnaLabel <- filteredWithCancerLabel%>%
-      filter(stringr::str_detect(name,mirnaListForCombmi1mi2))
     
-  }
-  else{
-    concat <- filteredWithCancer
-    filteredWithMirnaLabel <- filteredWithCancerLabel
-  }
-  
-  
-  nodes <- data.frame(id=filteredWithMirnaLabel$name, label=filteredWithMirnaLabel$name)
-  edges <- data.frame(from= concat$source , to=concat$target, label=concat$CancerTypes, font.size =8, length=50)
+    for (i in 1:nrow(commonMirnaPairFilter())){
+      concated <- rbind(concated, filter(commonMirnaPair_source_target, ((commonMirnaPair_source_target$source==splittedSourceTargetFilteringMIRNA1[i] & commonMirnaPair_source_target$target==splittedSourceTargetFilteringMIRNA2[i] )|
+                                                                           (commonMirnaPair_source_target$source==splittedSourceTargetFilteringMIRNA2[i] & commonMirnaPair_source_target$target==splittedSourceTargetFilteringMIRNA1[i] )
+                                                                         
+      )))
+      
+    }
+    
+    concatedUnique <- unique(concated[,c("source","target","CancerTypes")])
+    forNodeSharedName <- unique(c(concated$source,concated$target))
+    intersectionSharedName <- intersect(filter(commonMirnaPairs_node_attr,stringr::str_detect(commonMirnaPairs_node_attr$shared_name,networkFilteringList))$shared_name,forNodeSharedName)
+    
+    print(concatedUnique)
+    
+    nodes <- data.frame(id=forNodeSharedName, label=forNodeSharedName)
+    
+    edges <- data.frame(from = concatedUnique$source , to = concatedUnique$target, label = concatedUnique$CancerTypes )
+    
+    
   
   nodes$shape <- "dot"
   nodes$size <- 15
@@ -1729,7 +1712,7 @@ output$commonMirnaNetwork <- renderVisNetwork({
   edges$length <- 10
   visNetwork(nodes, edges)%>%
     visIgraphLayout() 
- 
+  }
   
 })
 
