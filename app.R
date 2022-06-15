@@ -59,97 +59,272 @@ ACC <- sqldf::sqldf("SELECT ACC_filtered.*, BH_rejected, BH_pvalues_adjusted fro
                           (ACC_filtered.entrezgene_id = ACCWBenjaminiHochbergCorrection.mrna AND ACC_filtered.mirna1 = ACCWBenjaminiHochbergCorrection.mirna1 AND ACC_filtered.mirna2 = ACCWBenjaminiHochbergCorrection.mirna2) 
                           OR (ACC_filtered.entrezgene_id = ACCWBenjaminiHochbergCorrection.mrna AND ACC_filtered.mirna1 = ACCWBenjaminiHochbergCorrection.mirna2 AND ACC_filtered.mirna2 = ACCWBenjaminiHochbergCorrection.mirna1)")
 
+ACC_BH_pvalues_adjusted_min = min(ACC$BH_pvalues_adjusted)
+ACC_BH_pvalues_adjusted_max = max(ACC$BH_pvalues_adjusted)
 
 BLCA_allData <- read_csv("finalDTData/BLCA.csv",show_col_types = FALSE)
-BLCA <- BLCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+BLCA_filtered <- BLCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+BLCAWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/BLCAWBenjaminiHochbergCorrection.csv")
+BLCA <- sqldf::sqldf("SELECT BLCA_filtered.*, BH_rejected, BH_pvalues_adjusted from BLCA_filtered LEFT JOIN BLCAWBenjaminiHochbergCorrection ON 
+                          (BLCA_filtered.entrezgene_id = BLCAWBenjaminiHochbergCorrection.mrna AND BLCA_filtered.mirna1 = BLCAWBenjaminiHochbergCorrection.mirna1 AND BLCA_filtered.mirna2 = BLCAWBenjaminiHochbergCorrection.mirna2) 
+                          OR (BLCA_filtered.entrezgene_id = BLCAWBenjaminiHochbergCorrection.mrna AND BLCA_filtered.mirna1 = BLCAWBenjaminiHochbergCorrection.mirna2 AND BLCA_filtered.mirna2 = BLCAWBenjaminiHochbergCorrection.mirna1)")
 
+BLCA_BH_pvalues_adjusted_min = min(BLCA$BH_pvalues_adjusted)
+BLCA_BH_pvalues_adjusted_max = max(BLCA$BH_pvalues_adjusted)
 # BRCA_allData <- read_csv("finalDTData/BRCA.csv")
 # BRCA <- BRCA_allData[,c()]
 
 CESC_allData <- read_csv("finalDTData/CESC.csv",show_col_types = FALSE)
-CESC <- CESC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+CESC_filtered <- CESC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+CESCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/CESCWBenjaminiHochbergCorrection.csv")
+CESC <- sqldf::sqldf("SELECT CESC_filtered.*, BH_rejected, BH_pvalues_adjusted from CESC_filtered LEFT JOIN CESCWBenjaminiHochbergCorrection ON 
+                          (CESC_filtered.entrezgene_id = CESCWBenjaminiHochbergCorrection.mrna AND CESC_filtered.mirna1 = CESCWBenjaminiHochbergCorrection.mirna1 AND CESC_filtered.mirna2 = CESCWBenjaminiHochbergCorrection.mirna2) 
+                          OR (CESC_filtered.entrezgene_id = CESCWBenjaminiHochbergCorrection.mrna AND CESC_filtered.mirna1 = CESCWBenjaminiHochbergCorrection.mirna2 AND CESC_filtered.mirna2 = CESCWBenjaminiHochbergCorrection.mirna1)")
+CESC_BH_pvalues_adjusted_min = min(CESC$BH_pvalues_adjusted)
+CESC_BH_pvalues_adjusted_max = max(CESC$BH_pvalues_adjusted)
 
 CHOL_allData <- read_csv("finalDTData/CHOL.csv",show_col_types = FALSE)
-CHOL <- CHOL_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+CHOL_filtered <- CHOL_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+CHOLWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/CHOLWBenjaminiHochbergCorrection.csv")
+CHOL <- sqldf::sqldf("SELECT CHOL_filtered.*, BH_rejected, BH_pvalues_adjusted from CHOL_filtered LEFT JOIN CHOLWBenjaminiHochbergCorrection ON 
+                          (CHOL_filtered.entrezgene_id = CHOLWBenjaminiHochbergCorrection.mrna AND CHOL_filtered.mirna1 = CHOLWBenjaminiHochbergCorrection.mirna1 AND CHOL_filtered.mirna2 = CHOLWBenjaminiHochbergCorrection.mirna2) 
+                          OR (CHOL_filtered.entrezgene_id = CHOLWBenjaminiHochbergCorrection.mrna AND CHOL_filtered.mirna1 = CHOLWBenjaminiHochbergCorrection.mirna2 AND CHOL_filtered.mirna2 = CHOLWBenjaminiHochbergCorrection.mirna1)")
+CHOL_BH_pvalues_adjusted_min = min(CHOL$BH_pvalues_adjusted)
+CHOL_BH_pvalues_adjusted_max = max(CHOL$BH_pvalues_adjusted)
 
 COAD_allData <- read_csv("finalDTData/COAD.csv",show_col_types = FALSE)
-COAD <- COAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC")]
+COAD_filtered <- COAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC")]
+COADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/COADWBenjaminiHochbergCorrection.csv")
+COAD <- sqldf::sqldf("SELECT COAD_filtered.*, BH_rejected, BH_pvalues_adjusted from COAD_filtered LEFT JOIN COADWBenjaminiHochbergCorrection ON 
+                          (COAD_filtered.entrezgene_id = COADWBenjaminiHochbergCorrection.mrna AND COAD_filtered.mirna1 = COADWBenjaminiHochbergCorrection.mirna1 AND COAD_filtered.mirna2 = COADWBenjaminiHochbergCorrection.mirna2) 
+                          OR (COAD_filtered.entrezgene_id = COADWBenjaminiHochbergCorrection.mrna AND COAD_filtered.mirna1 = COADWBenjaminiHochbergCorrection.mirna2 AND COAD_filtered.mirna2 = COADWBenjaminiHochbergCorrection.mirna1)")
+COAD_BH_pvalues_adjusted_min = min(COAD$BH_pvalues_adjusted)
+COAD_BH_pvalues_adjusted_max = max(COAD$BH_pvalues_adjusted)
 
 DLBC_allData <- read_csv("finalDTData/DLBC.csv",show_col_types = FALSE)
-DLBC <- DLBC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+DLBC_filtered <- DLBC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+DLBCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/DLBCWBenjaminiHochbergCorrection.csv")
+DLBC <- sqldf::sqldf("SELECT DLBC_filtered.*, BH_rejected, BH_pvalues_adjusted from DLBC_filtered LEFT JOIN DLBCWBenjaminiHochbergCorrection ON 
+                          (DLBC_filtered.entrezgene_id = DLBCWBenjaminiHochbergCorrection.mrna AND DLBC_filtered.mirna1 = DLBCWBenjaminiHochbergCorrection.mirna1 AND DLBC_filtered.mirna2 = DLBCWBenjaminiHochbergCorrection.mirna2) 
+                          OR (DLBC_filtered.entrezgene_id = DLBCWBenjaminiHochbergCorrection.mrna AND DLBC_filtered.mirna1 = DLBCWBenjaminiHochbergCorrection.mirna2 AND DLBC_filtered.mirna2 = DLBCWBenjaminiHochbergCorrection.mirna1)")
+DLBC_BH_pvalues_adjusted_min = min(DLBC$BH_pvalues_adjusted)
+DLBC_BH_pvalues_adjusted_max = max(DLBC$BH_pvalues_adjusted)
 
 ESCA_allData <- read_csv("finalDTData/ESCA.csv",show_col_types = FALSE)
-ESCA <- ESCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+ESCA_filtered <- ESCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+ESCAWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/ESCAWBenjaminiHochbergCorrection.csv")
+ESCA <- sqldf::sqldf("SELECT ESCA_filtered.*, BH_rejected, BH_pvalues_adjusted from ESCA_filtered LEFT JOIN ESCAWBenjaminiHochbergCorrection ON 
+                          (ESCA_filtered.entrezgene_id = ESCAWBenjaminiHochbergCorrection.mrna AND ESCA_filtered.mirna1 = ESCAWBenjaminiHochbergCorrection.mirna1 AND ESCA_filtered.mirna2 = ESCAWBenjaminiHochbergCorrection.mirna2) 
+                          OR (ESCA_filtered.entrezgene_id = ESCAWBenjaminiHochbergCorrection.mrna AND ESCA_filtered.mirna1 = ESCAWBenjaminiHochbergCorrection.mirna2 AND ESCA_filtered.mirna2 = ESCAWBenjaminiHochbergCorrection.mirna1)")
+ESCA_BH_pvalues_adjusted_min = min(ESCA$BH_pvalues_adjusted)
+ESCA_BH_pvalues_adjusted_max = max(ESCA$BH_pvalues_adjusted)
 
 HNSC_allData <- read_csv("finalDTData/HNSC.csv",show_col_types = FALSE)
-HNSC <- HNSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+HNSC_filtered <- HNSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+HNSCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/HNSCWBenjaminiHochbergCorrection.csv")
+HNSC <- sqldf::sqldf("SELECT HNSC_filtered.*, BH_rejected, BH_pvalues_adjusted from HNSC_filtered LEFT JOIN HNSCWBenjaminiHochbergCorrection ON 
+                          (HNSC_filtered.entrezgene_id = HNSCWBenjaminiHochbergCorrection.mrna AND HNSC_filtered.mirna1 = HNSCWBenjaminiHochbergCorrection.mirna1 AND HNSC_filtered.mirna2 = HNSCWBenjaminiHochbergCorrection.mirna2) 
+                          OR (HNSC_filtered.entrezgene_id = HNSCWBenjaminiHochbergCorrection.mrna AND HNSC_filtered.mirna1 = HNSCWBenjaminiHochbergCorrection.mirna2 AND HNSC_filtered.mirna2 = HNSCWBenjaminiHochbergCorrection.mirna1)")
+HNSC_BH_pvalues_adjusted_min = min(HNSC$BH_pvalues_adjusted)
+HNSC_BH_pvalues_adjusted_max = max(HNSC$BH_pvalues_adjusted)
 
 KICH_allData <- read_csv("finalDTData/KICH.csv",show_col_types = FALSE)
-KICH <- KICH_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+KICH_filtered <- KICH_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+KICHWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/KICHWBenjaminiHochbergCorrection.csv")
+KICH <- sqldf::sqldf("SELECT KICH_filtered.*, BH_rejected, BH_pvalues_adjusted from KICH_filtered LEFT JOIN KICHWBenjaminiHochbergCorrection ON 
+                          (KICH_filtered.entrezgene_id = KICHWBenjaminiHochbergCorrection.mrna AND KICH_filtered.mirna1 = KICHWBenjaminiHochbergCorrection.mirna1 AND KICH_filtered.mirna2 = KICHWBenjaminiHochbergCorrection.mirna2) 
+                          OR (KICH_filtered.entrezgene_id = KICHWBenjaminiHochbergCorrection.mrna AND KICH_filtered.mirna1 = KICHWBenjaminiHochbergCorrection.mirna2 AND KICH_filtered.mirna2 = KICHWBenjaminiHochbergCorrection.mirna1)")
+KICH_BH_pvalues_adjusted_min = min(KICH$BH_pvalues_adjusted)
+KICH_BH_pvalues_adjusted_max = max(KICH$BH_pvalues_adjusted)
 
 KIRC_allData <- read_csv("finalDTData/KIRC.csv",show_col_types = FALSE)
-KIRC <- KIRC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+KIRC_filtered <- KIRC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+KIRCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/KIRCWBenjaminiHochbergCorrection.csv")
+KIRC <- sqldf::sqldf("SELECT KIRC_filtered.*, BH_rejected, BH_pvalues_adjusted from KIRC_filtered LEFT JOIN KIRCWBenjaminiHochbergCorrection ON 
+                          (KIRC_filtered.entrezgene_id = KIRCWBenjaminiHochbergCorrection.mrna AND KIRC_filtered.mirna1 = KIRCWBenjaminiHochbergCorrection.mirna1 AND KIRC_filtered.mirna2 = KIRCWBenjaminiHochbergCorrection.mirna2) 
+                          OR (KIRC_filtered.entrezgene_id = KIRCWBenjaminiHochbergCorrection.mrna AND KIRC_filtered.mirna1 = KIRCWBenjaminiHochbergCorrection.mirna2 AND KIRC_filtered.mirna2 = KIRCWBenjaminiHochbergCorrection.mirna1)")
+KIRC_BH_pvalues_adjusted_min = min(KIRC$BH_pvalues_adjusted)
+KIRC_BH_pvalues_adjusted_max = max(KIRC$BH_pvalues_adjusted)
 
 KIRP_allData <- read_csv("finalDTData/KIRP.csv",show_col_types = FALSE)
-KIRP <- KIRP_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+KIRP_filtered <- KIRP_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+KIRPWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/KIRPWBenjaminiHochbergCorrection.csv")
+KIRP <- sqldf::sqldf("SELECT KIRP_filtered.*, BH_rejected, BH_pvalues_adjusted from KIRP_filtered LEFT JOIN KIRPWBenjaminiHochbergCorrection ON 
+                          (KIRP_filtered.entrezgene_id = KIRPWBenjaminiHochbergCorrection.mrna AND KIRP_filtered.mirna1 = KIRPWBenjaminiHochbergCorrection.mirna1 AND KIRP_filtered.mirna2 = KIRPWBenjaminiHochbergCorrection.mirna2) 
+                          OR (KIRP_filtered.entrezgene_id = KIRPWBenjaminiHochbergCorrection.mrna AND KIRP_filtered.mirna1 = KIRPWBenjaminiHochbergCorrection.mirna2 AND KIRP_filtered.mirna2 = KIRPWBenjaminiHochbergCorrection.mirna1)")
+KIRP_BH_pvalues_adjusted_min = min(KIRP$BH_pvalues_adjusted)
+KIRP_BH_pvalues_adjusted_max = max(KIRP$BH_pvalues_adjusted)
 
 LGG_allData <- read_csv("finalDTData/LGG.csv",show_col_types = FALSE)
-LGG <- LGG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+LGG_filtered <- LGG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+LGGWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/LGGWBenjaminiHochbergCorrection.csv")
+LGG <- sqldf::sqldf("SELECT LGG_filtered.*, BH_rejected, BH_pvalues_adjusted from LGG_filtered LEFT JOIN LGGWBenjaminiHochbergCorrection ON 
+                          (LGG_filtered.entrezgene_id = LGGWBenjaminiHochbergCorrection.mrna AND LGG_filtered.mirna1 = LGGWBenjaminiHochbergCorrection.mirna1 AND LGG_filtered.mirna2 = LGGWBenjaminiHochbergCorrection.mirna2) 
+                          OR (LGG_filtered.entrezgene_id = LGGWBenjaminiHochbergCorrection.mrna AND LGG_filtered.mirna1 = LGGWBenjaminiHochbergCorrection.mirna2 AND LGG_filtered.mirna2 = LGGWBenjaminiHochbergCorrection.mirna1)")
+LGG_BH_pvalues_adjusted_min = min(LGG$BH_pvalues_adjusted)
+LGG_BH_pvalues_adjusted_max = max(LGG$BH_pvalues_adjusted)
 
 LIHC_allData <- read_csv("finalDTData/LIHC.csv",show_col_types = FALSE)
-LIHC <- LIHC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+LIHC_filtered <- LIHC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+LIHCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/LIHCWBenjaminiHochbergCorrection.csv")
+LIHC <- sqldf::sqldf("SELECT LIHC_filtered.*, BH_rejected, BH_pvalues_adjusted from LIHC_filtered LEFT JOIN LIHCWBenjaminiHochbergCorrection ON 
+                          (LIHC_filtered.entrezgene_id = LIHCWBenjaminiHochbergCorrection.mrna AND LIHC_filtered.mirna1 = LIHCWBenjaminiHochbergCorrection.mirna1 AND LIHC_filtered.mirna2 = LIHCWBenjaminiHochbergCorrection.mirna2) 
+                          OR (LIHC_filtered.entrezgene_id = LIHCWBenjaminiHochbergCorrection.mrna AND LIHC_filtered.mirna1 = LIHCWBenjaminiHochbergCorrection.mirna2 AND LIHC_filtered.mirna2 = LIHCWBenjaminiHochbergCorrection.mirna1)")
+LIHC_BH_pvalues_adjusted_min = min(LIHC$BH_pvalues_adjusted)
+LIHC_BH_pvalues_adjusted_max = max(LIHC$BH_pvalues_adjusted)
 
 LUAD_allData <- read_csv("finalDTData/LUAD.csv",show_col_types = FALSE)
-LUAD <- LUAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+LUAD_filtered <- LUAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+LUADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/LUADWBenjaminiHochbergCorrection.csv")
+LUAD <- sqldf::sqldf("SELECT LUAD_filtered.*, BH_rejected, BH_pvalues_adjusted from LUAD_filtered LEFT JOIN LUADWBenjaminiHochbergCorrection ON 
+                          (LUAD_filtered.entrezgene_id = LUADWBenjaminiHochbergCorrection.mrna AND LUAD_filtered.mirna1 = LUADWBenjaminiHochbergCorrection.mirna1 AND LUAD_filtered.mirna2 = LUADWBenjaminiHochbergCorrection.mirna2) 
+                          OR (LUAD_filtered.entrezgene_id = LUADWBenjaminiHochbergCorrection.mrna AND LUAD_filtered.mirna1 = LUADWBenjaminiHochbergCorrection.mirna2 AND LUAD_filtered.mirna2 = LUADWBenjaminiHochbergCorrection.mirna1)")
+LUAD_BH_pvalues_adjusted_min = min(LUAD$BH_pvalues_adjusted)
+LUAD_BH_pvalues_adjusted_max = max(LUAD$BH_pvalues_adjusted)
 
 LUSC_allData <- read_csv("finalDTData/LUSC.csv",show_col_types = FALSE)
-LUSC <- LUSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+LUSC_filtered <- LUSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+LUSCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/LUSCWBenjaminiHochbergCorrection.csv")
+LUSC <- sqldf::sqldf("SELECT LUSC_filtered.*, BH_rejected, BH_pvalues_adjusted from LUSC_filtered LEFT JOIN LUSCWBenjaminiHochbergCorrection ON 
+                          (LUSC_filtered.entrezgene_id = LUSCWBenjaminiHochbergCorrection.mrna AND LUSC_filtered.mirna1 = LUSCWBenjaminiHochbergCorrection.mirna1 AND LUSC_filtered.mirna2 = LUSCWBenjaminiHochbergCorrection.mirna2) 
+                          OR (LUSC_filtered.entrezgene_id = LUSCWBenjaminiHochbergCorrection.mrna AND LUSC_filtered.mirna1 = LUSCWBenjaminiHochbergCorrection.mirna2 AND LUSC_filtered.mirna2 = LUSCWBenjaminiHochbergCorrection.mirna1)")
+LUSC_BH_pvalues_adjusted_min = min(LUSC$BH_pvalues_adjusted)
+LUSC_BH_pvalues_adjusted_max = max(LUSC$BH_pvalues_adjusted)
 
 MESO_allData <- read_csv("finalDTData/MESO.csv",show_col_types = FALSE)
-MESO <- MESO_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+MESO_filtered <- MESO_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+MESOWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/MESOWBenjaminiHochbergCorrection.csv")
+MESO <- sqldf::sqldf("SELECT MESO_filtered.*, BH_rejected, BH_pvalues_adjusted from MESO_filtered LEFT JOIN MESOWBenjaminiHochbergCorrection ON 
+                          (MESO_filtered.entrezgene_id = MESOWBenjaminiHochbergCorrection.mrna AND MESO_filtered.mirna1 = MESOWBenjaminiHochbergCorrection.mirna1 AND MESO_filtered.mirna2 = MESOWBenjaminiHochbergCorrection.mirna2) 
+                          OR (MESO_filtered.entrezgene_id = MESOWBenjaminiHochbergCorrection.mrna AND MESO_filtered.mirna1 = MESOWBenjaminiHochbergCorrection.mirna2 AND MESO_filtered.mirna2 = MESOWBenjaminiHochbergCorrection.mirna1)")
+MESO_BH_pvalues_adjusted_min = min(MESO$BH_pvalues_adjusted)
+MESO_BH_pvalues_adjusted_max = max(MESO$BH_pvalues_adjusted)
 
 OV_allData <- read_csv("finalDTData/OV.csv",show_col_types = FALSE)
-OV <- OV_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+OV_filtered <- OV_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+OVWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/OVWBenjaminiHochbergCorrection.csv")
+OV <- sqldf::sqldf("SELECT OV_filtered.*, BH_rejected, BH_pvalues_adjusted from OV_filtered LEFT JOIN OVWBenjaminiHochbergCorrection ON 
+                          (OV_filtered.entrezgene_id = OVWBenjaminiHochbergCorrection.mrna AND OV_filtered.mirna1 = OVWBenjaminiHochbergCorrection.mirna1 AND OV_filtered.mirna2 = OVWBenjaminiHochbergCorrection.mirna2) 
+                          OR (OV_filtered.entrezgene_id = OVWBenjaminiHochbergCorrection.mrna AND OV_filtered.mirna1 = OVWBenjaminiHochbergCorrection.mirna2 AND OV_filtered.mirna2 = OVWBenjaminiHochbergCorrection.mirna1)")
+OV_BH_pvalues_adjusted_min = min(OV$BH_pvalues_adjusted)
+OV_BH_pvalues_adjusted_max = max(OV$BH_pvalues_adjusted)
 
 PAAD_allData <- read_csv("finalDTData/PAAD.csv",show_col_types = FALSE)
-PAAD <- PAAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+PAAD_filtered <- PAAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+PAADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/PAADWBenjaminiHochbergCorrection.csv")
+PAAD <- sqldf::sqldf("SELECT PAAD_filtered.*, BH_rejected, BH_pvalues_adjusted from PAAD_filtered LEFT JOIN PAADWBenjaminiHochbergCorrection ON 
+                          (PAAD_filtered.entrezgene_id = PAADWBenjaminiHochbergCorrection.mrna AND PAAD_filtered.mirna1 = PAADWBenjaminiHochbergCorrection.mirna1 AND PAAD_filtered.mirna2 = PAADWBenjaminiHochbergCorrection.mirna2) 
+                          OR (PAAD_filtered.entrezgene_id = PAADWBenjaminiHochbergCorrection.mrna AND PAAD_filtered.mirna1 = PAADWBenjaminiHochbergCorrection.mirna2 AND PAAD_filtered.mirna2 = PAADWBenjaminiHochbergCorrection.mirna1)")
+PAAD_BH_pvalues_adjusted_min = min(PAAD$BH_pvalues_adjusted)
+PAAD_BH_pvalues_adjusted_max = max(PAAD$BH_pvalues_adjusted)
 
 PCPG_allData <- read_csv("finalDTData/PCPG.csv",show_col_types = FALSE)
-PCPG <- PCPG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+PCPG_filtered <- PCPG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+PCPGWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/PCPGWBenjaminiHochbergCorrection.csv")
+PCPG <- sqldf::sqldf("SELECT PCPG_filtered.*, BH_rejected, BH_pvalues_adjusted from PCPG_filtered LEFT JOIN PCPGWBenjaminiHochbergCorrection ON 
+                          (PCPG_filtered.entrezgene_id = PCPGWBenjaminiHochbergCorrection.mrna AND PCPG_filtered.mirna1 = PCPGWBenjaminiHochbergCorrection.mirna1 AND PCPG_filtered.mirna2 = PCPGWBenjaminiHochbergCorrection.mirna2) 
+                          OR (PCPG_filtered.entrezgene_id = PCPGWBenjaminiHochbergCorrection.mrna AND PCPG_filtered.mirna1 = PCPGWBenjaminiHochbergCorrection.mirna2 AND PCPG_filtered.mirna2 = PCPGWBenjaminiHochbergCorrection.mirna1)")
+PCPG_BH_pvalues_adjusted_min = min(PCPG$BH_pvalues_adjusted)
+PCPG_BH_pvalues_adjusted_max = max(PCPG$BH_pvalues_adjusted)
 
 PRAD_allData <- read_csv("finalDTData/PRAD.csv",show_col_types = FALSE)
-PRAD <- PRAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+PRAD_filtered <- PRAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+PRADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/PRADWBenjaminiHochbergCorrection.csv")
+PRAD <- sqldf::sqldf("SELECT PRAD_filtered.*, BH_rejected, BH_pvalues_adjusted from PRAD_filtered LEFT JOIN PRADWBenjaminiHochbergCorrection ON 
+                          (PRAD_filtered.entrezgene_id = PRADWBenjaminiHochbergCorrection.mrna AND PRAD_filtered.mirna1 = PRADWBenjaminiHochbergCorrection.mirna1 AND PRAD_filtered.mirna2 = PRADWBenjaminiHochbergCorrection.mirna2) 
+                          OR (PRAD_filtered.entrezgene_id = PRADWBenjaminiHochbergCorrection.mrna AND PRAD_filtered.mirna1 = PRADWBenjaminiHochbergCorrection.mirna2 AND PRAD_filtered.mirna2 = PRADWBenjaminiHochbergCorrection.mirna1)")
+PRAD_BH_pvalues_adjusted_min = min(PRAD$BH_pvalues_adjusted)
+PRAD_BH_pvalues_adjusted_max = max(PRAD$BH_pvalues_adjusted)
 
 READ_allData <- read_csv("finalDTData/READ.csv",show_col_types = FALSE)
-READ <- READ_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC")]
+READ_filtered <- READ_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC")]
+READWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/READWBenjaminiHochbergCorrection.csv")
+READ <- sqldf::sqldf("SELECT READ_filtered.*, BH_rejected, BH_pvalues_adjusted from READ_filtered LEFT JOIN READWBenjaminiHochbergCorrection ON 
+                          (READ_filtered.entrezgene_id = READWBenjaminiHochbergCorrection.mrna AND READ_filtered.mirna1 = READWBenjaminiHochbergCorrection.mirna1 AND READ_filtered.mirna2 = READWBenjaminiHochbergCorrection.mirna2) 
+                          OR (READ_filtered.entrezgene_id = READWBenjaminiHochbergCorrection.mrna AND READ_filtered.mirna1 = READWBenjaminiHochbergCorrection.mirna2 AND READ_filtered.mirna2 = READWBenjaminiHochbergCorrection.mirna1)")
+READ_BH_pvalues_adjusted_min = min(READ$BH_pvalues_adjusted)
+READ_BH_pvalues_adjusted_max = max(READ$BH_pvalues_adjusted)
 
 SARC_allData <- read_csv("finalDTData/SARC.csv",show_col_types = FALSE)
-SARC <- SARC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC")]
+SARC_filtered <- SARC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC")]
+SARCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/SARCWBenjaminiHochbergCorrection.csv")
+SARC <- sqldf::sqldf("SELECT SARC_filtered.*, BH_rejected, BH_pvalues_adjusted from SARC_filtered LEFT JOIN SARCWBenjaminiHochbergCorrection ON 
+                          (SARC_filtered.entrezgene_id = SARCWBenjaminiHochbergCorrection.mrna AND SARC_filtered.mirna1 = SARCWBenjaminiHochbergCorrection.mirna1 AND SARC_filtered.mirna2 = SARCWBenjaminiHochbergCorrection.mirna2) 
+                          OR (SARC_filtered.entrezgene_id = SARCWBenjaminiHochbergCorrection.mrna AND SARC_filtered.mirna1 = SARCWBenjaminiHochbergCorrection.mirna2 AND SARC_filtered.mirna2 = SARCWBenjaminiHochbergCorrection.mirna1)")
+SARC_BH_pvalues_adjusted_min = min(SARC$BH_pvalues_adjusted)
+SARC_BH_pvalues_adjusted_max = max(SARC$BH_pvalues_adjusted)
 
 SKCM_allData <- read_csv("finalDTData/SKCM.csv",show_col_types = FALSE)
-SKCM <- SKCM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+SKCM_filtered <- SKCM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+SKCMWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/SKCMWBenjaminiHochbergCorrection.csv")
+SKCM <- sqldf::sqldf("SELECT SKCM_filtered.*, BH_rejected, BH_pvalues_adjusted from SKCM_filtered LEFT JOIN SKCMWBenjaminiHochbergCorrection ON 
+                          (SKCM_filtered.entrezgene_id = SKCMWBenjaminiHochbergCorrection.mrna AND SKCM_filtered.mirna1 = SKCMWBenjaminiHochbergCorrection.mirna1 AND SKCM_filtered.mirna2 = SKCMWBenjaminiHochbergCorrection.mirna2) 
+                          OR (SKCM_filtered.entrezgene_id = SKCMWBenjaminiHochbergCorrection.mrna AND SKCM_filtered.mirna1 = SKCMWBenjaminiHochbergCorrection.mirna2 AND SKCM_filtered.mirna2 = SKCMWBenjaminiHochbergCorrection.mirna1)")
+SKCM_BH_pvalues_adjusted_min = min(SKCM$BH_pvalues_adjusted)
+SKCM_BH_pvalues_adjusted_max = max(SKCM$BH_pvalues_adjusted)
 
 STAD_allData <- read_csv("finalDTData/STAD.csv",show_col_types = FALSE)
-STAD <- STAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+STAD_filtered <- STAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+STADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/STADWBenjaminiHochbergCorrection.csv")
+STAD <- sqldf::sqldf("SELECT STAD_filtered.*, BH_rejected, BH_pvalues_adjusted from STAD_filtered LEFT JOIN STADWBenjaminiHochbergCorrection ON 
+                          (STAD_filtered.entrezgene_id = STADWBenjaminiHochbergCorrection.mrna AND STAD_filtered.mirna1 = STADWBenjaminiHochbergCorrection.mirna1 AND STAD_filtered.mirna2 = STADWBenjaminiHochbergCorrection.mirna2) 
+                          OR (STAD_filtered.entrezgene_id = STADWBenjaminiHochbergCorrection.mrna AND STAD_filtered.mirna1 = STADWBenjaminiHochbergCorrection.mirna2 AND STAD_filtered.mirna2 = STADWBenjaminiHochbergCorrection.mirna1)")
+STAD_BH_pvalues_adjusted_min = min(STAD$BH_pvalues_adjusted)
+STAD_BH_pvalues_adjusted_max = max(STAD$BH_pvalues_adjusted)
 
 TGCT_allData <- read_csv("finalDTData/TGCT.csv",show_col_types = FALSE)
-TGCT <- TGCT_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+TGCT_filtered <- TGCT_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+TGCTWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/TGCTWBenjaminiHochbergCorrection.csv")
+TGCT <- sqldf::sqldf("SELECT TGCT_filtered.*, BH_rejected, BH_pvalues_adjusted from TGCT_filtered LEFT JOIN TGCTWBenjaminiHochbergCorrection ON 
+                          (TGCT_filtered.entrezgene_id = TGCTWBenjaminiHochbergCorrection.mrna AND TGCT_filtered.mirna1 = TGCTWBenjaminiHochbergCorrection.mirna1 AND TGCT_filtered.mirna2 = TGCTWBenjaminiHochbergCorrection.mirna2) 
+                          OR (TGCT_filtered.entrezgene_id = TGCTWBenjaminiHochbergCorrection.mrna AND TGCT_filtered.mirna1 = TGCTWBenjaminiHochbergCorrection.mirna2 AND TGCT_filtered.mirna2 = TGCTWBenjaminiHochbergCorrection.mirna1)")
+TGCT_BH_pvalues_adjusted_min = min(TGCT$BH_pvalues_adjusted)
+TGCT_BH_pvalues_adjusted_max = max(TGCT$BH_pvalues_adjusted)
 
 THCA_allData <- read_csv("finalDTData/THCA.csv",show_col_types = FALSE)
-THCA <- THCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+THCA_filtered <- THCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+THCAWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/THCAWBenjaminiHochbergCorrection.csv")
+THCA <- sqldf::sqldf("SELECT THCA_filtered.*, BH_rejected, BH_pvalues_adjusted from THCA_filtered LEFT JOIN THCAWBenjaminiHochbergCorrection ON 
+                          (THCA_filtered.entrezgene_id = THCAWBenjaminiHochbergCorrection.mrna AND THCA_filtered.mirna1 = THCAWBenjaminiHochbergCorrection.mirna1 AND THCA_filtered.mirna2 = THCAWBenjaminiHochbergCorrection.mirna2) 
+                          OR (THCA_filtered.entrezgene_id = THCAWBenjaminiHochbergCorrection.mrna AND THCA_filtered.mirna1 = THCAWBenjaminiHochbergCorrection.mirna2 AND THCA_filtered.mirna2 = THCAWBenjaminiHochbergCorrection.mirna1)")
+THCA_BH_pvalues_adjusted_min = min(THCA$BH_pvalues_adjusted)
+THCA_BH_pvalues_adjusted_max = max(THCA$BH_pvalues_adjusted)
 
 THYM_allData <- read_csv("finalDTData/THYM.csv",show_col_types = FALSE)
-THYM <- THYM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+THYM_filtered <- THYM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+THYMWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/THYMWBenjaminiHochbergCorrection.csv")
+THYM <- sqldf::sqldf("SELECT THYM_filtered.*, BH_rejected, BH_pvalues_adjusted from THYM_filtered LEFT JOIN THYMWBenjaminiHochbergCorrection ON 
+                          (THYM_filtered.entrezgene_id = THYMWBenjaminiHochbergCorrection.mrna AND THYM_filtered.mirna1 = THYMWBenjaminiHochbergCorrection.mirna1 AND THYM_filtered.mirna2 = THYMWBenjaminiHochbergCorrection.mirna2) 
+                          OR (THYM_filtered.entrezgene_id = THYMWBenjaminiHochbergCorrection.mrna AND THYM_filtered.mirna1 = THYMWBenjaminiHochbergCorrection.mirna2 AND THYM_filtered.mirna2 = THYMWBenjaminiHochbergCorrection.mirna1)")
+THYM_BH_pvalues_adjusted_min = min(THYM$BH_pvalues_adjusted)
+THYM_BH_pvalues_adjusted_max = max(THYM$BH_pvalues_adjusted)
 
 UCEC_allData <- read_csv("finalDTData/UCEC.csv",show_col_types = FALSE)
-UCEC <- UCEC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+UCEC_filtered <- UCEC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+UCECWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/UCECWBenjaminiHochbergCorrection.csv")
+UCEC <- sqldf::sqldf("SELECT UCEC_filtered.*, BH_rejected, BH_pvalues_adjusted from UCEC_filtered LEFT JOIN UCECWBenjaminiHochbergCorrection ON 
+                          (UCEC_filtered.entrezgene_id = UCECWBenjaminiHochbergCorrection.mrna AND UCEC_filtered.mirna1 = UCECWBenjaminiHochbergCorrection.mirna1 AND UCEC_filtered.mirna2 = UCECWBenjaminiHochbergCorrection.mirna2) 
+                          OR (UCEC_filtered.entrezgene_id = UCECWBenjaminiHochbergCorrection.mrna AND UCEC_filtered.mirna1 = UCECWBenjaminiHochbergCorrection.mirna2 AND UCEC_filtered.mirna2 = UCECWBenjaminiHochbergCorrection.mirna1)")
+UCEC_BH_pvalues_adjusted_min = min(UCEC$BH_pvalues_adjusted)
+UCEC_BH_pvalues_adjusted_max = max(UCEC$BH_pvalues_adjusted)
 
 UCS_allData <- read_csv("finalDTData/UCS.csv",show_col_types = FALSE)
-UCS <- UCS_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+UCS_filtered <- UCS_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+UCSWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/UCSWBenjaminiHochbergCorrection.csv")
+UCS <- sqldf::sqldf("SELECT UCS_filtered.*, BH_rejected, BH_pvalues_adjusted from UCS_filtered LEFT JOIN UCSWBenjaminiHochbergCorrection ON 
+                          (UCS_filtered.entrezgene_id = UCSWBenjaminiHochbergCorrection.mrna AND UCS_filtered.mirna1 = UCSWBenjaminiHochbergCorrection.mirna1 AND UCS_filtered.mirna2 = UCSWBenjaminiHochbergCorrection.mirna2) 
+                          OR (UCS_filtered.entrezgene_id = UCSWBenjaminiHochbergCorrection.mrna AND UCS_filtered.mirna1 = UCSWBenjaminiHochbergCorrection.mirna2 AND UCS_filtered.mirna2 = UCSWBenjaminiHochbergCorrection.mirna1)")
+UCS_BH_pvalues_adjusted_min = min(UCS$BH_pvalues_adjusted)
+UCS_BH_pvalues_adjusted_max = max(UCS$BH_pvalues_adjusted)
 
 UVM_allData <- read_csv("finalDTData/UVM.csv",show_col_types = FALSE)
-UVM <- UVM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
-
+UVM_filtered <- UVM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
+UVMWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/UVMWBenjaminiHochbergCorrection.csv")
+UVM <- sqldf::sqldf("SELECT UVM_filtered.*, BH_rejected, BH_pvalues_adjusted from UVM_filtered LEFT JOIN UVMWBenjaminiHochbergCorrection ON 
+                          (UVM_filtered.entrezgene_id = UVMWBenjaminiHochbergCorrection.mrna AND UVM_filtered.mirna1 = UVMWBenjaminiHochbergCorrection.mirna1 AND UVM_filtered.mirna2 = UVMWBenjaminiHochbergCorrection.mirna2) 
+                          OR (UVM_filtered.entrezgene_id = UVMWBenjaminiHochbergCorrection.mrna AND UVM_filtered.mirna1 = UVMWBenjaminiHochbergCorrection.mirna2 AND UVM_filtered.mirna2 = UVMWBenjaminiHochbergCorrection.mirna1)")
+UVM_BH_pvalues_adjusted_min = min(UVM$BH_pvalues_adjusted)
+UVM_BH_pvalues_adjusted_max = max(UVM$BH_pvalues_adjusted)
 ####################################################################################################
 
 concated <- data.frame(source=c(),target=c())
@@ -528,6 +703,202 @@ ui <- fluidPage(
                                          
                                          hr(),
                                          
+                                         # 
+                                         # sliderInput("BH_pvalue_adjusted",
+                                         #             label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                         #             value = c(0,1),
+                                         #             min = 0,
+                                         #             max = 1),
+                                         
+                                         conditionalPanel(condition = "input.dataset == 'ACC'",
+                                                         sliderInput("BH_pvalue_adjusted", 
+                                                                     label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                     min=ACC_BH_pvalues_adjusted_min, 
+                                                                     max=ACC_BH_pvalues_adjusted_max,
+                                                                     value=c(ACC_BH_pvalues_adjusted_min,ACC_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'BLCA'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=BLCA_BH_pvalues_adjusted_min, 
+                                                                      max=BLCA_BH_pvalues_adjusted_max,
+                                                                      value=c(BLCA_BH_pvalues_adjusted_min,BLCA_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'CESC'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=CESC_BH_pvalues_adjusted_min, 
+                                                                      max=CESC_BH_pvalues_adjusted_max,
+                                                                      value=c(CESC_BH_pvalues_adjusted_min,CESC_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'CHOL'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=CHOL_BH_pvalues_adjusted_min, 
+                                                                      max=CHOL_BH_pvalues_adjusted_max,
+                                                                      value=c(CHOL_BH_pvalues_adjusted_min,CHOL_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'COAD'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=COAD_BH_pvalues_adjusted_min, 
+                                                                      max=COAD_BH_pvalues_adjusted_max,
+                                                                      value=c(COAD_BH_pvalues_adjusted_min,COAD_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'DLBC'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=DLBC_BH_pvalues_adjusted_min, 
+                                                                      max=DLBC_BH_pvalues_adjusted_max,
+                                                                      value=c(DLBC_BH_pvalues_adjusted_min,DLBC_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'ESCA'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=ESCA_BH_pvalues_adjusted_min, 
+                                                                      max=ESCA_BH_pvalues_adjusted_max,
+                                                                      value=c(ESCA_BH_pvalues_adjusted_min,ESCA_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'HNSC'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=HNSC_BH_pvalues_adjusted_min, 
+                                                                      max=HNSC_BH_pvalues_adjusted_max,
+                                                                      value=c(HNSC_BH_pvalues_adjusted_min,HNSC_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'KICH'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=KICH_BH_pvalues_adjusted_min, 
+                                                                      max=KICH_BH_pvalues_adjusted_max,
+                                                                      value=c(KICH_BH_pvalues_adjusted_min,KICH_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'KIRC'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=KIRC_BH_pvalues_adjusted_min, 
+                                                                      max=KIRC_BH_pvalues_adjusted_max,
+                                                                      value=c(KIRC_BH_pvalues_adjusted_min,KIRC_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'KIRP'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=KIRP_BH_pvalues_adjusted_min, 
+                                                                      max=KIRP_BH_pvalues_adjusted_max,
+                                                                      value=c(KIRP_BH_pvalues_adjusted_min,KIRP_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'LGG'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=LGG_BH_pvalues_adjusted_min, 
+                                                                      max=LGG_BH_pvalues_adjusted_max,
+                                                                      value=c(LGG_BH_pvalues_adjusted_min,LGG_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'LIHC'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=LIHC_BH_pvalues_adjusted_min, 
+                                                                      max=LIHC_BH_pvalues_adjusted_max,
+                                                                      value=c(LIHC_BH_pvalues_adjusted_min,LIHC_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'LUAD'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=LUAD_BH_pvalues_adjusted_min, 
+                                                                      max=LUAD_BH_pvalues_adjusted_max,
+                                                                      value=c(LUAD_BH_pvalues_adjusted_min,LUAD_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'LUSC'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=LUSC_BH_pvalues_adjusted_min, 
+                                                                      max=LUSC_BH_pvalues_adjusted_max,
+                                                                      value=c(LUSC_BH_pvalues_adjusted_min,LUSC_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'MESO'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=MESO_BH_pvalues_adjusted_min, 
+                                                                      max=MESO_BH_pvalues_adjusted_max,
+                                                                      value=c(MESO_BH_pvalues_adjusted_min,MESO_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'OV'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=OV_BH_pvalues_adjusted_min, 
+                                                                      max=OV_BH_pvalues_adjusted_max,
+                                                                      value=c(OV_BH_pvalues_adjusted_min,OV_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'PAAD'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=PAAD_BH_pvalues_adjusted_min, 
+                                                                      max=PAAD_BH_pvalues_adjusted_max,
+                                                                      value=c(PAAD_BH_pvalues_adjusted_min,PAAD_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'PCPG'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=PCPG_BH_pvalues_adjusted_min, 
+                                                                      max=PCPG_BH_pvalues_adjusted_max,
+                                                                      value=c(PCPG_BH_pvalues_adjusted_min,PCPG_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'PRAD'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=PRAD_BH_pvalues_adjusted_min, 
+                                                                      max=PRAD_BH_pvalues_adjusted_max,
+                                                                      value=c(PRAD_BH_pvalues_adjusted_min,PRAD_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'READ'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=READ_BH_pvalues_adjusted_min, 
+                                                                      max=READ_BH_pvalues_adjusted_max,
+                                                                      value=c(READ_BH_pvalues_adjusted_min,READ_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'SARC'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=SARC_BH_pvalues_adjusted_min, 
+                                                                      max=SARC_BH_pvalues_adjusted_max,
+                                                                      value=c(SARC_BH_pvalues_adjusted_min,SARC_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'SKCM'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=SKCM_BH_pvalues_adjusted_min, 
+                                                                      max=SKCM_BH_pvalues_adjusted_max,
+                                                                      value=c(SKCM_BH_pvalues_adjusted_min,SKCM_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'STAD'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=STAD_BH_pvalues_adjusted_min, 
+                                                                      max=STAD_BH_pvalues_adjusted_max,
+                                                                      value=c(STAD_BH_pvalues_adjusted_min,STAD_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'TGCT'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=TGCT_BH_pvalues_adjusted_min, 
+                                                                      max=TGCT_BH_pvalues_adjusted_max,
+                                                                      value=c(TGCT_BH_pvalues_adjusted_min,TGCT_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'THCA'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=THCA_BH_pvalues_adjusted_min, 
+                                                                      max=THCA_BH_pvalues_adjusted_max,
+                                                                      value=c(THCA_BH_pvalues_adjusted_min,THCA_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'THYM'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=THYM_BH_pvalues_adjusted_min, 
+                                                                      max=THYM_BH_pvalues_adjusted_max,
+                                                                      value=c(THYM_BH_pvalues_adjusted_min,THYM_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'UCEC'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=UCEC_BH_pvalues_adjusted_min, 
+                                                                      max=UCEC_BH_pvalues_adjusted_max,
+                                                                      value=c(UCEC_BH_pvalues_adjusted_min,UCEC_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'UCS'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=UCS_BH_pvalues_adjusted_min, 
+                                                                      max=UCS_BH_pvalues_adjusted_max,
+                                                                      value=c(UCS_BH_pvalues_adjusted_min,UCS_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'UVM'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=UVM_BH_pvalues_adjusted_min, 
+                                                                      max=UVM_BH_pvalues_adjusted_max,
+                                                                      value=c(UVM_BH_pvalues_adjusted_min,UVM_BH_pvalues_adjusted_max))),
+                                         
+                                         hr(),
+                                         checkboxGroupInput(inputId = "filter_BH_rejected",
+                                                            label = " ",
+                                                            choiceNames = c("Filter out BH not rejected?"),
+                                                            choiceValues = c("True")
+                                                            ),
+                                         
+                                         hr(),
                                          checkboxGroupInput(inputId = "is_mrna_tf",
                                                             label = "Is mRNA TF?",
                                                             choiceNames = c("mRNA is TF", "mRNA is not TF"),
@@ -545,7 +916,11 @@ ui <- fluidPage(
                                             tabPanel("Table", br(),
                                                      DT::dataTableOutput("table", height = "800px")),
                                             
-                                            tabPanel("Network", shinycustomloader::withLoader(visNetworkOutput("vNetwork", height = "100vh"),type = "html",loader="loader3"))
+                                            tabPanel("Network", shinycustomloader::withLoader(visNetworkOutput("vNetwork", height = "100vh"),type = "html",loader="loader3"),
+                                                     div(align = "right", downloadButton("downloadNodeTable", "Download Node Table"),
+                                                         downloadButton("downloadEdgeTable", "Download Edge Table")),
+                                                     br(),
+                                                     br())
                                 )
                             )
                         )
@@ -556,17 +931,15 @@ ui <- fluidPage(
                         sidebarLayout(
                             sidebarPanel(
                                 
-                                # checkboxGroupInput(inputId = "CommonCancer", 
-                                #                    label = "Select Cancer Names",
-                                #                    choices = cancerNames,
-                                #                    selected=cancerNames),
                                 pickerInput(inputId = "CommonTripletCancer", label = "Select Cancer Names",choices = cancerNames, selected=cancerNames, multiple = TRUE),
                                 hr(),
                                 selectizeInput("mrnaCommonTriplet", "mRNA Filter", choices=unique(mrnaFilterCommonTriplets$name), multiple=TRUE),
                                 br(),
                                 selectizeInput("mirnaCommonTriplet", "miRNA Filter", choices=unique(mirnaFilterCommonTriplets$name), multiple=TRUE),
                                 hr(),
-                                br()
+                                br(),
+                                downloadButton("downloadCommonTripletsData", "Download")
+                                
                                 
                               
                                 
@@ -577,7 +950,13 @@ ui <- fluidPage(
                                 tabsetPanel(type = "tabs",
                                             tabPanel("Table", br(),
                                                      DT::dataTableOutput("tableCommonTriplet")),
-                                            tabPanel("Network", shinycustomloader::withLoader(visNetworkOutput("commonTripletNetwork", height = "100vh"),type = "html",loader="loader3"))
+                                            tabPanel("Network", shinycustomloader::withLoader(visNetworkOutput("commonTripletNetwork", height = "100vh"),type = "html",loader="loader3"),
+                                                     br(),
+                                                     div(align = "right",downloadButton("downloadNodeTableCommonTriplet", "Download Node Table"),
+                                                         downloadButton("downloadEdgeTableCommonTriplet", "Download Edge Table")),
+                                                     br(),
+                                                     br()
+                                            )
                                 )
                             )
                             
@@ -596,10 +975,16 @@ ui <- fluidPage(
                             hr(),
                             selectizeInput("mirnaCommonMirnaPair", "miRNA Filter", choices=mirnaListCommonMirnaPairs, multiple=TRUE),
                             hr(),
-                            pickerInput(inputId = "CommonMirnaPairCancerCount", label = "Filter with Count",choices = c(1,2,3,4,5,6,7,8), selected=c(1,2,3,4,5,6,7,8), multiple = TRUE),
+                            pickerInput(inputId = "CommonMirnaPairCancerCount", label = "Select with Count Above:",choices = c(1,2,3,4,5,6,7), selected=c(1), multiple = FALSE),
+                            # checkboxGroupInput(inputId = "CommonMirnaPairCancerCount",
+                            #                    label = "Filter with Count",
+                            #                    choiceNames = c("Above 3","Above 4","Above 5","Above 6", "Above 7","Above 8"),
+                            #                    choiceValues = c("Above3","Above4","Above5","Above6", "Above7","Above8"),
+                            #                    selected = c("Above3","Above4","Above5","Above6", "Above7","Above8")),
+                            #numericInput("CommonMirnaPairCancerCount2", "Select with Count Above:", 2, min = 2, max = 8, step = 1),
                             br(),
-                            br()
-                            
+                            br(),
+                            downloadButton("downloadCommonMirnaPairsData", "Download")
                             
                           ),
                           
@@ -607,7 +992,12 @@ ui <- fluidPage(
                             useShinyalert(),
                             tabsetPanel(type = "tabs",
                                         tabPanel("Common miRNA Pair Table", DT::dataTableOutput("tableCommonmiRNAPair")),
-                                        tabPanel("Network", shinycustomloader::withLoader(visNetworkOutput("commonMirnaNetwork", height = "100vh"),type = "html",loader="loader3"))
+                                        tabPanel("Network", shinycustomloader::withLoader(visNetworkOutput("commonMirnaNetwork", height = "100vh"),type = "html",loader="loader3"),
+                                                 br(),
+                                                 div(align = "right", downloadButton("downloadNodeTableCommonMirnaPair", "Download Node Table"),
+                                                     downloadButton("downloadEdgeTableCommonMirnaPair", "Download Edge Table")),
+                                                 br(),
+                                                 br())
                                         
                                         
                             )
@@ -637,15 +1027,7 @@ ui <- fluidPage(
                           tags$hr()
 
                         ),
-                        # tags$div(style="height:800px",
-                        #   tags$div(style="float: left; max-width:45vw; width:100%; margin-top:100px",
-                        #            shinycustomloader::withLoader(plotlyOutput("commonMrnaHeatmap",height=600),type = "html",loader="loader3")
-                        #            ),
-                        #   tags$div(style="float: right; max-width:45vw; width:100%;",
-                        #            shinycustomloader::withLoader(plotlyOutput("commonMirnaHeatmap",height=800),type = "html",loader="loader3")
-                        #            )
-                        # 
-                        # ),
+
                         tags$br(),
                         tags$div(
                           tags$div(style="float: left; width:100%; height:auto; max-width:45vw; margin-bottom:15px; margin-top:15px",
@@ -809,91 +1191,113 @@ server <- function(input, output, session) {
         updateSelectizeInput(session,"mrnaFilter",choices = unique(datasetInput()$hgnc_symbol))
     })
     
+    
     observeEvent(input$dataset,{
         mirnaList <- stringr::str_replace(union_all(datasetInput()$mirna1,datasetInput()$mirna2),"mir","miR")
         updateSelectizeInput(session,"mirnaFilter",choices = unique(mirnaList))
     })
     
     
-    datasetInput2 <- reactive({
     
+
+    datasetFinal <- reactive({
+        
         mirnaFilter <- NULL
         mrnaFilter <- NULL
         TFFilter <- NULL
-        if(nrow(datasetInput()) >0 & !is.null(datasetInput())){
-          if(length(input$mirnaFilter) == 0 & length(input$mrnaFilter) == 0 ){
-            concated <- datasetInput()
-          }
-          
-          if(length(input$mrnaFilter) > 0){
-            mrnaFilter <- filter(datasetInput(),hgnc_symbol %in% input$mrnaFilter)
-          }
-          
-          if(length(input$mirnaFilter) >0){
-            mirnaFilter <- filter(datasetInput(), mirna1 %in% tolower(input$mirnaFilter) | mirna2 %in% tolower(input$mirnaFilter))
-          }
-          
-          if(length(input$mirnaFilter) != 0 || length(input$mrnaFilter) != 0){
-            concated <- distinct(rbind(mrnaFilter, mirnaFilter))
-          }
-          
+        
+        dataset <- datasetInput()
+        
+        if(length(nrow(dataset)) >0 & !is.null(dataset)){
+            if(length(input$mirnaFilter) == 0 & length(input$mrnaFilter) == 0 ){
+                concated <- datasetInput()
+            }
+            
+            if(length(input$mrnaFilter) > 0){
+
+                mrnaFilter <- filter(datasetInput(),hgnc_symbol %in% input$mrnaFilter)
+            }
+            
+            if(length(input$mirnaFilter) >0){
+                mirnaFilter <- filter(datasetInput(), mirna1 %in% tolower(input$mirnaFilter) | mirna2 %in% tolower(input$mirnaFilter))
+            }
+            
+            if(length(input$mirnaFilter) != 0 || length(input$mrnaFilter) != 0){
+                concated <- distinct(rbind(mrnaFilter, mirnaFilter))
+            }
+            
         }
         
-        return (concated)
-      
-    })
-    
-    datasetInput3 <- reactive({
-      
-        minLanc = min(datasetInput2()$Lancaster_XY_Z)
-        maxLanc = max(datasetInput2()$Lancaster_XY_Z)
-      
-        dataset <- datasetInput2()
+        dataset1 <- concated
         
-        # filteredWithTests <-filter(datasetInput2(),
-        #                            Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2]
-        # )
-        # 
-        #print(nrow(dataset))
-        
-        if(nrow(dataset >0) & !is.null(dataset)){
-          if(length(tolower(input$is_mrna_tf)) !=2){
-            dataset <- filter(datasetInput2(),tolower(is_mrna_tf) %in% tolower(input$is_mrna_tf))
-          }
-          
-          else{
-            dataset <- datasetInput2()
+        if(length(nrow(dataset1 >0)) & !is.null(dataset1)){
             
-          }
-          
+            if(length(tolower(input$is_mrna_tf)) !=2){
+                dataset1 <- filter(concated,tolower(is_mrna_tf) %in% tolower(input$is_mrna_tf))
+                if(nrow(dataset1) == 0){
+                    dataset1 <- NULL
+                    
+                }
+            }
+
+            else{
+                dataset1 <- concated
+
+            }
+
         }
         else{
-          dataset <- NULL
+            dataset1 <- NULL
         }
 
-       
-        return (dataset)
+        if(length(nrow(dataset1))>0 & !is.null(dataset1)){
+            filteredWithTests <-filter(dataset1,
+                                       Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2])
+            if(nrow(filteredWithTests) == 0){
+                filteredWithTests <- NULL
+            }
+
+        }
+        else{
+            filteredWithTests <- NULL
+        }
+
+        if(length(nrow(filteredWithTests))>0 & !is.null(filteredWithTests)){
+            filteredWithBH_value <-filter(filteredWithTests,
+                                          BH_pvalues_adjusted >=input$BH_pvalue_adjusted[1], BH_pvalues_adjusted <=input$BH_pvalue_adjusted[2])
+            if(nrow(filteredWithBH_value) == 0){
+                filteredWithBH_value <- NULL
+                
+            }
+
+        }
+        else{
+            filteredWithBH_value <- NULL
+        }
         
 
-      
+        if(length(nrow(filteredWithBH_value >0)) & !is.null(filteredWithBH_value)){
+
+            if(length(tolower(input$filter_BH_rejected)) ==1){
+                filteredWithBH_rejected <- filter(filteredWithBH_value,tolower(BH_rejected) %in% tolower(input$filter_BH_rejected))
+
+                if(nrow(filteredWithBH_rejected) == 0){
+                    filteredWithBH_rejected <- NULL
+                }
+            }
+            else{
+                filteredWithBH_rejected <- filteredWithBH_value
+            }
+
+        }
+        else{
+            filteredWithBH_rejected <- NULL
+        }
+        
+        return (filteredWithBH_rejected)
+        
     })
     
-    datasetInput4<- reactive({
-      
-      dataset <- datasetInput3()
-      
-      if(nrow(dataset)>0 & !is.null(dataset)){
-        filteredWithTests <-filter(dataset,
-                                   Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2]
-        )
-        
-      }
-      else{
-        filteredWithTests <- NULL
-      }
-      return(filteredWithTests)
-      
-    })
     
     true_false_formatter <-
       formatter("span",
@@ -914,16 +1318,17 @@ server <- function(input, output, session) {
     
     
     DatasetRoundDigits <-reactive({
-      
-        dataset <-datasetInput4()
         
-        if(!is.null(dataset) & nrow(dataset) >0){
+        dataset <-datasetFinal()
+        
+        
+        if(!is.null(dataset) & length(nrow(dataset)) >0){
           dataset$mirna1 <- stringr::str_remove(dataset$mirna1, "hsa-")
           dataset$mirna2 <- stringr::str_remove(dataset$mirna2, "hsa-")
           dataset$mirna1 <- stringr::str_replace(dataset$mirna1,"mir","miR")
           dataset$mirna2 <- stringr::str_replace(dataset$mirna2,"mir","miR")
-          # dataset <- dataset %>%
-          #   dplyr::mutate(across(where(is.numeric),round,3))
+          dataset <- dataset %>%
+            dplyr::mutate(across(where(is.numeric),round,4))
           
         }
         else{
@@ -939,12 +1344,11 @@ server <- function(input, output, session) {
     
     
 output$table <- DT::renderDataTable({
+  #print(!is.null(DatasetRoundDigits()))
+  #print(nrow(DatasetRoundDigits()) >0)
+  #print(!is.null(DatasetRoundDigits()) & nrow(DatasetRoundDigits()) >0)
   
-  print(!is.null(DatasetRoundDigits()))
-  print(nrow(DatasetRoundDigits()) >0)
-  
-  if(!is.null(DatasetRoundDigits()) & nrow(DatasetRoundDigits()) >0){
-    print("GİRDİ")
+  if(!is.null(DatasetRoundDigits()) & length(nrow(DatasetRoundDigits())) >0){
     DT1 <- DatasetRoundDigits()
     DT <- cbind(DT1,
                 button = sapply(1:nrow(DT1), button("table")),
@@ -958,10 +1362,10 @@ output$table <- DT::renderDataTable({
     
     
     
-    hideList1 <- c(7,8,9,10,11,12,13)
+    hideList1 <- c(7,8,9,10,11)
     hideList2 <- c(7,8,9,10,11,12,13,14,15,16,17)
     hideList3 <- c(7,8,9,10,11,12,13)
-    hideList4 <- c(7,8,9)
+    hideList4 <- c(7,8,9,10)
     hideList5 <-c(7,8,9,10,11,12,13,14,15)
     
     ifelse(input$dataset=="ACC" || input$dataset=="DLBC" || input$dataset=="LGG" || input$dataset=="MESO" || input$dataset=="OV" || input$dataset=="UCS" || input$dataset=="UVM", columnHideList <-hideList1,
@@ -1044,10 +1448,10 @@ output$table <- DT::renderDataTable({
     
 
     nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,"BH_rejected","BH_pvalues_adjusted", "miRNA-mRNA Expressions")
-    nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"miRNA-mRNA Expressions")
-    nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,mRNApvalue,mRNALogFC,"miRNA-mRNA Expressions" )
-    nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, "miRNA-mRNA Expressions")
-    nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"miRNA-mRNA Expressions")
+    nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"BH_rejected","BH_pvalues_adjusted","miRNA-mRNA Expressions")
+    nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,mRNApvalue,mRNALogFC,"BH_rejected","BH_pvalues_adjusted","miRNA-mRNA Expressions" )
+    nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase,"BH_rejected","BH_pvalues_adjusted", "miRNA-mRNA Expressions")
+    nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"BH_rejected","BH_pvalues_adjusted","miRNA-mRNA Expressions")
 
     # nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", "tripletvalue","is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase","miRNA-mRNA Expressions")
     # nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", "tripletvalue", " is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase", "miRNA1pvalue", "miRNA1LogFC", "miRNA2pvalue", "miRNA2LogFC", "mRNApvalue", "mRNALogFC","miRNA-mRNA Expressions")
@@ -1124,9 +1528,9 @@ output$table <- DT::renderDataTable({
     
   }
   else{
-    dataset <- datatable(data.frame(Nachricht = "Die ausgewählte Schnittstelle enthält hierfür keine Daten."))
-    DT::datatable(dataset,escape = F, fillContainer = TRUE
-    )
+    #dataset <- datatable(data.frame(Nachricht = "Die ausgewählte Schnittstelle enthält hierfür keine Daten."))
+    #DT::datatable(dataset,escape = F, fillContainer = TRUE)
+    NULL
   }
 
       
@@ -1486,7 +1890,7 @@ nodeAttributeInput <- reactive({
     
 })
 
-output$vNetwork <- renderVisNetwork({
+cancerSpecificNetworkNodeEdge <- reactive({
   
   if(!is.null(DatasetRoundDigits())){
     combmi1mi2mrna <- unique(c(gsub("hsa-", "",tolower(DatasetRoundDigits()$mirna1)),gsub("hsa-", "",tolower(DatasetRoundDigits()$mirna2)),DatasetRoundDigits()$hgnc_symbol))
@@ -1515,9 +1919,54 @@ output$vNetwork <- renderVisNetwork({
     forNodeName[grepl("/",forNodeName)] <- " "
     intersectionSharedName <- intersect(filter(nodeAttributeInput(),stringr::str_detect(nodeAttributeInput()$shared.name,networkFilteringList))$shared.name,forNodeSharedName)
     
-
     nodes <- data.frame(id=intersectionSharedName, label=filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$name)
     edges <- data.frame(from= concatedUnique$source , to=concatedUnique$target)
+    
+    node_edge_list <- list("nodes" = nodes, "edges" = edges, "intersectionSharedName"  = intersectionSharedName)
+    
+    
+  }
+  return(node_edge_list)
+  
+})
+
+output$vNetwork <- renderVisNetwork({
+  
+  if(!is.null(DatasetRoundDigits())){
+    # combmi1mi2mrna <- unique(c(gsub("hsa-", "",tolower(DatasetRoundDigits()$mirna1)),gsub("hsa-", "",tolower(DatasetRoundDigits()$mirna2)),DatasetRoundDigits()$hgnc_symbol))
+    # orListForNetworkFiltering <- rep("|",length(combmi1mi2mrna))
+    # networkFilteringList <- paste(c(rbind(orListForNetworkFiltering, matrix(combmi1mi2mrna,ncol = length(orListForNetworkFiltering)))[-1]),collapse = '')
+    # sourceTargetFiltering <- paste(gsub("hsa-", "",tolower(DatasetRoundDigits()$mirna1)),gsub("hsa-", "",tolower(DatasetRoundDigits()$mirna2)),DatasetRoundDigits()$hgnc_symbol)
+    # 
+    # splittedSourceTargetFiltering <- strsplit(sourceTargetFiltering,split = " ")
+    # splittedSourceTargetFilteringMRNA <- sapply(splittedSourceTargetFiltering,'[',3)
+    # splittedSourceTargetFilteringMIRNA1 <- sapply(splittedSourceTargetFiltering,'[',1)
+    # splittedSourceTargetFilteringMIRNA2 <- sapply(splittedSourceTargetFiltering,'[',2)
+    # splittedSourceTargetFilteringDUMMY1_2 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA1,"/",splittedSourceTargetFilteringMIRNA2))
+    # splittedSourceTargetFilteringDUMMY2_1 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA2,"/",splittedSourceTargetFilteringMIRNA1))
+    # 
+    # for (i in 1:nrow(DatasetRoundDigits())){
+    #   concated <- rbind(concated, filter(sourceTargetInput(), ((tolower(sourceTargetInput()$source)==tolower(splittedSourceTargetFilteringMIRNA1[i]) & (tolower(sourceTargetInput()$target) == tolower(splittedSourceTargetFilteringDUMMY1_2[i]) |tolower(sourceTargetInput()$target) == tolower(splittedSourceTargetFilteringDUMMY2_1[i]) ))|
+    #                                                              (tolower(sourceTargetInput()$source)==tolower(splittedSourceTargetFilteringMIRNA2[i]) & (tolower(sourceTargetInput()$target) == tolower(splittedSourceTargetFilteringDUMMY1_2[i]) | tolower(sourceTargetInput()$target) == tolower(splittedSourceTargetFilteringDUMMY2_1[i])))|
+    #                                                              ((tolower(sourceTargetInput()$source)==tolower(splittedSourceTargetFilteringDUMMY1_2[i])| tolower(sourceTargetInput()$source)==tolower(splittedSourceTargetFilteringDUMMY2_1[i])) & tolower(sourceTargetInput()$target) == tolower(splittedSourceTargetFilteringMRNA[i]))
+    #   )))
+    #   
+    # }
+    # 
+    # concatedUnique <- unique(concated[,c("source","target")])
+    # forNodeSharedName <- unique(c(concated$source,concated$target))
+    # forNodeName <- forNodeSharedName
+    # forNodeName[grepl("/",forNodeName)] <- " "
+    # intersectionSharedName <- intersect(filter(nodeAttributeInput(),stringr::str_detect(nodeAttributeInput()$shared.name,networkFilteringList))$shared.name,forNodeSharedName)
+    # 
+
+    #nodes <- data.frame(id=intersectionSharedName, label=filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$name)
+    #edges <- data.frame(from= concatedUnique$source , to=concatedUnique$target)
+    
+    nodes <- cancerSpecificNetworkNodeEdge()$nodes
+    edges <- cancerSpecificNetworkNodeEdge()$edges
+    intersectionSharedName <- cancerSpecificNetworkNodeEdge()$intersectionSharedName
+    
     
     nodes$size <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna",25,ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="dummy",3,20))
     edges$color <- "rgb(153,153,153)"
@@ -1591,7 +2040,9 @@ output$vNetwork <- renderVisNetwork({
                            color.border=c("rgb(153,153,153)", "rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)")
       )
       visNetwork(nodes, edges) %>%
-        visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 120,useGroups = F)%>%visIgraphLayout()
+        visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 120,useGroups = F)%>%
+        visIgraphLayout()%>%
+        visNodes(font = list(color="black", size=40, face="Ubuntu"))
     }
     
   }
@@ -1599,9 +2050,45 @@ output$vNetwork <- renderVisNetwork({
     
     
 })
-##################################################################################################
 
-output$commonTripletNetwork <- renderVisNetwork({
+##################################################################################################    
+
+commonMirnaNetworkNodeEdge <- reactive({
+  if(!is.null(commonMirnaPairFilter()) || nrow(commonMirnaPairFilter()) >0){
+    networkFilteringSplit <- unique(unlist(strsplit(commonMirnaPairFilter()$miRNAPair, split = "/")))
+    orListForNetworkFilteringSplit<- rep("|",length(networkFilteringSplit))
+    networkFilteringList <- paste(c(rbind(orListForNetworkFilteringSplit, matrix(networkFilteringSplit,ncol = length(orListForNetworkFilteringSplit)))[-1]),collapse = '')
+    
+    
+    splittedMrnaFilteredSource <- strsplit(commonMirnaPairFilter()$miRNAPair, split = "/")
+    splittedSourceTargetFilteringMIRNA1 <- sapply(splittedMrnaFilteredSource,'[',1)
+    splittedSourceTargetFilteringMIRNA2 <- sapply(splittedMrnaFilteredSource,'[',2)
+    
+    
+    for (i in 1:nrow(commonMirnaPairFilter())){
+      concated <- rbind(concated, filter(commonMirnaPair_source_target, ((commonMirnaPair_source_target$source==splittedSourceTargetFilteringMIRNA1[i] & commonMirnaPair_source_target$target==splittedSourceTargetFilteringMIRNA2[i] )|
+                                                                           (commonMirnaPair_source_target$source==splittedSourceTargetFilteringMIRNA2[i] & commonMirnaPair_source_target$target==splittedSourceTargetFilteringMIRNA1[i] )
+                                                                         
+      )))
+      
+    }
+    
+    concatedUnique <- unique(concated[,c("source","target","CancerTypes")])
+    forNodeSharedName <- unique(c(concated$source,concated$target))
+    intersectionSharedName <- intersect(filter(commonMirnaPairs_node_attr,stringr::str_detect(commonMirnaPairs_node_attr$shared_name,networkFilteringList))$shared_name,forNodeSharedName)
+    
+    nodes <- data.frame(id=forNodeSharedName, label=forNodeSharedName)
+    
+    edges <- data.frame(from = concatedUnique$source , to = concatedUnique$target, label = concatedUnique$CancerTypes)
+    
+    node_edge_list <- list("nodes" = nodes, "edges" = edges)
+
+  }
+  return(node_edge_list)
+
+})
+
+commonTripletNetworkNodeEdge <- reactive({
   
   if(!is.null(commonTripletFilter()) || nrow(commonTripletFilter()) >0){
     networkFilteringSplit <- unique(unlist(strsplit(commonTripletFilter()$Triplet, split = "/")))
@@ -1636,6 +2123,20 @@ output$commonTripletNetwork <- renderVisNetwork({
     nodes <- data.frame(id=intersectionSharedName, label=filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$visname)
     edges <- data.frame(from = concatedUnique$source , to = concatedUnique$target, label = concatedUnique$whichcancer )
     
+    node_edge_list <- list("nodes" = nodes, "edges" = edges, "intersectionSharedName"  = intersectionSharedName)
+  }
+  return(node_edge_list) 
+})
+
+
+##################################################################################################
+
+output$commonTripletNetwork <- renderVisNetwork({
+  
+    nodes <- commonTripletNetworkNodeEdge()$nodes
+    edges <- commonTripletNetworkNodeEdge()$edges
+    intersectionSharedName <- commonTripletNetworkNodeEdge()$intersectionSharedName
+    
     
     nodes$shape <- ifelse(tolower(filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$info)=="mrna","diamond",
                           ifelse(tolower(filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$info)=="mirna","dot",
@@ -1654,65 +2155,26 @@ output$commonTripletNetwork <- renderVisNetwork({
 
     visNetwork(nodes, edges)%>%
       visIgraphLayout()%>% 
-      visExport(type = "pdf", name = "export-network",
-                                    float = "left", label = "Save network", background = "white", style= "")%>% 
       visEdges(font = list(align="horizontal", color="black", size=30, face="Ubuntu"))%>%
       visNodes(font = list(color="black", size=40, face="Ubuntu"))
-    
-  }
-  else{
-    NULL
-  }
-  
-  
-  
 })
 
 
 output$commonMirnaNetwork <- renderVisNetwork({
   
-  
-  if(!is.null(commonMirnaPairFilter()) || nrow(commonMirnaPairFilter()) >0){
-    networkFilteringSplit <- unique(unlist(strsplit(commonMirnaPairFilter()$miRNAPair, split = "/")))
-    orListForNetworkFilteringSplit<- rep("|",length(networkFilteringSplit))
-    networkFilteringList <- paste(c(rbind(orListForNetworkFilteringSplit, matrix(networkFilteringSplit,ncol = length(orListForNetworkFilteringSplit)))[-1]),collapse = '')
-    
-    
-    splittedMrnaFilteredSource <- strsplit(commonMirnaPairFilter()$miRNAPair, split = "/")
-    splittedSourceTargetFilteringMIRNA1 <- sapply(splittedMrnaFilteredSource,'[',1)
-    splittedSourceTargetFilteringMIRNA2 <- sapply(splittedMrnaFilteredSource,'[',2)
-
-    
-    for (i in 1:nrow(commonMirnaPairFilter())){
-      concated <- rbind(concated, filter(commonMirnaPair_source_target, ((commonMirnaPair_source_target$source==splittedSourceTargetFilteringMIRNA1[i] & commonMirnaPair_source_target$target==splittedSourceTargetFilteringMIRNA2[i] )|
-                                                                           (commonMirnaPair_source_target$source==splittedSourceTargetFilteringMIRNA2[i] & commonMirnaPair_source_target$target==splittedSourceTargetFilteringMIRNA1[i] )
-                                                                         
-      )))
-      
-    }
-    
-    concatedUnique <- unique(concated[,c("source","target","CancerTypes")])
-    forNodeSharedName <- unique(c(concated$source,concated$target))
-    intersectionSharedName <- intersect(filter(commonMirnaPairs_node_attr,stringr::str_detect(commonMirnaPairs_node_attr$shared_name,networkFilteringList))$shared_name,forNodeSharedName)
-    
-    print(concatedUnique)
-    
-    nodes <- data.frame(id=forNodeSharedName, label=forNodeSharedName)
-    
-    edges <- data.frame(from = concatedUnique$source , to = concatedUnique$target, label = concatedUnique$CancerTypes )
-    
-    
-  
+  nodes <- commonMirnaNetworkNodeEdge()$nodes
+  edges <- commonMirnaNetworkNodeEdge()$edges
   nodes$shape <- "dot"
-  nodes$size <- 15
+  nodes$size <- 20
   nodes$color.background <- "rgb(153,153,153)"
   nodes$color.border <- "rgb(153,153,153)"
   
   edges$color <- "rgb(153,153,153)"
-  edges$length <- 10
+  edges$length <- 15
   visNetwork(nodes, edges)%>%
-    visIgraphLayout() 
-  }
+    visIgraphLayout() %>% visEdges(font = list(align="horizontal", color="black", size=20, face="Ubuntu"))%>%
+    visNodes(font = list(color="black", size=30, face="Ubuntu"))
+
   
 })
 
@@ -1762,9 +2224,9 @@ commonTripletFilter <- reactive({
   
 })
 
+
 commonMirnaPairFilter <- reactive({
   dataset <-MirnaPairsInWhichCancerWCount
-  
   
   if(length(input$mirnaCommonMirnaPair) >0){
     orListForMirna <- rep("|",length(input$mirnaCommonMirnaPair))
@@ -1792,10 +2254,44 @@ commonMirnaPairFilter <- reactive({
   }
   
   if(nrow(filteredWithCancer) >0 & !is.null(filteredWithCancer)){
-   orListForCommonMirnaPairCancerCount <- rep("|",length(input$CommonMirnaPairCancerCount))
-   countListForCommonTripletAndPair <- paste(c(rbind(orListForCommonMirnaPairCancerCount, matrix(input$CommonMirnaPairCancerCount,ncol = length(orListForCommonMirnaPairCancerCount)))[-1]),collapse = '')
-   filteredWithCount <- filteredWithMirna%>%
-     filter(stringr::str_detect(Count,countListForCommonTripletAndPair))
+    
+    #CommonMirnaPairCancerCountSub <- substring(input$CommonMirnaPairCancerCount,6,6)
+    
+
+    
+    #orListForCommonMirnaPairCancerCount <- rep("|",length(CommonMirnaPairCancerCountSub))
+    #countListForCommonTripletAndPair <- paste(c(rbind(orListForCommonMirnaPairCancerCount, matrix(CommonMirnaPairCancerCountSub,ncol = length(orListForCommonMirnaPairCancerCount)))[-1]),collapse = '')
+    
+    if(input$CommonMirnaPairCancerCount ==1){
+      count <- c(2,3,4,5,6,7,8)
+    }
+    if(input$CommonMirnaPairCancerCount ==2){
+      count <- c(3,4,5,6,7,8)
+    }
+    if(input$CommonMirnaPairCancerCount ==3){
+      count <- c(4,5,6,7,8)
+    }
+    if(input$CommonMirnaPairCancerCount ==4){
+      count <- c(5,6,7,8)
+    }
+    if(input$CommonMirnaPairCancerCount ==5){
+      count <- c(6,7,8)
+    }
+    if(input$CommonMirnaPairCancerCount ==6){
+      count <- c(7,8)
+    }
+    if(input$CommonMirnaPairCancerCount ==7){
+      count <- c(8)
+    }
+    
+    orListForCommonMirnaPairCancerCount <- rep("|",length(count))
+    countListForCommonTripletAndPair <- paste(c(rbind(orListForCommonMirnaPairCancerCount, matrix(count,ncol = length(orListForCommonMirnaPairCancerCount)))[-1]),collapse = '')
+    
+    #orListForCommonMirnaPairCancerCount <- rep("|",length(input$CommonMirnaPairCancerCount))
+    #countListForCommonTripletAndPair <- paste(c(rbind(orListForCommonMirnaPairCancerCount, matrix(input$CommonMirnaPairCancerCount,ncol = length(orListForCommonMirnaPairCancerCount)))[-1]),collapse = '')
+    
+    filteredWithCount <- filteredWithMirna%>%
+      filter(stringr::str_detect(Count,countListForCommonTripletAndPair))
     
   }
   else{
@@ -1803,6 +2299,7 @@ commonMirnaPairFilter <- reactive({
   }
   
 })
+
 
 
 output$tableCommonTriplet <- DT::renderDataTable({
@@ -1926,6 +2423,8 @@ output$commonMirnaHeatmap <- renderPlotly({
   
 })
 
+##################################################################################################    
+
 output$downloadData <- downloadHandler(
   filename = function() {
     paste(input$dataset, ".csv", sep = "")
@@ -1935,7 +2434,76 @@ output$downloadData <- downloadHandler(
   })
 
 
+output$downloadCommonTripletsData <- downloadHandler(
+  filename = function() {
+    paste("pan-cancer-triplet-data", ".csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(commonTripletFilter(), file, row.names = FALSE)
+  })
+
+output$downloadCommonMirnaPairsData <- downloadHandler(
+  filename = function() {
+    paste("pan-cancer-mirna-pair-data", ".csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(commonMirnaPairFilter(), file, row.names = FALSE)
+  })
+
+
+output$downloadNodeTable <- downloadHandler(
+  filename = function() {
+    paste("cancer-specific-triplet-node-data", ".csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(cancerSpecificNetworkNodeEdge()$nodes, file, row.names = FALSE)
+  })
+
+output$downloadEdgeTable <- downloadHandler(
+  filename = function() {
+    paste("cancer-specific-triplet-edge-data", ".csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(cancerSpecificNetworkNodeEdge()$edges, file, row.names = FALSE)
+  })
+
+
+output$downloadNodeTableCommonMirnaPair <- downloadHandler(
+  filename = function() {
+    paste("pan-cancer-mirna-pair-node-data", ".csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(commonMirnaNetworkNodeEdge()$nodes, file, row.names = FALSE)
+  })
+
+output$downloadEdgeTableCommonMirnaPair <- downloadHandler(
+  filename = function() {
+    paste("pan-cancer-mirna-pair-edge-data", ".csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(commonMirnaNetworkNodeEdge()$edges, file, row.names = FALSE)
+  })
+
+output$downloadNodeTableCommonTriplet <- downloadHandler(
+  filename = function() {
+    paste("pan-cancer-triplet-node-data", ".csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(commonTripletNetworkNodeEdge()$nodes, file, row.names = FALSE)
+  })
+
+output$downloadEdgeTableCommonTriplet <- downloadHandler(
+  filename = function() {
+    paste("pan-cancer-triplet-edge-data", ".csv", sep = "")
+  },
+  content = function(file) {
+    write.csv(commonTripletNetworkNodeEdge()$edges, file, row.names = FALSE)
+  })
+
+
 }
+
+
 ##################################################################################################    
 
 
