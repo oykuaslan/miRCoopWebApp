@@ -55,7 +55,10 @@ cancerNames <- c("ACC","BLCA","BRCA","CESC","CHOL","COAD","DLBC","ESCA","HNSC","
 ACC_allData <- read_csv("finalDTData/ACC.csv",show_col_types = FALSE)
 ACC_filtered <- ACC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
 ACCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/ACCWBenjaminiHochbergCorrection.csv")
-ACC <- sqldf::sqldf("SELECT ACC_filtered.*, BH_rejected, BH_pvalues_adjusted from ACC_filtered LEFT JOIN ACCWBenjaminiHochbergCorrection ON 
+# ACC <- sqldf::sqldf("SELECT ACC_filtered.*, BH_rejected, BH_pvalues_adjusted from ACC_filtered LEFT JOIN ACCWBenjaminiHochbergCorrection ON 
+#                           (ACC_filtered.entrezgene_id = ACCWBenjaminiHochbergCorrection.mrna AND ACC_filtered.mirna1 = ACCWBenjaminiHochbergCorrection.mirna1 AND ACC_filtered.mirna2 = ACCWBenjaminiHochbergCorrection.mirna2) 
+#                           OR (ACC_filtered.entrezgene_id = ACCWBenjaminiHochbergCorrection.mrna AND ACC_filtered.mirna1 = ACCWBenjaminiHochbergCorrection.mirna2 AND ACC_filtered.mirna2 = ACCWBenjaminiHochbergCorrection.mirna1)")
+ACC <- sqldf::sqldf("SELECT ACC_filtered.*, BH_pvalues_adjusted from ACC_filtered LEFT JOIN ACCWBenjaminiHochbergCorrection ON 
                           (ACC_filtered.entrezgene_id = ACCWBenjaminiHochbergCorrection.mrna AND ACC_filtered.mirna1 = ACCWBenjaminiHochbergCorrection.mirna1 AND ACC_filtered.mirna2 = ACCWBenjaminiHochbergCorrection.mirna2) 
                           OR (ACC_filtered.entrezgene_id = ACCWBenjaminiHochbergCorrection.mrna AND ACC_filtered.mirna1 = ACCWBenjaminiHochbergCorrection.mirna2 AND ACC_filtered.mirna2 = ACCWBenjaminiHochbergCorrection.mirna1)")
 
@@ -65,7 +68,7 @@ ACC_BH_pvalues_adjusted_max = max(ACC$BH_pvalues_adjusted)
 BLCA_allData <- read_csv("finalDTData/BLCA.csv",show_col_types = FALSE)
 BLCA_filtered <- BLCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 BLCAWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/BLCAWBenjaminiHochbergCorrection.csv")
-BLCA <- sqldf::sqldf("SELECT BLCA_filtered.*, BH_rejected, BH_pvalues_adjusted from BLCA_filtered LEFT JOIN BLCAWBenjaminiHochbergCorrection ON 
+BLCA <- sqldf::sqldf("SELECT BLCA_filtered.*, BH_pvalues_adjusted from BLCA_filtered LEFT JOIN BLCAWBenjaminiHochbergCorrection ON 
                           (BLCA_filtered.entrezgene_id = BLCAWBenjaminiHochbergCorrection.mrna AND BLCA_filtered.mirna1 = BLCAWBenjaminiHochbergCorrection.mirna1 AND BLCA_filtered.mirna2 = BLCAWBenjaminiHochbergCorrection.mirna2) 
                           OR (BLCA_filtered.entrezgene_id = BLCAWBenjaminiHochbergCorrection.mrna AND BLCA_filtered.mirna1 = BLCAWBenjaminiHochbergCorrection.mirna2 AND BLCA_filtered.mirna2 = BLCAWBenjaminiHochbergCorrection.mirna1)")
 
@@ -77,7 +80,7 @@ BLCA_BH_pvalues_adjusted_max = max(BLCA$BH_pvalues_adjusted)
 CESC_allData <- read_csv("finalDTData/CESC.csv",show_col_types = FALSE)
 CESC_filtered <- CESC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 CESCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/CESCWBenjaminiHochbergCorrection.csv")
-CESC <- sqldf::sqldf("SELECT CESC_filtered.*, BH_rejected, BH_pvalues_adjusted from CESC_filtered LEFT JOIN CESCWBenjaminiHochbergCorrection ON 
+CESC <- sqldf::sqldf("SELECT CESC_filtered.*,  BH_pvalues_adjusted from CESC_filtered LEFT JOIN CESCWBenjaminiHochbergCorrection ON 
                           (CESC_filtered.entrezgene_id = CESCWBenjaminiHochbergCorrection.mrna AND CESC_filtered.mirna1 = CESCWBenjaminiHochbergCorrection.mirna1 AND CESC_filtered.mirna2 = CESCWBenjaminiHochbergCorrection.mirna2) 
                           OR (CESC_filtered.entrezgene_id = CESCWBenjaminiHochbergCorrection.mrna AND CESC_filtered.mirna1 = CESCWBenjaminiHochbergCorrection.mirna2 AND CESC_filtered.mirna2 = CESCWBenjaminiHochbergCorrection.mirna1)")
 CESC_BH_pvalues_adjusted_min = min(CESC$BH_pvalues_adjusted)
@@ -86,7 +89,7 @@ CESC_BH_pvalues_adjusted_max = max(CESC$BH_pvalues_adjusted)
 CHOL_allData <- read_csv("finalDTData/CHOL.csv",show_col_types = FALSE)
 CHOL_filtered <- CHOL_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 CHOLWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/CHOLWBenjaminiHochbergCorrection.csv")
-CHOL <- sqldf::sqldf("SELECT CHOL_filtered.*, BH_rejected, BH_pvalues_adjusted from CHOL_filtered LEFT JOIN CHOLWBenjaminiHochbergCorrection ON 
+CHOL <- sqldf::sqldf("SELECT CHOL_filtered.*,  BH_pvalues_adjusted from CHOL_filtered LEFT JOIN CHOLWBenjaminiHochbergCorrection ON 
                           (CHOL_filtered.entrezgene_id = CHOLWBenjaminiHochbergCorrection.mrna AND CHOL_filtered.mirna1 = CHOLWBenjaminiHochbergCorrection.mirna1 AND CHOL_filtered.mirna2 = CHOLWBenjaminiHochbergCorrection.mirna2) 
                           OR (CHOL_filtered.entrezgene_id = CHOLWBenjaminiHochbergCorrection.mrna AND CHOL_filtered.mirna1 = CHOLWBenjaminiHochbergCorrection.mirna2 AND CHOL_filtered.mirna2 = CHOLWBenjaminiHochbergCorrection.mirna1)")
 CHOL_BH_pvalues_adjusted_min = min(CHOL$BH_pvalues_adjusted)
@@ -95,7 +98,7 @@ CHOL_BH_pvalues_adjusted_max = max(CHOL$BH_pvalues_adjusted)
 COAD_allData <- read_csv("finalDTData/COAD.csv",show_col_types = FALSE)
 COAD_filtered <- COAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC")]
 COADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/COADWBenjaminiHochbergCorrection.csv")
-COAD <- sqldf::sqldf("SELECT COAD_filtered.*, BH_rejected, BH_pvalues_adjusted from COAD_filtered LEFT JOIN COADWBenjaminiHochbergCorrection ON 
+COAD <- sqldf::sqldf("SELECT COAD_filtered.*, BH_pvalues_adjusted from COAD_filtered LEFT JOIN COADWBenjaminiHochbergCorrection ON 
                           (COAD_filtered.entrezgene_id = COADWBenjaminiHochbergCorrection.mrna AND COAD_filtered.mirna1 = COADWBenjaminiHochbergCorrection.mirna1 AND COAD_filtered.mirna2 = COADWBenjaminiHochbergCorrection.mirna2) 
                           OR (COAD_filtered.entrezgene_id = COADWBenjaminiHochbergCorrection.mrna AND COAD_filtered.mirna1 = COADWBenjaminiHochbergCorrection.mirna2 AND COAD_filtered.mirna2 = COADWBenjaminiHochbergCorrection.mirna1)")
 COAD_BH_pvalues_adjusted_min = min(COAD$BH_pvalues_adjusted)
@@ -104,7 +107,7 @@ COAD_BH_pvalues_adjusted_max = max(COAD$BH_pvalues_adjusted)
 DLBC_allData <- read_csv("finalDTData/DLBC.csv",show_col_types = FALSE)
 DLBC_filtered <- DLBC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
 DLBCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/DLBCWBenjaminiHochbergCorrection.csv")
-DLBC <- sqldf::sqldf("SELECT DLBC_filtered.*, BH_rejected, BH_pvalues_adjusted from DLBC_filtered LEFT JOIN DLBCWBenjaminiHochbergCorrection ON 
+DLBC <- sqldf::sqldf("SELECT DLBC_filtered.*,  BH_pvalues_adjusted from DLBC_filtered LEFT JOIN DLBCWBenjaminiHochbergCorrection ON 
                           (DLBC_filtered.entrezgene_id = DLBCWBenjaminiHochbergCorrection.mrna AND DLBC_filtered.mirna1 = DLBCWBenjaminiHochbergCorrection.mirna1 AND DLBC_filtered.mirna2 = DLBCWBenjaminiHochbergCorrection.mirna2) 
                           OR (DLBC_filtered.entrezgene_id = DLBCWBenjaminiHochbergCorrection.mrna AND DLBC_filtered.mirna1 = DLBCWBenjaminiHochbergCorrection.mirna2 AND DLBC_filtered.mirna2 = DLBCWBenjaminiHochbergCorrection.mirna1)")
 DLBC_BH_pvalues_adjusted_min = min(DLBC$BH_pvalues_adjusted)
@@ -113,7 +116,7 @@ DLBC_BH_pvalues_adjusted_max = max(DLBC$BH_pvalues_adjusted)
 ESCA_allData <- read_csv("finalDTData/ESCA.csv",show_col_types = FALSE)
 ESCA_filtered <- ESCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 ESCAWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/ESCAWBenjaminiHochbergCorrection.csv")
-ESCA <- sqldf::sqldf("SELECT ESCA_filtered.*, BH_rejected, BH_pvalues_adjusted from ESCA_filtered LEFT JOIN ESCAWBenjaminiHochbergCorrection ON 
+ESCA <- sqldf::sqldf("SELECT ESCA_filtered.*,  BH_pvalues_adjusted from ESCA_filtered LEFT JOIN ESCAWBenjaminiHochbergCorrection ON 
                           (ESCA_filtered.entrezgene_id = ESCAWBenjaminiHochbergCorrection.mrna AND ESCA_filtered.mirna1 = ESCAWBenjaminiHochbergCorrection.mirna1 AND ESCA_filtered.mirna2 = ESCAWBenjaminiHochbergCorrection.mirna2) 
                           OR (ESCA_filtered.entrezgene_id = ESCAWBenjaminiHochbergCorrection.mrna AND ESCA_filtered.mirna1 = ESCAWBenjaminiHochbergCorrection.mirna2 AND ESCA_filtered.mirna2 = ESCAWBenjaminiHochbergCorrection.mirna1)")
 ESCA_BH_pvalues_adjusted_min = min(ESCA$BH_pvalues_adjusted)
@@ -122,7 +125,7 @@ ESCA_BH_pvalues_adjusted_max = max(ESCA$BH_pvalues_adjusted)
 HNSC_allData <- read_csv("finalDTData/HNSC.csv",show_col_types = FALSE)
 HNSC_filtered <- HNSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 HNSCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/HNSCWBenjaminiHochbergCorrection.csv")
-HNSC <- sqldf::sqldf("SELECT HNSC_filtered.*, BH_rejected, BH_pvalues_adjusted from HNSC_filtered LEFT JOIN HNSCWBenjaminiHochbergCorrection ON 
+HNSC <- sqldf::sqldf("SELECT HNSC_filtered.*,  BH_pvalues_adjusted from HNSC_filtered LEFT JOIN HNSCWBenjaminiHochbergCorrection ON 
                           (HNSC_filtered.entrezgene_id = HNSCWBenjaminiHochbergCorrection.mrna AND HNSC_filtered.mirna1 = HNSCWBenjaminiHochbergCorrection.mirna1 AND HNSC_filtered.mirna2 = HNSCWBenjaminiHochbergCorrection.mirna2) 
                           OR (HNSC_filtered.entrezgene_id = HNSCWBenjaminiHochbergCorrection.mrna AND HNSC_filtered.mirna1 = HNSCWBenjaminiHochbergCorrection.mirna2 AND HNSC_filtered.mirna2 = HNSCWBenjaminiHochbergCorrection.mirna1)")
 HNSC_BH_pvalues_adjusted_min = min(HNSC$BH_pvalues_adjusted)
@@ -131,7 +134,7 @@ HNSC_BH_pvalues_adjusted_max = max(HNSC$BH_pvalues_adjusted)
 KICH_allData <- read_csv("finalDTData/KICH.csv",show_col_types = FALSE)
 KICH_filtered <- KICH_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 KICHWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/KICHWBenjaminiHochbergCorrection.csv")
-KICH <- sqldf::sqldf("SELECT KICH_filtered.*, BH_rejected, BH_pvalues_adjusted from KICH_filtered LEFT JOIN KICHWBenjaminiHochbergCorrection ON 
+KICH <- sqldf::sqldf("SELECT KICH_filtered.*,  BH_pvalues_adjusted from KICH_filtered LEFT JOIN KICHWBenjaminiHochbergCorrection ON 
                           (KICH_filtered.entrezgene_id = KICHWBenjaminiHochbergCorrection.mrna AND KICH_filtered.mirna1 = KICHWBenjaminiHochbergCorrection.mirna1 AND KICH_filtered.mirna2 = KICHWBenjaminiHochbergCorrection.mirna2) 
                           OR (KICH_filtered.entrezgene_id = KICHWBenjaminiHochbergCorrection.mrna AND KICH_filtered.mirna1 = KICHWBenjaminiHochbergCorrection.mirna2 AND KICH_filtered.mirna2 = KICHWBenjaminiHochbergCorrection.mirna1)")
 KICH_BH_pvalues_adjusted_min = min(KICH$BH_pvalues_adjusted)
@@ -140,7 +143,7 @@ KICH_BH_pvalues_adjusted_max = max(KICH$BH_pvalues_adjusted)
 KIRC_allData <- read_csv("finalDTData/KIRC.csv",show_col_types = FALSE)
 KIRC_filtered <- KIRC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 KIRCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/KIRCWBenjaminiHochbergCorrection.csv")
-KIRC <- sqldf::sqldf("SELECT KIRC_filtered.*, BH_rejected, BH_pvalues_adjusted from KIRC_filtered LEFT JOIN KIRCWBenjaminiHochbergCorrection ON 
+KIRC <- sqldf::sqldf("SELECT KIRC_filtered.*,  BH_pvalues_adjusted from KIRC_filtered LEFT JOIN KIRCWBenjaminiHochbergCorrection ON 
                           (KIRC_filtered.entrezgene_id = KIRCWBenjaminiHochbergCorrection.mrna AND KIRC_filtered.mirna1 = KIRCWBenjaminiHochbergCorrection.mirna1 AND KIRC_filtered.mirna2 = KIRCWBenjaminiHochbergCorrection.mirna2) 
                           OR (KIRC_filtered.entrezgene_id = KIRCWBenjaminiHochbergCorrection.mrna AND KIRC_filtered.mirna1 = KIRCWBenjaminiHochbergCorrection.mirna2 AND KIRC_filtered.mirna2 = KIRCWBenjaminiHochbergCorrection.mirna1)")
 KIRC_BH_pvalues_adjusted_min = min(KIRC$BH_pvalues_adjusted)
@@ -149,7 +152,7 @@ KIRC_BH_pvalues_adjusted_max = max(KIRC$BH_pvalues_adjusted)
 KIRP_allData <- read_csv("finalDTData/KIRP.csv",show_col_types = FALSE)
 KIRP_filtered <- KIRP_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 KIRPWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/KIRPWBenjaminiHochbergCorrection.csv")
-KIRP <- sqldf::sqldf("SELECT KIRP_filtered.*, BH_rejected, BH_pvalues_adjusted from KIRP_filtered LEFT JOIN KIRPWBenjaminiHochbergCorrection ON 
+KIRP <- sqldf::sqldf("SELECT KIRP_filtered.*,  BH_pvalues_adjusted from KIRP_filtered LEFT JOIN KIRPWBenjaminiHochbergCorrection ON 
                           (KIRP_filtered.entrezgene_id = KIRPWBenjaminiHochbergCorrection.mrna AND KIRP_filtered.mirna1 = KIRPWBenjaminiHochbergCorrection.mirna1 AND KIRP_filtered.mirna2 = KIRPWBenjaminiHochbergCorrection.mirna2) 
                           OR (KIRP_filtered.entrezgene_id = KIRPWBenjaminiHochbergCorrection.mrna AND KIRP_filtered.mirna1 = KIRPWBenjaminiHochbergCorrection.mirna2 AND KIRP_filtered.mirna2 = KIRPWBenjaminiHochbergCorrection.mirna1)")
 KIRP_BH_pvalues_adjusted_min = min(KIRP$BH_pvalues_adjusted)
@@ -158,7 +161,7 @@ KIRP_BH_pvalues_adjusted_max = max(KIRP$BH_pvalues_adjusted)
 LGG_allData <- read_csv("finalDTData/LGG.csv",show_col_types = FALSE)
 LGG_filtered <- LGG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
 LGGWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/LGGWBenjaminiHochbergCorrection.csv")
-LGG <- sqldf::sqldf("SELECT LGG_filtered.*, BH_rejected, BH_pvalues_adjusted from LGG_filtered LEFT JOIN LGGWBenjaminiHochbergCorrection ON 
+LGG <- sqldf::sqldf("SELECT LGG_filtered.*, BH_pvalues_adjusted from LGG_filtered LEFT JOIN LGGWBenjaminiHochbergCorrection ON 
                           (LGG_filtered.entrezgene_id = LGGWBenjaminiHochbergCorrection.mrna AND LGG_filtered.mirna1 = LGGWBenjaminiHochbergCorrection.mirna1 AND LGG_filtered.mirna2 = LGGWBenjaminiHochbergCorrection.mirna2) 
                           OR (LGG_filtered.entrezgene_id = LGGWBenjaminiHochbergCorrection.mrna AND LGG_filtered.mirna1 = LGGWBenjaminiHochbergCorrection.mirna2 AND LGG_filtered.mirna2 = LGGWBenjaminiHochbergCorrection.mirna1)")
 LGG_BH_pvalues_adjusted_min = min(LGG$BH_pvalues_adjusted)
@@ -167,7 +170,7 @@ LGG_BH_pvalues_adjusted_max = max(LGG$BH_pvalues_adjusted)
 LIHC_allData <- read_csv("finalDTData/LIHC.csv",show_col_types = FALSE)
 LIHC_filtered <- LIHC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 LIHCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/LIHCWBenjaminiHochbergCorrection.csv")
-LIHC <- sqldf::sqldf("SELECT LIHC_filtered.*, BH_rejected, BH_pvalues_adjusted from LIHC_filtered LEFT JOIN LIHCWBenjaminiHochbergCorrection ON 
+LIHC <- sqldf::sqldf("SELECT LIHC_filtered.*, BH_pvalues_adjusted from LIHC_filtered LEFT JOIN LIHCWBenjaminiHochbergCorrection ON 
                           (LIHC_filtered.entrezgene_id = LIHCWBenjaminiHochbergCorrection.mrna AND LIHC_filtered.mirna1 = LIHCWBenjaminiHochbergCorrection.mirna1 AND LIHC_filtered.mirna2 = LIHCWBenjaminiHochbergCorrection.mirna2) 
                           OR (LIHC_filtered.entrezgene_id = LIHCWBenjaminiHochbergCorrection.mrna AND LIHC_filtered.mirna1 = LIHCWBenjaminiHochbergCorrection.mirna2 AND LIHC_filtered.mirna2 = LIHCWBenjaminiHochbergCorrection.mirna1)")
 LIHC_BH_pvalues_adjusted_min = min(LIHC$BH_pvalues_adjusted)
@@ -176,7 +179,7 @@ LIHC_BH_pvalues_adjusted_max = max(LIHC$BH_pvalues_adjusted)
 LUAD_allData <- read_csv("finalDTData/LUAD.csv",show_col_types = FALSE)
 LUAD_filtered <- LUAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 LUADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/LUADWBenjaminiHochbergCorrection.csv")
-LUAD <- sqldf::sqldf("SELECT LUAD_filtered.*, BH_rejected, BH_pvalues_adjusted from LUAD_filtered LEFT JOIN LUADWBenjaminiHochbergCorrection ON 
+LUAD <- sqldf::sqldf("SELECT LUAD_filtered.*, BH_pvalues_adjusted from LUAD_filtered LEFT JOIN LUADWBenjaminiHochbergCorrection ON 
                           (LUAD_filtered.entrezgene_id = LUADWBenjaminiHochbergCorrection.mrna AND LUAD_filtered.mirna1 = LUADWBenjaminiHochbergCorrection.mirna1 AND LUAD_filtered.mirna2 = LUADWBenjaminiHochbergCorrection.mirna2) 
                           OR (LUAD_filtered.entrezgene_id = LUADWBenjaminiHochbergCorrection.mrna AND LUAD_filtered.mirna1 = LUADWBenjaminiHochbergCorrection.mirna2 AND LUAD_filtered.mirna2 = LUADWBenjaminiHochbergCorrection.mirna1)")
 LUAD_BH_pvalues_adjusted_min = min(LUAD$BH_pvalues_adjusted)
@@ -185,7 +188,7 @@ LUAD_BH_pvalues_adjusted_max = max(LUAD$BH_pvalues_adjusted)
 LUSC_allData <- read_csv("finalDTData/LUSC.csv",show_col_types = FALSE)
 LUSC_filtered <- LUSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 LUSCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/LUSCWBenjaminiHochbergCorrection.csv")
-LUSC <- sqldf::sqldf("SELECT LUSC_filtered.*, BH_rejected, BH_pvalues_adjusted from LUSC_filtered LEFT JOIN LUSCWBenjaminiHochbergCorrection ON 
+LUSC <- sqldf::sqldf("SELECT LUSC_filtered.*, BH_pvalues_adjusted from LUSC_filtered LEFT JOIN LUSCWBenjaminiHochbergCorrection ON 
                           (LUSC_filtered.entrezgene_id = LUSCWBenjaminiHochbergCorrection.mrna AND LUSC_filtered.mirna1 = LUSCWBenjaminiHochbergCorrection.mirna1 AND LUSC_filtered.mirna2 = LUSCWBenjaminiHochbergCorrection.mirna2) 
                           OR (LUSC_filtered.entrezgene_id = LUSCWBenjaminiHochbergCorrection.mrna AND LUSC_filtered.mirna1 = LUSCWBenjaminiHochbergCorrection.mirna2 AND LUSC_filtered.mirna2 = LUSCWBenjaminiHochbergCorrection.mirna1)")
 LUSC_BH_pvalues_adjusted_min = min(LUSC$BH_pvalues_adjusted)
@@ -194,7 +197,7 @@ LUSC_BH_pvalues_adjusted_max = max(LUSC$BH_pvalues_adjusted)
 MESO_allData <- read_csv("finalDTData/MESO.csv",show_col_types = FALSE)
 MESO_filtered <- MESO_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
 MESOWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/MESOWBenjaminiHochbergCorrection.csv")
-MESO <- sqldf::sqldf("SELECT MESO_filtered.*, BH_rejected, BH_pvalues_adjusted from MESO_filtered LEFT JOIN MESOWBenjaminiHochbergCorrection ON 
+MESO <- sqldf::sqldf("SELECT MESO_filtered.*, BH_pvalues_adjusted from MESO_filtered LEFT JOIN MESOWBenjaminiHochbergCorrection ON 
                           (MESO_filtered.entrezgene_id = MESOWBenjaminiHochbergCorrection.mrna AND MESO_filtered.mirna1 = MESOWBenjaminiHochbergCorrection.mirna1 AND MESO_filtered.mirna2 = MESOWBenjaminiHochbergCorrection.mirna2) 
                           OR (MESO_filtered.entrezgene_id = MESOWBenjaminiHochbergCorrection.mrna AND MESO_filtered.mirna1 = MESOWBenjaminiHochbergCorrection.mirna2 AND MESO_filtered.mirna2 = MESOWBenjaminiHochbergCorrection.mirna1)")
 MESO_BH_pvalues_adjusted_min = min(MESO$BH_pvalues_adjusted)
@@ -203,7 +206,7 @@ MESO_BH_pvalues_adjusted_max = max(MESO$BH_pvalues_adjusted)
 OV_allData <- read_csv("finalDTData/OV.csv",show_col_types = FALSE)
 OV_filtered <- OV_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
 OVWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/OVWBenjaminiHochbergCorrection.csv")
-OV <- sqldf::sqldf("SELECT OV_filtered.*, BH_rejected, BH_pvalues_adjusted from OV_filtered LEFT JOIN OVWBenjaminiHochbergCorrection ON 
+OV <- sqldf::sqldf("SELECT OV_filtered.*, BH_pvalues_adjusted from OV_filtered LEFT JOIN OVWBenjaminiHochbergCorrection ON 
                           (OV_filtered.entrezgene_id = OVWBenjaminiHochbergCorrection.mrna AND OV_filtered.mirna1 = OVWBenjaminiHochbergCorrection.mirna1 AND OV_filtered.mirna2 = OVWBenjaminiHochbergCorrection.mirna2) 
                           OR (OV_filtered.entrezgene_id = OVWBenjaminiHochbergCorrection.mrna AND OV_filtered.mirna1 = OVWBenjaminiHochbergCorrection.mirna2 AND OV_filtered.mirna2 = OVWBenjaminiHochbergCorrection.mirna1)")
 OV_BH_pvalues_adjusted_min = min(OV$BH_pvalues_adjusted)
@@ -212,7 +215,7 @@ OV_BH_pvalues_adjusted_max = max(OV$BH_pvalues_adjusted)
 PAAD_allData <- read_csv("finalDTData/PAAD.csv",show_col_types = FALSE)
 PAAD_filtered <- PAAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 PAADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/PAADWBenjaminiHochbergCorrection.csv")
-PAAD <- sqldf::sqldf("SELECT PAAD_filtered.*, BH_rejected, BH_pvalues_adjusted from PAAD_filtered LEFT JOIN PAADWBenjaminiHochbergCorrection ON 
+PAAD <- sqldf::sqldf("SELECT PAAD_filtered.*, BH_pvalues_adjusted from PAAD_filtered LEFT JOIN PAADWBenjaminiHochbergCorrection ON 
                           (PAAD_filtered.entrezgene_id = PAADWBenjaminiHochbergCorrection.mrna AND PAAD_filtered.mirna1 = PAADWBenjaminiHochbergCorrection.mirna1 AND PAAD_filtered.mirna2 = PAADWBenjaminiHochbergCorrection.mirna2) 
                           OR (PAAD_filtered.entrezgene_id = PAADWBenjaminiHochbergCorrection.mrna AND PAAD_filtered.mirna1 = PAADWBenjaminiHochbergCorrection.mirna2 AND PAAD_filtered.mirna2 = PAADWBenjaminiHochbergCorrection.mirna1)")
 PAAD_BH_pvalues_adjusted_min = min(PAAD$BH_pvalues_adjusted)
@@ -221,7 +224,7 @@ PAAD_BH_pvalues_adjusted_max = max(PAAD$BH_pvalues_adjusted)
 PCPG_allData <- read_csv("finalDTData/PCPG.csv",show_col_types = FALSE)
 PCPG_filtered <- PCPG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 PCPGWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/PCPGWBenjaminiHochbergCorrection.csv")
-PCPG <- sqldf::sqldf("SELECT PCPG_filtered.*, BH_rejected, BH_pvalues_adjusted from PCPG_filtered LEFT JOIN PCPGWBenjaminiHochbergCorrection ON 
+PCPG <- sqldf::sqldf("SELECT PCPG_filtered.*, BH_pvalues_adjusted from PCPG_filtered LEFT JOIN PCPGWBenjaminiHochbergCorrection ON 
                           (PCPG_filtered.entrezgene_id = PCPGWBenjaminiHochbergCorrection.mrna AND PCPG_filtered.mirna1 = PCPGWBenjaminiHochbergCorrection.mirna1 AND PCPG_filtered.mirna2 = PCPGWBenjaminiHochbergCorrection.mirna2) 
                           OR (PCPG_filtered.entrezgene_id = PCPGWBenjaminiHochbergCorrection.mrna AND PCPG_filtered.mirna1 = PCPGWBenjaminiHochbergCorrection.mirna2 AND PCPG_filtered.mirna2 = PCPGWBenjaminiHochbergCorrection.mirna1)")
 PCPG_BH_pvalues_adjusted_min = min(PCPG$BH_pvalues_adjusted)
@@ -230,7 +233,7 @@ PCPG_BH_pvalues_adjusted_max = max(PCPG$BH_pvalues_adjusted)
 PRAD_allData <- read_csv("finalDTData/PRAD.csv",show_col_types = FALSE)
 PRAD_filtered <- PRAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 PRADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/PRADWBenjaminiHochbergCorrection.csv")
-PRAD <- sqldf::sqldf("SELECT PRAD_filtered.*, BH_rejected, BH_pvalues_adjusted from PRAD_filtered LEFT JOIN PRADWBenjaminiHochbergCorrection ON 
+PRAD <- sqldf::sqldf("SELECT PRAD_filtered.*, BH_pvalues_adjusted from PRAD_filtered LEFT JOIN PRADWBenjaminiHochbergCorrection ON 
                           (PRAD_filtered.entrezgene_id = PRADWBenjaminiHochbergCorrection.mrna AND PRAD_filtered.mirna1 = PRADWBenjaminiHochbergCorrection.mirna1 AND PRAD_filtered.mirna2 = PRADWBenjaminiHochbergCorrection.mirna2) 
                           OR (PRAD_filtered.entrezgene_id = PRADWBenjaminiHochbergCorrection.mrna AND PRAD_filtered.mirna1 = PRADWBenjaminiHochbergCorrection.mirna2 AND PRAD_filtered.mirna2 = PRADWBenjaminiHochbergCorrection.mirna1)")
 PRAD_BH_pvalues_adjusted_min = min(PRAD$BH_pvalues_adjusted)
@@ -239,7 +242,7 @@ PRAD_BH_pvalues_adjusted_max = max(PRAD$BH_pvalues_adjusted)
 READ_allData <- read_csv("finalDTData/READ.csv",show_col_types = FALSE)
 READ_filtered <- READ_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC")]
 READWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/READWBenjaminiHochbergCorrection.csv")
-READ <- sqldf::sqldf("SELECT READ_filtered.*, BH_rejected, BH_pvalues_adjusted from READ_filtered LEFT JOIN READWBenjaminiHochbergCorrection ON 
+READ <- sqldf::sqldf("SELECT READ_filtered.*, BH_pvalues_adjusted from READ_filtered LEFT JOIN READWBenjaminiHochbergCorrection ON 
                           (READ_filtered.entrezgene_id = READWBenjaminiHochbergCorrection.mrna AND READ_filtered.mirna1 = READWBenjaminiHochbergCorrection.mirna1 AND READ_filtered.mirna2 = READWBenjaminiHochbergCorrection.mirna2) 
                           OR (READ_filtered.entrezgene_id = READWBenjaminiHochbergCorrection.mrna AND READ_filtered.mirna1 = READWBenjaminiHochbergCorrection.mirna2 AND READ_filtered.mirna2 = READWBenjaminiHochbergCorrection.mirna1)")
 READ_BH_pvalues_adjusted_min = min(READ$BH_pvalues_adjusted)
@@ -248,7 +251,7 @@ READ_BH_pvalues_adjusted_max = max(READ$BH_pvalues_adjusted)
 SARC_allData <- read_csv("finalDTData/SARC.csv",show_col_types = FALSE)
 SARC_filtered <- SARC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC")]
 SARCWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/SARCWBenjaminiHochbergCorrection.csv")
-SARC <- sqldf::sqldf("SELECT SARC_filtered.*, BH_rejected, BH_pvalues_adjusted from SARC_filtered LEFT JOIN SARCWBenjaminiHochbergCorrection ON 
+SARC <- sqldf::sqldf("SELECT SARC_filtered.*,  BH_pvalues_adjusted from SARC_filtered LEFT JOIN SARCWBenjaminiHochbergCorrection ON 
                           (SARC_filtered.entrezgene_id = SARCWBenjaminiHochbergCorrection.mrna AND SARC_filtered.mirna1 = SARCWBenjaminiHochbergCorrection.mirna1 AND SARC_filtered.mirna2 = SARCWBenjaminiHochbergCorrection.mirna2) 
                           OR (SARC_filtered.entrezgene_id = SARCWBenjaminiHochbergCorrection.mrna AND SARC_filtered.mirna1 = SARCWBenjaminiHochbergCorrection.mirna2 AND SARC_filtered.mirna2 = SARCWBenjaminiHochbergCorrection.mirna1)")
 SARC_BH_pvalues_adjusted_min = min(SARC$BH_pvalues_adjusted)
@@ -257,7 +260,7 @@ SARC_BH_pvalues_adjusted_max = max(SARC$BH_pvalues_adjusted)
 SKCM_allData <- read_csv("finalDTData/SKCM.csv",show_col_types = FALSE)
 SKCM_filtered <- SKCM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 SKCMWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/SKCMWBenjaminiHochbergCorrection.csv")
-SKCM <- sqldf::sqldf("SELECT SKCM_filtered.*, BH_rejected, BH_pvalues_adjusted from SKCM_filtered LEFT JOIN SKCMWBenjaminiHochbergCorrection ON 
+SKCM <- sqldf::sqldf("SELECT SKCM_filtered.*, BH_pvalues_adjusted from SKCM_filtered LEFT JOIN SKCMWBenjaminiHochbergCorrection ON 
                           (SKCM_filtered.entrezgene_id = SKCMWBenjaminiHochbergCorrection.mrna AND SKCM_filtered.mirna1 = SKCMWBenjaminiHochbergCorrection.mirna1 AND SKCM_filtered.mirna2 = SKCMWBenjaminiHochbergCorrection.mirna2) 
                           OR (SKCM_filtered.entrezgene_id = SKCMWBenjaminiHochbergCorrection.mrna AND SKCM_filtered.mirna1 = SKCMWBenjaminiHochbergCorrection.mirna2 AND SKCM_filtered.mirna2 = SKCMWBenjaminiHochbergCorrection.mirna1)")
 SKCM_BH_pvalues_adjusted_min = min(SKCM$BH_pvalues_adjusted)
@@ -266,7 +269,7 @@ SKCM_BH_pvalues_adjusted_max = max(SKCM$BH_pvalues_adjusted)
 STAD_allData <- read_csv("finalDTData/STAD.csv",show_col_types = FALSE)
 STAD_filtered <- STAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 STADWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/STADWBenjaminiHochbergCorrection.csv")
-STAD <- sqldf::sqldf("SELECT STAD_filtered.*, BH_rejected, BH_pvalues_adjusted from STAD_filtered LEFT JOIN STADWBenjaminiHochbergCorrection ON 
+STAD <- sqldf::sqldf("SELECT STAD_filtered.*, BH_pvalues_adjusted from STAD_filtered LEFT JOIN STADWBenjaminiHochbergCorrection ON 
                           (STAD_filtered.entrezgene_id = STADWBenjaminiHochbergCorrection.mrna AND STAD_filtered.mirna1 = STADWBenjaminiHochbergCorrection.mirna1 AND STAD_filtered.mirna2 = STADWBenjaminiHochbergCorrection.mirna2) 
                           OR (STAD_filtered.entrezgene_id = STADWBenjaminiHochbergCorrection.mrna AND STAD_filtered.mirna1 = STADWBenjaminiHochbergCorrection.mirna2 AND STAD_filtered.mirna2 = STADWBenjaminiHochbergCorrection.mirna1)")
 STAD_BH_pvalues_adjusted_min = min(STAD$BH_pvalues_adjusted)
@@ -275,7 +278,7 @@ STAD_BH_pvalues_adjusted_max = max(STAD$BH_pvalues_adjusted)
 TGCT_allData <- read_csv("finalDTData/TGCT.csv",show_col_types = FALSE)
 TGCT_filtered <- TGCT_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
 TGCTWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/TGCTWBenjaminiHochbergCorrection.csv")
-TGCT <- sqldf::sqldf("SELECT TGCT_filtered.*, BH_rejected, BH_pvalues_adjusted from TGCT_filtered LEFT JOIN TGCTWBenjaminiHochbergCorrection ON 
+TGCT <- sqldf::sqldf("SELECT TGCT_filtered.*, BH_pvalues_adjusted from TGCT_filtered LEFT JOIN TGCTWBenjaminiHochbergCorrection ON 
                           (TGCT_filtered.entrezgene_id = TGCTWBenjaminiHochbergCorrection.mrna AND TGCT_filtered.mirna1 = TGCTWBenjaminiHochbergCorrection.mirna1 AND TGCT_filtered.mirna2 = TGCTWBenjaminiHochbergCorrection.mirna2) 
                           OR (TGCT_filtered.entrezgene_id = TGCTWBenjaminiHochbergCorrection.mrna AND TGCT_filtered.mirna1 = TGCTWBenjaminiHochbergCorrection.mirna2 AND TGCT_filtered.mirna2 = TGCTWBenjaminiHochbergCorrection.mirna1)")
 TGCT_BH_pvalues_adjusted_min = min(TGCT$BH_pvalues_adjusted)
@@ -284,7 +287,7 @@ TGCT_BH_pvalues_adjusted_max = max(TGCT$BH_pvalues_adjusted)
 THCA_allData <- read_csv("finalDTData/THCA.csv",show_col_types = FALSE)
 THCA_filtered <- THCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 THCAWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/THCAWBenjaminiHochbergCorrection.csv")
-THCA <- sqldf::sqldf("SELECT THCA_filtered.*, BH_rejected, BH_pvalues_adjusted from THCA_filtered LEFT JOIN THCAWBenjaminiHochbergCorrection ON 
+THCA <- sqldf::sqldf("SELECT THCA_filtered.*, BH_pvalues_adjusted from THCA_filtered LEFT JOIN THCAWBenjaminiHochbergCorrection ON 
                           (THCA_filtered.entrezgene_id = THCAWBenjaminiHochbergCorrection.mrna AND THCA_filtered.mirna1 = THCAWBenjaminiHochbergCorrection.mirna1 AND THCA_filtered.mirna2 = THCAWBenjaminiHochbergCorrection.mirna2) 
                           OR (THCA_filtered.entrezgene_id = THCAWBenjaminiHochbergCorrection.mrna AND THCA_filtered.mirna1 = THCAWBenjaminiHochbergCorrection.mirna2 AND THCA_filtered.mirna2 = THCAWBenjaminiHochbergCorrection.mirna1)")
 THCA_BH_pvalues_adjusted_min = min(THCA$BH_pvalues_adjusted)
@@ -293,7 +296,7 @@ THCA_BH_pvalues_adjusted_max = max(THCA$BH_pvalues_adjusted)
 THYM_allData <- read_csv("finalDTData/THYM.csv",show_col_types = FALSE)
 THYM_filtered <- THYM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 THYMWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/THYMWBenjaminiHochbergCorrection.csv")
-THYM <- sqldf::sqldf("SELECT THYM_filtered.*, BH_rejected, BH_pvalues_adjusted from THYM_filtered LEFT JOIN THYMWBenjaminiHochbergCorrection ON 
+THYM <- sqldf::sqldf("SELECT THYM_filtered.*, BH_pvalues_adjusted from THYM_filtered LEFT JOIN THYMWBenjaminiHochbergCorrection ON 
                           (THYM_filtered.entrezgene_id = THYMWBenjaminiHochbergCorrection.mrna AND THYM_filtered.mirna1 = THYMWBenjaminiHochbergCorrection.mirna1 AND THYM_filtered.mirna2 = THYMWBenjaminiHochbergCorrection.mirna2) 
                           OR (THYM_filtered.entrezgene_id = THYMWBenjaminiHochbergCorrection.mrna AND THYM_filtered.mirna1 = THYMWBenjaminiHochbergCorrection.mirna2 AND THYM_filtered.mirna2 = THYMWBenjaminiHochbergCorrection.mirna1)")
 THYM_BH_pvalues_adjusted_min = min(THYM$BH_pvalues_adjusted)
@@ -302,7 +305,7 @@ THYM_BH_pvalues_adjusted_max = max(THYM$BH_pvalues_adjusted)
 UCEC_allData <- read_csv("finalDTData/UCEC.csv",show_col_types = FALSE)
 UCEC_filtered <- UCEC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
 UCECWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/UCECWBenjaminiHochbergCorrection.csv")
-UCEC <- sqldf::sqldf("SELECT UCEC_filtered.*, BH_rejected, BH_pvalues_adjusted from UCEC_filtered LEFT JOIN UCECWBenjaminiHochbergCorrection ON 
+UCEC <- sqldf::sqldf("SELECT UCEC_filtered.*, BH_pvalues_adjusted from UCEC_filtered LEFT JOIN UCECWBenjaminiHochbergCorrection ON 
                           (UCEC_filtered.entrezgene_id = UCECWBenjaminiHochbergCorrection.mrna AND UCEC_filtered.mirna1 = UCECWBenjaminiHochbergCorrection.mirna1 AND UCEC_filtered.mirna2 = UCECWBenjaminiHochbergCorrection.mirna2) 
                           OR (UCEC_filtered.entrezgene_id = UCECWBenjaminiHochbergCorrection.mrna AND UCEC_filtered.mirna1 = UCECWBenjaminiHochbergCorrection.mirna2 AND UCEC_filtered.mirna2 = UCECWBenjaminiHochbergCorrection.mirna1)")
 UCEC_BH_pvalues_adjusted_min = min(UCEC$BH_pvalues_adjusted)
@@ -311,7 +314,7 @@ UCEC_BH_pvalues_adjusted_max = max(UCEC$BH_pvalues_adjusted)
 UCS_allData <- read_csv("finalDTData/UCS.csv",show_col_types = FALSE)
 UCS_filtered <- UCS_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
 UCSWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/UCSWBenjaminiHochbergCorrection.csv")
-UCS <- sqldf::sqldf("SELECT UCS_filtered.*, BH_rejected, BH_pvalues_adjusted from UCS_filtered LEFT JOIN UCSWBenjaminiHochbergCorrection ON 
+UCS <- sqldf::sqldf("SELECT UCS_filtered.*, BH_pvalues_adjusted from UCS_filtered LEFT JOIN UCSWBenjaminiHochbergCorrection ON 
                           (UCS_filtered.entrezgene_id = UCSWBenjaminiHochbergCorrection.mrna AND UCS_filtered.mirna1 = UCSWBenjaminiHochbergCorrection.mirna1 AND UCS_filtered.mirna2 = UCSWBenjaminiHochbergCorrection.mirna2) 
                           OR (UCS_filtered.entrezgene_id = UCSWBenjaminiHochbergCorrection.mrna AND UCS_filtered.mirna1 = UCSWBenjaminiHochbergCorrection.mirna2 AND UCS_filtered.mirna2 = UCSWBenjaminiHochbergCorrection.mirna1)")
 UCS_BH_pvalues_adjusted_min = min(UCS$BH_pvalues_adjusted)
@@ -320,7 +323,7 @@ UCS_BH_pvalues_adjusted_max = max(UCS$BH_pvalues_adjusted)
 UVM_allData <- read_csv("finalDTData/UVM.csv",show_col_types = FALSE)
 UVM_filtered <- UVM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB")]
 UVMWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/UVMWBenjaminiHochbergCorrection.csv")
-UVM <- sqldf::sqldf("SELECT UVM_filtered.*, BH_rejected, BH_pvalues_adjusted from UVM_filtered LEFT JOIN UVMWBenjaminiHochbergCorrection ON 
+UVM <- sqldf::sqldf("SELECT UVM_filtered.*, BH_pvalues_adjusted from UVM_filtered LEFT JOIN UVMWBenjaminiHochbergCorrection ON 
                           (UVM_filtered.entrezgene_id = UVMWBenjaminiHochbergCorrection.mrna AND UVM_filtered.mirna1 = UVMWBenjaminiHochbergCorrection.mirna1 AND UVM_filtered.mirna2 = UVMWBenjaminiHochbergCorrection.mirna2) 
                           OR (UVM_filtered.entrezgene_id = UVMWBenjaminiHochbergCorrection.mrna AND UVM_filtered.mirna1 = UVMWBenjaminiHochbergCorrection.mirna2 AND UVM_filtered.mirna2 = UVMWBenjaminiHochbergCorrection.mirna1)")
 UVM_BH_pvalues_adjusted_min = min(UVM$BH_pvalues_adjusted)
@@ -493,12 +496,12 @@ UVMwMedian1 <- read_csv("dataset/medians/UVMwMedian1.csv",show_col_types = FALSE
 UVMwMedian2 <- read_csv("dataset/medians/UVMwMedian2.csv",show_col_types = FALSE)
 
 ####################################################################################################
-TripletsInWhichCancerWCount<- read_csv("dataset/commonTripletsFinalAfterReRun.csv",show_col_types = FALSE)
+TripletsInWhichCancerWCount<- read_delim("dataset/CommonTripletsAfterBHCorrection.csv",delim = ";",escape_double = FALSE, trim_ws = TRUE,show_col_types = FALSE)
 TripletsInWhichCancerWCount <-filter(TripletsInWhichCancerWCount, Count> 1)
 mrnaFilterCommonTriplets <- filter(commonTriplets_node_attr, info %in% "mrna")
 mirnaFilterCommonTriplets <- filter(commonTriplets_node_attr, info %in% "mirna")
 
-MirnaPairsInWhichCancerWCount <- read_csv("dataset/commonMirnaPairsFinalAfterReRun.csv",show_col_types = FALSE)
+MirnaPairsInWhichCancerWCount <- read_delim("dataset/commonMirnaPairsAfterBHCorrection.csv",escape_double = FALSE, trim_ws = TRUE,show_col_types = FALSE)
 MirnaPairsInWhichCancerWCount <-filter(MirnaPairsInWhichCancerWCount, Count> 1)
 mirnaListCommonMirnaPairs <- unique(rbind(commonMirnaPair_source_target$source, commonMirnaPair_source_target$target))
 
@@ -508,23 +511,20 @@ TCGA_abbreviations <- read.table("dataset/TCGA_abbreviations.csv", header = T, s
 Glossary <- read.table("dataset/Glossary.csv", header = T, sep = ";")
 
 
-miRCoopTotalCounts <- read_delim("dataset/stats/miRCoopTotalCounts.csv", 
+miRCoopTotalCounts <- read_delim("dataset/stats/miRCoopTotalCountsAfterBHCorrection.csv", 
                                  delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
-commonMrnaAbove20 <- read_excel("dataset/stats/commonMrnaAbove20NormalizedForRHeatMap.xlsx")
+commonMrnaAbove20 <- read_excel("dataset/stats/totalMrnaCountCancerMatrixWithTotalMrnaCountInDatabasesAfterBHCorrectionAbove15.xlsx")
 commonMrnaAbove20 <- as.data.frame(commonMrnaAbove20)
 
-commonMirnaAbove50 <- read_excel("dataset/stats/commonMirnaAbove50NormalizedForRHeatMap.xlsx")
+commonMirnaAbove50 <- read_excel("dataset/stats/totalMirnaCountCancerMatrixWithTotalMirnaCountInDatabasesAfterBHCorrectionAbove30.xlsx")
 commonMirnaAbove50 <- as.data.frame(commonMirnaAbove50)
 
-miRCoopTotalCounts <- read_delim("dataset/stats/miRCoopTotalCounts.csv", 
-                                 delim = ";", escape_double = FALSE, trim_ws = TRUE)
+mRNACountsScatter <- read_delim("dataset/stats/mRNACountsScatterAfterBHCorrection.csv", 
+                                delim = ",", escape_double = FALSE, trim_ws = TRUE)
 
-mRNACountsScatter <- read_delim("dataset/stats/mRNACountsScatter.csv", 
-                                delim = ";", escape_double = FALSE, trim_ws = TRUE)
-
-miRNACountsScatter <- read_delim("dataset/stats/miRNACountsScatter.csv", 
-                                 delim = ";", escape_double = FALSE, trim_ws = TRUE)
+miRNACountsScatter <- read_delim("dataset/stats/miRNACountsScatterAfterBHcorrection.csv", 
+                                 delim = ",", escape_double = FALSE, trim_ws = TRUE)
 
 ####################################################################################################
 bslib_mircooptriplet_theme <- bs_theme(
@@ -1344,20 +1344,31 @@ server <- function(input, output, session) {
     
     
 output$table <- DT::renderDataTable({
-  #print(!is.null(DatasetRoundDigits()))
-  #print(nrow(DatasetRoundDigits()) >0)
-  #print(!is.null(DatasetRoundDigits()) & nrow(DatasetRoundDigits()) >0)
-  
+
   if(!is.null(DatasetRoundDigits()) & length(nrow(DatasetRoundDigits())) >0){
     DT1 <- DatasetRoundDigits()
+    print("asdfghnhgfdsdfgh")
     DT <- cbind(DT1,
                 button = sapply(1:nrow(DT1), button("table")),
                 stringsAsFactors = FALSE)
     
     DT[is.na(DT)] <- " "
-    DT1$mirna1Literature <- stringr::str_replace(DT1$mirna1Literature,"NA"," ")
-    DT1$mirna2Literature <- stringr::str_replace(DT1$mirna2Literature,"NA"," ")
-    DT1$mrnaLiterature <- stringr::str_replace(DT1$mrnaLiterature,"NA"," ")
+    
+    if("mirna1Literature" %in% colnames(DT1)){
+        DT1$mirna1Literature <- stringr::str_replace(DT1$mirna1Literature,"NA"," ")
+        
+    }
+    if("mirna2Literature" %in% colnames(DT1)){
+        DT1$mirna2Literature <- stringr::str_replace(DT1$mirna2Literature,"NA"," ")
+        
+    }
+    if("mrnaLiterature" %in% colnames(DT1)){
+        DT1$mrnaLiterature <- stringr::str_replace(DT1$mrnaLiterature,"NA"," ")
+        
+    }
+    #DT1$mirna1Literature <- stringr::str_replace(DT1$mirna1Literature,"NA"," ")
+    #DT1$mirna2Literature <- stringr::str_replace(DT1$mirna2Literature,"NA"," ")
+    #DT1$mrnaLiterature <- stringr::str_replace(DT1$mrnaLiterature,"NA"," ")
     
     
     
@@ -1365,7 +1376,7 @@ output$table <- DT::renderDataTable({
     hideList1 <- c(7,8,9,10,11)
     hideList2 <- c(7,8,9,10,11,12,13,14,15,16,17)
     hideList3 <- c(7,8,9,10,11,12,13)
-    hideList4 <- c(7,8,9,10)
+    hideList4 <- c(7,8,9)
     hideList5 <-c(7,8,9,10,11,12,13,14,15)
     
     ifelse(input$dataset=="ACC" || input$dataset=="DLBC" || input$dataset=="LGG" || input$dataset=="MESO" || input$dataset=="OV" || input$dataset=="UCS" || input$dataset=="UVM", columnHideList <-hideList1,
@@ -1446,12 +1457,17 @@ output$table <- DT::renderDataTable({
       a(infoBtn('question'), onclick="customHref('Glossary')")
     ) %>% as.character()
     
+    BH_pvalues <-  tags$span(
+        "Adjusted pvalue",
+        a(infoBtn('question'), onclick="customHref('Glossary')")
+    ) %>% as.character()
+    
 
-    nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,"BH_rejected","BH_pvalues_adjusted", "miRNA-mRNA Expressions")
-    nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"BH_rejected","BH_pvalues_adjusted","miRNA-mRNA Expressions")
-    nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,mRNApvalue,mRNALogFC,"BH_rejected","BH_pvalues_adjusted","miRNA-mRNA Expressions" )
-    nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase,"BH_rejected","BH_pvalues_adjusted", "miRNA-mRNA Expressions")
-    nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,"BH_rejected","BH_pvalues_adjusted","miRNA-mRNA Expressions")
+    nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,BH_pvalues, "miRNA-mRNA Expressions")
+    nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,BH_pvalues,"miRNA-mRNA Expressions")
+    nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,mRNApvalue,mRNALogFC,BH_pvalues,"miRNA-mRNA Expressions" )
+    nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase,BH_pvalues, "miRNA-mRNA Expressions")
+    nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,BH_pvalues,"miRNA-mRNA Expressions")
 
     # nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", "tripletvalue","is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase","miRNA-mRNA Expressions")
     # nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", "tripletvalue", " is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase", "miRNA1pvalue", "miRNA1LogFC", "miRNA2pvalue", "miRNA2LogFC", "mRNApvalue", "mRNALogFC","miRNA-mRNA Expressions")
