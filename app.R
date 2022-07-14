@@ -74,8 +74,15 @@ BLCA <- sqldf::sqldf("SELECT BLCA_filtered.*, BH_pvalues_adjusted from BLCA_filt
 
 BLCA_BH_pvalues_adjusted_min = min(BLCA$BH_pvalues_adjusted)
 BLCA_BH_pvalues_adjusted_max = max(BLCA$BH_pvalues_adjusted)
-# BRCA_allData <- read_csv("finalDTData/BRCA.csv")
-# BRCA <- BRCA_allData[,c()]
+
+BRCA_allData <- read_csv("finalDTData/BRCA.csv",show_col_types = FALSE)
+BRCA_filtered <- BRCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
+BRCAWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/BRCAWBenjaminiHochbergCorrection.csv")
+BRCA <- sqldf::sqldf("SELECT BRCA_filtered.*,  BH_pvalues_adjusted from BRCA_filtered LEFT JOIN BRCAWBenjaminiHochbergCorrection ON 
+                          (BRCA_filtered.entrezgene_id = BRCAWBenjaminiHochbergCorrection.mrna AND BRCA_filtered.mirna1 = BRCAWBenjaminiHochbergCorrection.mirna1 AND BRCA_filtered.mirna2 = BRCAWBenjaminiHochbergCorrection.mirna2) 
+                          OR (BRCA_filtered.entrezgene_id = BRCAWBenjaminiHochbergCorrection.mrna AND BRCA_filtered.mirna1 = BRCAWBenjaminiHochbergCorrection.mirna2 AND BRCA_filtered.mirna2 = BRCAWBenjaminiHochbergCorrection.mirna1)")
+BRCA_BH_pvalues_adjusted_min = min(BRCA$BH_pvalues_adjusted)
+BRCA_BH_pvalues_adjusted_max = max(BRCA$BH_pvalues_adjusted)
 
 CESC_allData <- read_csv("finalDTData/CESC.csv",show_col_types = FALSE)
 CESC_filtered <- CESC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC")]
@@ -436,8 +443,8 @@ ACCwMedian1 <- read_csv("dataset/medians/ACCwMedian1.csv",show_col_types = FALSE
 ACCwMedian2 <- read_csv("dataset/medians/ACCwMedian2.csv",show_col_types = FALSE)
 BLCAwMedian1 <- read_csv("dataset/medians/BLCAwMedian1.csv",show_col_types = FALSE)
 BLCAwMedian2 <- read_csv("dataset/medians/BLCAwMedian2.csv",show_col_types = FALSE)
-# BRCAwMedian1 <- read_csv("dataset/medians/BRCAwMedian1.csv",show_col_types = FALSE)
-# BRCAwMedian2 <- read_csv("dataset/medians/BRCAwMedian2.csv"),show_col_types = FALSE
+BRCAwMedian1 <- read_csv("dataset/medians/BRCAwMedian1.csv",show_col_types = FALSE)
+BRCAwMedian2 <- read_csv("dataset/medians/BRCAwMedian2.csv",show_col_types = FALSE)
 CESCwMedian1 <- read_csv("dataset/medians/CESCwMedian1.csv",show_col_types = FALSE)
 CESCwMedian2 <- read_csv("dataset/medians/CESCwMedian2.csv",show_col_types = FALSE)
 CHOLwMedian1 <- read_csv("dataset/medians/CHOLwMedian1.csv",show_col_types = FALSE)
@@ -722,6 +729,12 @@ ui <- fluidPage(
                                                                       min=BLCA_BH_pvalues_adjusted_min, 
                                                                       max=BLCA_BH_pvalues_adjusted_max,
                                                                       value=c(BLCA_BH_pvalues_adjusted_min,BLCA_BH_pvalues_adjusted_max))),
+                                         conditionalPanel(condition = "input.dataset == 'BRCA'",
+                                                          sliderInput("BH_pvalue_adjusted", 
+                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
+                                                                      min=BRCA_BH_pvalues_adjusted_min, 
+                                                                      max=BRCA_BH_pvalues_adjusted_max,
+                                                                      value=c(BRCA_BH_pvalues_adjusted_min,BRCA_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'CESC'",
                                                           sliderInput("BH_pvalue_adjusted", 
                                                                       label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
@@ -891,12 +904,12 @@ ui <- fluidPage(
                                                                       max=UVM_BH_pvalues_adjusted_max,
                                                                       value=c(UVM_BH_pvalues_adjusted_min,UVM_BH_pvalues_adjusted_max))),
                                          
-                                         hr(),
-                                         checkboxGroupInput(inputId = "filter_BH_rejected",
-                                                            label = " ",
-                                                            choiceNames = c("Filter out BH not rejected?"),
-                                                            choiceValues = c("True")
-                                                            ),
+                                         # hr(),
+                                         # checkboxGroupInput(inputId = "filter_BH_rejected",
+                                         #                    label = " ",
+                                         #                    choiceNames = c("Filter out BH not rejected?"),
+                                         #                    choiceValues = c("True")
+                                         #                    ),
                                          
                                          hr(),
                                          checkboxGroupInput(inputId = "is_mrna_tf",
@@ -975,7 +988,7 @@ ui <- fluidPage(
                             hr(),
                             selectizeInput("mirnaCommonMirnaPair", "miRNA Filter", choices=mirnaListCommonMirnaPairs, multiple=TRUE),
                             hr(),
-                            pickerInput(inputId = "CommonMirnaPairCancerCount", label = "Select with Count Above:",choices = c(1,2,3,4,5,6,7), selected=c(1), multiple = FALSE),
+                            pickerInput(inputId = "CommonMirnaPairCancerCount", label = "Select with Count Above:",choices = c(1,2,3,4), selected=c(1), multiple = FALSE),
                             # checkboxGroupInput(inputId = "CommonMirnaPairCancerCount",
                             #                    label = "Filter with Count",
                             #                    choiceNames = c("Above 3","Above 4","Above 5","Above 6", "Above 7","Above 8"),
@@ -1154,7 +1167,7 @@ server <- function(input, output, session) {
         switch(input$dataset, 
                "ACC" = ACC,
                "BLCA"=BLCA,
-               #"BRCA"=BRCA,
+               "BRCA"=BRCA,
                "CESC"=CESC,
                "CHOL"=CHOL,
                "COAD"=COAD,
@@ -1193,6 +1206,7 @@ server <- function(input, output, session) {
     
     
     observeEvent(input$dataset,{
+        #mirnaList <- stringr::str_remove(stringr::str_replace(union_all(datasetInput()$mirna1,datasetInput()$mirna2),"mir","miR"),"hsa-")
         mirnaList <- stringr::str_replace(union_all(datasetInput()$mirna1,datasetInput()$mirna2),"mir","miR")
         updateSelectizeInput(session,"mirnaFilter",choices = unique(mirnaList))
     })
@@ -1276,25 +1290,25 @@ server <- function(input, output, session) {
         }
         
 
-        if(length(nrow(filteredWithBH_value >0)) & !is.null(filteredWithBH_value)){
-
-            if(length(tolower(input$filter_BH_rejected)) ==1){
-                filteredWithBH_rejected <- filter(filteredWithBH_value,tolower(BH_rejected) %in% tolower(input$filter_BH_rejected))
-
-                if(nrow(filteredWithBH_rejected) == 0){
-                    filteredWithBH_rejected <- NULL
-                }
-            }
-            else{
-                filteredWithBH_rejected <- filteredWithBH_value
-            }
-
-        }
-        else{
-            filteredWithBH_rejected <- NULL
-        }
+        # if(length(nrow(filteredWithBH_value >0)) & !is.null(filteredWithBH_value)){
+        # 
+        #     if(length(tolower(input$filter_BH_rejected)) ==1){
+        #         filteredWithBH_rejected <- filter(filteredWithBH_value,tolower(BH_rejected) %in% tolower(input$filter_BH_rejected))
+        # 
+        #         if(nrow(filteredWithBH_rejected) == 0){
+        #             filteredWithBH_rejected <- NULL
+        #         }
+        #     }
+        #     else{
+        #         filteredWithBH_rejected <- filteredWithBH_value
+        #     }
+        # 
+        # }
+        # else{
+        #     filteredWithBH_rejected <- NULL
+        # }
         
-        return (filteredWithBH_rejected)
+        return (filteredWithBH_value)
         
     })
     
@@ -1347,7 +1361,6 @@ output$table <- DT::renderDataTable({
 
   if(!is.null(DatasetRoundDigits()) & length(nrow(DatasetRoundDigits())) >0){
     DT1 <- DatasetRoundDigits()
-    print("asdfghnhgfdsdfgh")
     DT <- cbind(DT1,
                 button = sapply(1:nrow(DT1), button("table")),
                 stringsAsFactors = FALSE)
@@ -1366,12 +1379,7 @@ output$table <- DT::renderDataTable({
         DT1$mrnaLiterature <- stringr::str_replace(DT1$mrnaLiterature,"NA"," ")
         
     }
-    #DT1$mirna1Literature <- stringr::str_replace(DT1$mirna1Literature,"NA"," ")
-    #DT1$mirna2Literature <- stringr::str_replace(DT1$mirna2Literature,"NA"," ")
-    #DT1$mrnaLiterature <- stringr::str_replace(DT1$mrnaLiterature,"NA"," ")
-    
-    
-    
+
     
     hideList1 <- c(7,8,9,10,11)
     hideList2 <- c(7,8,9,10,11,12,13,14,15,16,17)
@@ -1380,7 +1388,7 @@ output$table <- DT::renderDataTable({
     hideList5 <-c(7,8,9,10,11,12,13,14,15)
     
     ifelse(input$dataset=="ACC" || input$dataset=="DLBC" || input$dataset=="LGG" || input$dataset=="MESO" || input$dataset=="OV" || input$dataset=="UCS" || input$dataset=="UVM", columnHideList <-hideList1,
-           ifelse(input$dataset=="BLCA" || input$dataset=="CESC" || input$dataset=="CHOL" || input$dataset=="ESCA" || input$dataset=="HNSC" || input$dataset=="KICH" || input$dataset=="KIRC" || input$dataset=="KIRP" || input$dataset=="LIHC" || input$dataset=="LUAD" || input$dataset=="LUSC" || input$dataset=="PAAD" || input$dataset=="PCPG" || input$dataset=="PRAD" || input$dataset=="SKCM" || input$dataset=="STAD" || input$dataset=="THCA" || input$dataset=="UCEC", columnHideList <-hideList2,
+           ifelse(input$dataset=="BLCA" || input$dataset=="CESC" || input$dataset=="CHOL" || input$dataset=="ESCA" || input$dataset=="HNSC" || input$dataset=="KICH" || input$dataset=="KIRC" || input$dataset=="KIRP" || input$dataset=="LIHC" || input$dataset=="LUAD" || input$dataset=="LUSC" || input$dataset=="PAAD" || input$dataset=="PCPG" || input$dataset=="PRAD" || input$dataset=="SKCM" || input$dataset=="STAD" || input$dataset=="THCA" || input$dataset=="UCEC"|| input$dataset=="BRCA", columnHideList <-hideList2,
                   ifelse(input$dataset=="COAD" || input$dataset=="READ" || input$dataset=="SARC", columnHideList <-hideList3,
                          ifelse(input$dataset=="TGCT", columnHideList <-hideList4,
                                 ifelse(input$dataset=="THYM", columnHideList <-hideList5, columnHideList <-c())))))
@@ -1458,7 +1466,7 @@ output$table <- DT::renderDataTable({
     ) %>% as.character()
     
     BH_pvalues <-  tags$span(
-        "Adjusted pvalue",
+        "Corrected pvalue",
         a(infoBtn('question'), onclick="customHref('Glossary')")
     ) %>% as.character()
     
@@ -1478,7 +1486,7 @@ output$table <- DT::renderDataTable({
 
     
     ifelse(input$dataset=="ACC" || input$dataset=="DLBC" || input$dataset=="LGG" || input$dataset=="MESO" || input$dataset=="OV" || input$dataset=="UCS" || input$dataset=="UVM", columnNameList <-nameList1,
-           ifelse(input$dataset=="BLCA" || input$dataset=="CESC" || input$dataset=="CHOL" || input$dataset=="ESCA" || input$dataset=="HNSC" || input$dataset=="KICH" || input$dataset=="KIRC" || input$dataset=="KIRP" || input$dataset=="LIHC" || input$dataset=="LUAD" || input$dataset=="LUSC" || input$dataset=="PAAD" || input$dataset=="PCPG" || input$dataset=="PRAD" || input$dataset=="SKCM" || input$dataset=="STAD" || input$dataset=="THCA" || input$dataset=="UCEC", columnNameList <-nameList2,
+           ifelse(input$dataset=="BLCA" || input$dataset=="CESC" || input$dataset=="CHOL" || input$dataset=="ESCA" || input$dataset=="HNSC" || input$dataset=="KICH" || input$dataset=="KIRC" || input$dataset=="KIRP" || input$dataset=="LIHC" || input$dataset=="LUAD" || input$dataset=="LUSC" || input$dataset=="PAAD" || input$dataset=="PCPG" || input$dataset=="PRAD" || input$dataset=="SKCM" || input$dataset=="STAD" || input$dataset=="THCA" || input$dataset=="UCEC" || input$dataset=="BRCA", columnNameList <-nameList2,
                   ifelse(input$dataset=="COAD" || input$dataset=="READ" || input$dataset=="SARC", columnNameList <-nameList3,
                          ifelse(input$dataset=="TGCT", columnNameList <-nameList4,
                                 ifelse(input$dataset=="THYM", columnNameList <-nameList5, columnNameList <-c())))))
@@ -1513,6 +1521,7 @@ output$table <- DT::renderDataTable({
     
     as.datatable(formattable(DT, list(
       Lancaster_XY_Z = color_tile("transparent", "lightpink"),
+      BH_pvalues_adjusted = color_tile("transparent", "lightpink"),
       is_mrna_tf = icon_formatter(),
       miRNA1_logFC = sign_formatter,
       miRNA2_logFC = sign_formatter,
@@ -1570,8 +1579,8 @@ observeEvent(input$button, {
   BLCAwMedian1JustMedians <- as.double(BLCAwMedian1[strtoi(row),21:ncol(BLCAwMedian1)][grepl("[0-9]+",BLCAwMedian1[strtoi(row),21:ncol(BLCAwMedian1)])])
   BLCAwMedian2JustMedians <- as.double(BLCAwMedian2[strtoi(row),21:ncol(BLCAwMedian2)][grepl("[0-9]+",BLCAwMedian2[strtoi(row),21:ncol(BLCAwMedian2)])])
 
-  # BRCAwMedian1JustMedians <- as.double(BRCAwMedian1[strtoi(row),15:ncol(BRCAwMedian1)][grepl("[0-9]+",BRCAwMedian1[strtoi(row),15:ncol(BRCAwMedian1)])])
-  # BRCAwMedian2JustMedians <- as.double(BRCAwMedian2[strtoi(row),15:ncol(BRCAwMedian2)][grepl("[0-9]+",BRCAwMedian2[strtoi(row),15:ncol(BRCAwMedian2)])])
+  BRCAwMedian1JustMedians <- as.double(BRCAwMedian1[strtoi(row),18:ncol(BRCAwMedian1)][grepl("[0-9]+",BRCAwMedian1[strtoi(row),18:ncol(BRCAwMedian1)])])
+  BRCAwMedian2JustMedians <- as.double(BRCAwMedian2[strtoi(row),18:ncol(BRCAwMedian2)][grepl("[0-9]+",BRCAwMedian2[strtoi(row),18:ncol(BRCAwMedian2)])])
   
   CESCwMedian1JustMedians <- as.double(CESCwMedian1[strtoi(row),21:ncol(CESCwMedian1)][grepl("[0-9]+",CESCwMedian1[strtoi(row),21:ncol(CESCwMedian1)])])
   CESCwMedian2JustMedians <- as.double(CESCwMedian2[strtoi(row),21:ncol(CESCwMedian2)][grepl("[0-9]+",CESCwMedian2[strtoi(row),21:ncol(CESCwMedian2)])])
@@ -2158,8 +2167,8 @@ output$commonTripletNetwork <- renderVisNetwork({
                           ifelse(tolower(filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$info)=="mirna","dot",
                                  ifelse(tolower(filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$info)=="dummy","dot","dot")))
     
-    nodes$size <- ifelse(tolower(filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$info)=="mrna",50,
-                         ifelse(tolower(filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$info)=="mirna",40,
+    nodes$size <- ifelse(tolower(filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$info)=="mrna",40,
+                         ifelse(tolower(filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$info)=="mirna",30,
                                 ifelse(tolower(filter(commonTriplets_node_attr,commonTriplets_node_attr$shared.name %in% intersectionSharedName)$info)=="dummy",8,3)))
     
     
@@ -2171,8 +2180,8 @@ output$commonTripletNetwork <- renderVisNetwork({
 
     visNetwork(nodes, edges)%>%
       visIgraphLayout()%>% 
-      visEdges(font = list(align="horizontal", color="black", size=30, face="Ubuntu"))%>%
-      visNodes(font = list(color="black", size=40, face="Ubuntu"))
+      visEdges(font = list(align="horizontal", color="black", size=20, face="Ubuntu"))%>%
+      visNodes(font = list(color="black", size=20, face="Ubuntu"))
 })
 
 
@@ -2279,27 +2288,27 @@ commonMirnaPairFilter <- reactive({
     #countListForCommonTripletAndPair <- paste(c(rbind(orListForCommonMirnaPairCancerCount, matrix(CommonMirnaPairCancerCountSub,ncol = length(orListForCommonMirnaPairCancerCount)))[-1]),collapse = '')
     
     if(input$CommonMirnaPairCancerCount ==1){
-      count <- c(2,3,4,5,6,7,8)
+      count <- c(2,3,4,5)
     }
     if(input$CommonMirnaPairCancerCount ==2){
-      count <- c(3,4,5,6,7,8)
+      count <- c(3,4,5)
     }
     if(input$CommonMirnaPairCancerCount ==3){
-      count <- c(4,5,6,7,8)
+      count <- c(4,5)
     }
     if(input$CommonMirnaPairCancerCount ==4){
-      count <- c(5,6,7,8)
+      count <- c(5)
     }
-    if(input$CommonMirnaPairCancerCount ==5){
-      count <- c(6,7,8)
-    }
-    if(input$CommonMirnaPairCancerCount ==6){
-      count <- c(7,8)
-    }
-    if(input$CommonMirnaPairCancerCount ==7){
-      count <- c(8)
-    }
-    
+    # if(input$CommonMirnaPairCancerCount ==5){
+    #   count <- c(6,7,8)
+    # }
+    # if(input$CommonMirnaPairCancerCount ==6){
+    #   count <- c(7,8)
+    # }
+    # if(input$CommonMirnaPairCancerCount ==7){
+    #   count <- c(8)
+    # }
+    # 
     orListForCommonMirnaPairCancerCount <- rep("|",length(count))
     countListForCommonTripletAndPair <- paste(c(rbind(orListForCommonMirnaPairCancerCount, matrix(count,ncol = length(orListForCommonMirnaPairCancerCount)))[-1]),collapse = '')
     

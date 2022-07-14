@@ -4,7 +4,8 @@ Term;Description
 <strong>Pan-cancer Triplets</strong>; Triplets and miRNA pairs that is common in at least two cancer type
 <strong>mRNA</strong>;messenger RNA
 <strong>TF</strong>;transcription factor
-<strong>Triplet p-value</strong>; p value from Kernel Three Variable Interaction Test
+<strong>Triplet pvalue</strong>; pvalues from Kernel Three Variable Interaction Test
+<strong>Corrected pvalue</strong>; pvalues adjusted with Benjamini/Hochberg to limit FDR
 <strong>miRNA Literature</strong>; Whether there is evidence in the literature regarding the importance of any of the miRNAs in the triplets is presented.
 <strong>mRNA Literature</strong>; Whether there is evidence in the literature regarding the importance of mRNAs in the triplets is presented.
 <strong>miRNA-mRNA Database</strong>; Experimental data source of miRNA and mRNA relationships
