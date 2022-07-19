@@ -65,7 +65,6 @@ BLCA_BH_pvalues_adjusted_max = max(BLCA$BH_pvalues_adjusted)
 
 BRCA_allData <- read_csv("finalDTDataWBHCorrection/BRCA.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
 BRCA <- BRCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
-BRCAWBenjaminiHochbergCorrection <- read_csv("BenjaminiHochberg/BRCAWBenjaminiHochbergCorrection.csv")
 
 BRCA_BH_pvalues_adjusted_min = min(BRCA$BH_pvalues_adjusted)
 BRCA_BH_pvalues_adjusted_max = max(BRCA$BH_pvalues_adjusted)
@@ -238,6 +237,8 @@ UVM <- UVM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster
 UVM_BH_pvalues_adjusted_min = min(UVM$BH_pvalues_adjusted)
 UVM_BH_pvalues_adjusted_max = max(UVM$BH_pvalues_adjusted)
 ####################################################################################################
+
+
 
 concated <- data.frame(source=c(),target=c())
 
@@ -596,13 +597,7 @@ ui <- fluidPage(
                                          br(),
                                          selectizeInput("mirnaFilter", "miRNA Filter", choices=NULL, multiple=TRUE),
                                          hr(),
-                                         
-                                         # conditionalPanel(condition = "input.dataset == 'ACC'",
-                                         #                  sliderInput("breakCount", "Break Count", min=1, max=1000, value=10)),
-                                         # 
-                                         # conditionalPanel(condition = "input.dataset == 'PRAD'",
-                                         #                 sliderInput("breakCount", "Break Count", min=50, max=5000, value=500)),
-                                         
+
 
                                          sliderInput("Lancaster_XY_Z_range",
                                                      label = p("Triplet pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
@@ -612,208 +607,217 @@ ui <- fluidPage(
                                          
                                          hr(),
                                          
-                                         # 
+                                        #uiOutput("BH_pval"),
                                          # sliderInput("BH_pvalue_adjusted",
                                          #             label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
                                          #             value = c(0,1),
                                          #             min = 0,
                                          #             max = 1),
-                                         
+
+                                        
                                          conditionalPanel(condition = "input.dataset == 'ACC'",
-                                                         sliderInput("BH_pvalue_adjusted", 
-                                                                     label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                     min=ACC_BH_pvalues_adjusted_min, 
+                                                         sliderInput("BH_pvalue_adjusted_ACC",
+                                                                     label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                     min=ACC_BH_pvalues_adjusted_min,
                                                                      max=ACC_BH_pvalues_adjusted_max,
-                                                                     value=c(ACC_BH_pvalues_adjusted_min,ACC_BH_pvalues_adjusted_max))),
-                                         conditionalPanel(condition = "input.dataset == 'BLCA'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=BLCA_BH_pvalues_adjusted_min, 
-                                                                      max=BLCA_BH_pvalues_adjusted_max,
-                                                                      value=c(BLCA_BH_pvalues_adjusted_min,BLCA_BH_pvalues_adjusted_max))),
+                                                                     value=c(ACC_BH_pvalues_adjusted_min,ACC_BH_pvalues_adjusted_max),
+                                                                     )),
+                                        
+                                        conditionalPanel(condition = "input.dataset == 'BLCA'",
+                                                         sliderInput("BH_pvalue_adjusted_BLCA",
+                                                                     label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                     min=BLCA_BH_pvalues_adjusted_min,
+                                                                     max=BLCA_BH_pvalues_adjusted_max,
+                                                                     value=c(BLCA_BH_pvalues_adjusted_min,BLCA_BH_pvalues_adjusted_max),
+                                                         )),
+
                                          conditionalPanel(condition = "input.dataset == 'BRCA'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=BRCA_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_BRCA",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=BRCA_BH_pvalues_adjusted_min,
                                                                       max=BRCA_BH_pvalues_adjusted_max,
-                                                                      value=c(BRCA_BH_pvalues_adjusted_min,BRCA_BH_pvalues_adjusted_max))),
+                                                                      value=c(BRCA_BH_pvalues_adjusted_min,BRCA_BH_pvalues_adjusted_max),
+                                                                      )),
+
                                          conditionalPanel(condition = "input.dataset == 'CESC'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=CESC_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_CESC",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=CESC_BH_pvalues_adjusted_min,
                                                                       max=CESC_BH_pvalues_adjusted_max,
-                                                                      value=c(CESC_BH_pvalues_adjusted_min,CESC_BH_pvalues_adjusted_max))),
+                                                                      value=c(CESC_BH_pvalues_adjusted_min,CESC_BH_pvalues_adjusted_max),
+                                                                      round = FALSE)),
+
                                          conditionalPanel(condition = "input.dataset == 'CHOL'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=CHOL_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_CHOL",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=CHOL_BH_pvalues_adjusted_min,
                                                                       max=CHOL_BH_pvalues_adjusted_max,
                                                                       value=c(CHOL_BH_pvalues_adjusted_min,CHOL_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'COAD'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=COAD_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_COAD",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=COAD_BH_pvalues_adjusted_min,
                                                                       max=COAD_BH_pvalues_adjusted_max,
                                                                       value=c(COAD_BH_pvalues_adjusted_min,COAD_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'DLBC'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=DLBC_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_DLBC",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=DLBC_BH_pvalues_adjusted_min,
                                                                       max=DLBC_BH_pvalues_adjusted_max,
                                                                       value=c(DLBC_BH_pvalues_adjusted_min,DLBC_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'ESCA'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=ESCA_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_ESCA",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=ESCA_BH_pvalues_adjusted_min,
                                                                       max=ESCA_BH_pvalues_adjusted_max,
                                                                       value=c(ESCA_BH_pvalues_adjusted_min,ESCA_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'HNSC'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=HNSC_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_HNSC",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=HNSC_BH_pvalues_adjusted_min,
                                                                       max=HNSC_BH_pvalues_adjusted_max,
                                                                       value=c(HNSC_BH_pvalues_adjusted_min,HNSC_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'KICH'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=KICH_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_KICH",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=KICH_BH_pvalues_adjusted_min,
                                                                       max=KICH_BH_pvalues_adjusted_max,
                                                                       value=c(KICH_BH_pvalues_adjusted_min,KICH_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'KIRC'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=KIRC_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_KIRC",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=KIRC_BH_pvalues_adjusted_min,
                                                                       max=KIRC_BH_pvalues_adjusted_max,
                                                                       value=c(KIRC_BH_pvalues_adjusted_min,KIRC_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'KIRP'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=KIRP_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_KIRP",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=KIRP_BH_pvalues_adjusted_min,
                                                                       max=KIRP_BH_pvalues_adjusted_max,
                                                                       value=c(KIRP_BH_pvalues_adjusted_min,KIRP_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'LGG'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=LGG_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_LGG",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=LGG_BH_pvalues_adjusted_min,
                                                                       max=LGG_BH_pvalues_adjusted_max,
                                                                       value=c(LGG_BH_pvalues_adjusted_min,LGG_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'LIHC'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=LIHC_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_LIHC",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=LIHC_BH_pvalues_adjusted_min,
                                                                       max=LIHC_BH_pvalues_adjusted_max,
                                                                       value=c(LIHC_BH_pvalues_adjusted_min,LIHC_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'LUAD'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=LUAD_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_LUAD",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=LUAD_BH_pvalues_adjusted_min,
                                                                       max=LUAD_BH_pvalues_adjusted_max,
                                                                       value=c(LUAD_BH_pvalues_adjusted_min,LUAD_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'LUSC'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=LUSC_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_LUSC",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=LUSC_BH_pvalues_adjusted_min,
                                                                       max=LUSC_BH_pvalues_adjusted_max,
                                                                       value=c(LUSC_BH_pvalues_adjusted_min,LUSC_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'MESO'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=MESO_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_MESO",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=MESO_BH_pvalues_adjusted_min,
                                                                       max=MESO_BH_pvalues_adjusted_max,
                                                                       value=c(MESO_BH_pvalues_adjusted_min,MESO_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'OV'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=OV_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_OV",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=OV_BH_pvalues_adjusted_min,
                                                                       max=OV_BH_pvalues_adjusted_max,
                                                                       value=c(OV_BH_pvalues_adjusted_min,OV_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'PAAD'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=PAAD_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_PAAD",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=PAAD_BH_pvalues_adjusted_min,
                                                                       max=PAAD_BH_pvalues_adjusted_max,
                                                                       value=c(PAAD_BH_pvalues_adjusted_min,PAAD_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'PCPG'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=PCPG_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_PCPG",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=PCPG_BH_pvalues_adjusted_min,
                                                                       max=PCPG_BH_pvalues_adjusted_max,
                                                                       value=c(PCPG_BH_pvalues_adjusted_min,PCPG_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'PRAD'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=PRAD_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_PRAD",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=PRAD_BH_pvalues_adjusted_min,
                                                                       max=PRAD_BH_pvalues_adjusted_max,
                                                                       value=c(PRAD_BH_pvalues_adjusted_min,PRAD_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'READ'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=READ_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_READ",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=READ_BH_pvalues_adjusted_min,
                                                                       max=READ_BH_pvalues_adjusted_max,
                                                                       value=c(READ_BH_pvalues_adjusted_min,READ_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'SARC'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=SARC_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_SARC",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=SARC_BH_pvalues_adjusted_min,
                                                                       max=SARC_BH_pvalues_adjusted_max,
                                                                       value=c(SARC_BH_pvalues_adjusted_min,SARC_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'SKCM'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=SKCM_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_SKCM",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=SKCM_BH_pvalues_adjusted_min,
                                                                       max=SKCM_BH_pvalues_adjusted_max,
                                                                       value=c(SKCM_BH_pvalues_adjusted_min,SKCM_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'STAD'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=STAD_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_STAD",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=STAD_BH_pvalues_adjusted_min,
                                                                       max=STAD_BH_pvalues_adjusted_max,
                                                                       value=c(STAD_BH_pvalues_adjusted_min,STAD_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'TGCT'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=TGCT_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_TGCT",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=TGCT_BH_pvalues_adjusted_min,
                                                                       max=TGCT_BH_pvalues_adjusted_max,
                                                                       value=c(TGCT_BH_pvalues_adjusted_min,TGCT_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'THCA'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=THCA_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_THCA",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=THCA_BH_pvalues_adjusted_min,
                                                                       max=THCA_BH_pvalues_adjusted_max,
                                                                       value=c(THCA_BH_pvalues_adjusted_min,THCA_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'THYM'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=THYM_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_THYM",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=THYM_BH_pvalues_adjusted_min,
                                                                       max=THYM_BH_pvalues_adjusted_max,
                                                                       value=c(THYM_BH_pvalues_adjusted_min,THYM_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'UCEC'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=UCEC_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_UCEC",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=UCEC_BH_pvalues_adjusted_min,
                                                                       max=UCEC_BH_pvalues_adjusted_max,
                                                                       value=c(UCEC_BH_pvalues_adjusted_min,UCEC_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'UCS'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=UCS_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_UCS",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=UCS_BH_pvalues_adjusted_min,
                                                                       max=UCS_BH_pvalues_adjusted_max,
                                                                       value=c(UCS_BH_pvalues_adjusted_min,UCS_BH_pvalues_adjusted_max))),
                                          conditionalPanel(condition = "input.dataset == 'UVM'",
-                                                          sliderInput("BH_pvalue_adjusted", 
-                                                                      label = p("Adjusted pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")), 
-                                                                      min=UVM_BH_pvalues_adjusted_min, 
+                                                          sliderInput("BH_pvalue_adjusted_UVM",
+                                                                      label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+                                                                      min=UVM_BH_pvalues_adjusted_min,
                                                                       max=UVM_BH_pvalues_adjusted_max,
                                                                       value=c(UVM_BH_pvalues_adjusted_min,UVM_BH_pvalues_adjusted_max))),
-                                         
-                                         # hr(),
+
+                                         hr(),
                                          # checkboxGroupInput(inputId = "filter_BH_rejected",
                                          #                    label = " ",
                                          #                    choiceNames = c("Filter out BH not rejected?"),
                                          #                    choiceValues = c("True")
                                          #                    ),
-                                         
-                                         hr(),
+                                         # 
+                                         # hr(),
                                          checkboxGroupInput(inputId = "is_mrna_tf",
                                                             label = "Is mRNA TF?",
                                                             choiceNames = c("mRNA is TF", "mRNA is not TF"),
@@ -1115,8 +1119,148 @@ server <- function(input, output, session) {
     
     
     
-
+    # output$BH_pval <- renderUI({
+    #     if(input$dataset =="ACC"){
+    #         min_pval <- ACC_BH_pvalues_adjusted_min
+    #         max_pval <- ACC_BH_pvalues_adjusted_max
+    #     }
+    #     if(input$dataset =="BLCA"){
+    #         min_pval <- BLCA_BH_pvalues_adjusted_min
+    #         max_pval <- BRCA_BH_pvalues_adjusted_max
+    #     }
+    #     if(input$dataset =="BRCA"){
+    #         min_pval <- BRCA_BH_pvalues_adjusted_min
+    #         max_pval <- BRCA_BH_pvalues_adjusted_max
+    #     }
+    #     sliderInput("BH_pvalue_adjusted",
+    #         label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
+    #                 min=min_pval,
+    #                 max=max_pval,
+    #                 value=c(min_pval,max_pval))
+    # })
+    
     datasetFinal <- reactive({
+        
+        if(input$dataset =="ACC"){
+            min_pval <- input$BH_pvalue_adjusted_ACC[1]
+            max_pval <- input$BH_pvalue_adjusted_ACC[2]
+        }
+        if(input$dataset =="BLCA"){
+            min_pval <- input$BH_pvalue_adjusted_BLCA[1]
+            max_pval <- input$BH_pvalue_adjusted_BLCA[2]
+        }
+        if(input$dataset =="BRCA"){
+            min_pval <- input$BH_pvalue_adjusted_BRCA[1]
+            max_pval <- input$BH_pvalue_adjusted_BRCA[2]
+        }
+        if(input$dataset =="CESC"){
+            min_pval <- input$BH_pvalue_adjusted_CESC[1]
+            max_pval <- input$BH_pvalue_adjusted_CESC[2]
+        }
+        if(input$dataset =="CHOL"){
+            min_pval <- input$BH_pvalue_adjusted_CHOL[1]
+            max_pval <- input$BH_pvalue_adjusted_CHOL[2]
+        }
+        if(input$dataset =="COAD"){
+            min_pval <- input$BH_pvalue_adjusted_COAD[1]
+            max_pval <- input$BH_pvalue_adjusted_COAD[2]
+        }
+        if(input$dataset =="DLBC"){
+            min_pval <- input$BH_pvalue_adjusted_DLBC[1]
+            max_pval <- input$BH_pvalue_adjusted_DLBC[2]
+        }
+        if(input$dataset =="ESCA"){
+            min_pval <- input$BH_pvalue_adjusted_ESCA[1]
+            max_pval <- input$BH_pvalue_adjusted_ESCA[2]
+        }
+        if(input$dataset =="HNSC"){
+            min_pval <- input$BH_pvalue_adjusted_HNSC[1]
+            max_pval <- input$BH_pvalue_adjusted_HNSC[2]
+        }
+        if(input$dataset =="KICH"){
+            min_pval <- input$BH_pvalue_adjusted_KICH[1]
+            max_pval <- input$BH_pvalue_adjusted_KICH[2]
+        }
+        if(input$dataset =="KIRC"){
+            min_pval <- input$BH_pvalue_adjusted_KIRC[1]
+            max_pval <- input$BH_pvalue_adjusted_KIRC[2]
+        }
+        if(input$dataset =="KIRP"){
+            min_pval <- input$BH_pvalue_adjusted_KIRP[1]
+            max_pval <- input$BH_pvalue_adjusted_KIRP[2]
+        }
+        if(input$dataset =="LGG"){
+            min_pval <- input$BH_pvalue_adjusted_LGG[1]
+            max_pval <- input$BH_pvalue_adjusted_LGG[2]
+        }
+        if(input$dataset =="LIHC"){
+            min_pval <- input$BH_pvalue_adjusted_LIHC[1]
+            max_pval <- input$BH_pvalue_adjusted_LIHC[2]
+        }
+        if(input$dataset =="LUAD"){
+            min_pval <- input$BH_pvalue_adjusted_LUAD[1]
+            max_pval <- input$BH_pvalue_adjusted_LUAD[2]
+        }
+        if(input$dataset =="LUSC"){
+            min_pval <- input$BH_pvalue_adjusted_LUSC[1]
+            max_pval <- input$BH_pvalue_adjusted_LUSC[2]
+        }
+        if(input$dataset =="MESO"){
+            min_pval <- input$BH_pvalue_adjusted_MESO[1]
+            max_pval <- input$BH_pvalue_adjusted_MESO[2]
+        }
+        if(input$dataset =="OV"){
+            min_pval <- input$BH_pvalue_adjusted_OV[1]
+            max_pval <- input$BH_pvalue_adjusted_OV[2]
+        }
+        if(input$dataset =="PAAD"){
+            min_pval <- input$BH_pvalue_adjusted_PAAD[1]
+            max_pval <- input$BH_pvalue_adjusted_PAAD[2]
+        }
+        if(input$dataset =="PCPG"){
+            min_pval <- input$BH_pvalue_adjusted_PCPG[1]
+            max_pval <- input$BH_pvalue_adjusted_PCPG[2]
+        }
+        if(input$dataset =="PRAD"){
+            min_pval <- input$BH_pvalue_adjusted_PRAD[1]
+            max_pval <- input$BH_pvalue_adjusted_PRAD[2]
+        }
+        if(input$dataset =="SARC"){
+            min_pval <- input$BH_pvalue_adjusted_SARC[1]
+            max_pval <- input$BH_pvalue_adjusted_SARC[2]
+        }
+        if(input$dataset =="SKCM"){
+            min_pval <- input$BH_pvalue_adjusted_SKCM[1]
+            max_pval <- input$BH_pvalue_adjusted_SKCM[2]
+        }
+        if(input$dataset =="STAD"){
+            min_pval <- input$BH_pvalue_adjusted_STAD[1]
+            max_pval <- input$BH_pvalue_adjusted_STAD[2]
+        }
+        if(input$dataset =="TGCT"){
+            min_pval <- input$BH_pvalue_adjusted_TGCT[1]
+            max_pval <- input$BH_pvalue_adjusted_TGCT[2]
+        }
+        if(input$dataset =="THCA"){
+            min_pval <- input$BH_pvalue_adjusted_THCA[1]
+            max_pval <- input$BH_pvalue_adjusted_THCA[2]
+        }
+        if(input$dataset =="THYM"){
+            min_pval <- input$BH_pvalue_adjusted_THYM[1]
+            max_pval <- input$BH_pvalue_adjusted_THYM[2]
+        }
+        if(input$dataset =="UCEC"){
+            min_pval <- input$BH_pvalue_adjusted_UCEC[1]
+            max_pval <- input$BH_pvalue_adjusted_UCEC[2]
+        }
+        if(input$dataset =="UCS"){
+            min_pval <- input$BH_pvalue_adjusted_UCS[1]
+            max_pval <- input$BH_pvalue_adjusted_UCS[2]
+        }
+        if(input$dataset =="UVM"){
+            min_pval <- input$BH_pvalue_adjusted_UVM[1]
+            max_pval <- input$BH_pvalue_adjusted_UVM[2]
+        }
         
         mirnaFilter <- NULL
         mrnaFilter <- NULL
@@ -1179,8 +1323,10 @@ server <- function(input, output, session) {
         }
 
         if(length(nrow(filteredWithTests))>0 & !is.null(filteredWithTests)){
+
             filteredWithBH_value <-filter(filteredWithTests,
-                                          BH_pvalues_adjusted >=input$BH_pvalue_adjusted[1], BH_pvalues_adjusted <=input$BH_pvalue_adjusted[2])
+                                          BH_pvalues_adjusted >= min_pval, BH_pvalues_adjusted <= max_pval)
+            
             if(nrow(filteredWithBH_value) == 0){
                 filteredWithBH_value <- NULL
                 
@@ -1210,6 +1356,10 @@ server <- function(input, output, session) {
         #     filteredWithBH_rejected <- NULL
         # }
         
+        print(nrow(datasetInput()))
+        print(nrow(dataset1))
+        print(nrow(filteredWithTests))
+        print(nrow(filteredWithBH_value))
         return (filteredWithBH_value)
         
     })
@@ -1234,7 +1384,7 @@ server <- function(input, output, session) {
     
     
     DatasetRoundDigits <-reactive({
-        
+
         dataset <-datasetFinal()
         
         
@@ -1582,11 +1732,11 @@ observeEvent(input$button, {
     value=c(BLCAwMedian1JustMedians,BLCAwMedian2JustMedians)
   ),
   
-  # ifelse(input$dataset=="BRCA", data <-data.frame(
-  #   name=c(rep("Both miRNA's Downregulated",length(BRCAwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(BRCAwMedian2JustMedians))),
-  #   value=c(BRCAwMedian1JustMedians,BRCAwMedian2JustMedians)
-  # ),
-  # 
+  ifelse(input$dataset=="BRCA", data <-data.frame(
+    name=c(rep("Both miRNA's Downregulated",length(BRCAwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(BRCAwMedian2JustMedians))),
+    value=c(BRCAwMedian1JustMedians,BRCAwMedian2JustMedians)
+  ),
+
   ifelse(input$dataset=="CESC", data <- data.frame(
     name=c(rep("Both miRNA's Downregulated",length(CESCwMedian1JustMedians)),rep("Both miRNA's Upregulated",length(CESCwMedian2JustMedians))),
     value=c(CESCwMedian1JustMedians,CESCwMedian2JustMedians)
@@ -1705,7 +1855,7 @@ observeEvent(input$button, {
     name=c(),
     value=c()
   )
-  )))))))))))))))))))))))))))))
+  ))))))))))))))))))))))))))))))
   )
 
 
