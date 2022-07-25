@@ -231,6 +231,7 @@ for (x in (1:nrow(CHOL_node_attr))){
   }
 }
 
+
 ESCA_node_attr["significance"] <- ""
 for (x in (1:nrow(ESCA_node_attr))){
   concatWhsa <- paste("hsa", ESCA_node_attr$shared.name[x],sep="-")

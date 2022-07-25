@@ -248,6 +248,9 @@ ACC_node_attr <- read.table("networkData/ACC_generalNetwork_default_node.csv", h
 BLCA_source_target <- read.table("networkData/BLCA_source_target_new.csv", header=TRUE, sep = ";" )
 BLCA_node_attr <- read.table("networkData/BLCA_node_attr_significantmirnas.csv", header = T, sep = ",")
 
+BRCA_source_target <- read.table("networkData/BRCA_source_target.csv", header=TRUE, sep = ";" )
+BRCA_node_attr <- read.table("networkData/BRCA_general_network_default_node.csv", header = T, sep = ",")
+
 CESC_source_target <- read.table("networkData/CESC_source_target_info.csv", header=TRUE, sep = ";" )
 CESC_node_attr <- read.table("networkData/CESC_node_attr_significantmirnas.csv", header = T, sep = ",")
 
@@ -796,19 +799,22 @@ ui <- fluidPage(
                                                                       label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
                                                                       min=UCEC_BH_pvalues_adjusted_min,
                                                                       max=UCEC_BH_pvalues_adjusted_max,
-                                                                      value=c(UCEC_BH_pvalues_adjusted_min,UCEC_BH_pvalues_adjusted_max))),
+                                                                      value=c(UCEC_BH_pvalues_adjusted_min,UCEC_BH_pvalues_adjusted_max)
+                                                                      )),
                                          conditionalPanel(condition = "input.dataset == 'UCS'",
                                                           sliderInput("BH_pvalue_adjusted_UCS",
                                                                       label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
                                                                       min=UCS_BH_pvalues_adjusted_min,
                                                                       max=UCS_BH_pvalues_adjusted_max,
-                                                                      value=c(UCS_BH_pvalues_adjusted_min,UCS_BH_pvalues_adjusted_max))),
+                                                                      value=c(UCS_BH_pvalues_adjusted_min,UCS_BH_pvalues_adjusted_max)
+                                                                      )),
                                          conditionalPanel(condition = "input.dataset == 'UVM'",
                                                           sliderInput("BH_pvalue_adjusted_UVM",
                                                                       label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
                                                                       min=UVM_BH_pvalues_adjusted_min,
                                                                       max=UVM_BH_pvalues_adjusted_max,
-                                                                      value=c(UVM_BH_pvalues_adjusted_min,UVM_BH_pvalues_adjusted_max))),
+                                                                      value=c(UVM_BH_pvalues_adjusted_min,UVM_BH_pvalues_adjusted_max)
+                                                                      )),
 
                                          hr(),
                                          # checkboxGroupInput(inputId = "filter_BH_rejected",
@@ -1118,27 +1124,6 @@ server <- function(input, output, session) {
     })
     
     
-    
-    # output$BH_pval <- renderUI({
-    #     if(input$dataset =="ACC"){
-    #         min_pval <- ACC_BH_pvalues_adjusted_min
-    #         max_pval <- ACC_BH_pvalues_adjusted_max
-    #     }
-    #     if(input$dataset =="BLCA"){
-    #         min_pval <- BLCA_BH_pvalues_adjusted_min
-    #         max_pval <- BRCA_BH_pvalues_adjusted_max
-    #     }
-    #     if(input$dataset =="BRCA"){
-    #         min_pval <- BRCA_BH_pvalues_adjusted_min
-    #         max_pval <- BRCA_BH_pvalues_adjusted_max
-    #     }
-    #     sliderInput("BH_pvalue_adjusted",
-    #         label = p("Corrected pvalue ",a(infoBtn('workingPop'), onclick="customHref('About')")),
-    #                 min=min_pval,
-    #                 max=max_pval,
-    #                 value=c(min_pval,max_pval))
-    # })
-    
     datasetFinal <- reactive({
         
         if(input$dataset =="ACC"){
@@ -1224,6 +1209,10 @@ server <- function(input, output, session) {
         if(input$dataset =="PRAD"){
             min_pval <- input$BH_pvalue_adjusted_PRAD[1]
             max_pval <- input$BH_pvalue_adjusted_PRAD[2]
+        }
+        if(input$dataset =="READ"){
+            min_pval <- input$BH_pvalue_adjusted_READ[1]
+            max_pval <- input$BH_pvalue_adjusted_READ[2]
         }
         if(input$dataset =="SARC"){
             min_pval <- input$BH_pvalue_adjusted_SARC[1]
@@ -1312,7 +1301,7 @@ server <- function(input, output, session) {
 
         if(length(nrow(dataset1))>0 & !is.null(dataset1)){
             filteredWithTests <-filter(dataset1,
-                                       Lancaster_XY_Z >=input$Lancaster_XY_Z_range[1], Lancaster_XY_Z <=input$Lancaster_XY_Z_range[2])
+                                       round(Lancaster_XY_Z,4) >= round(input$Lancaster_XY_Z_range[1],4), round(Lancaster_XY_Z,4) <=round(input$Lancaster_XY_Z_range[2],4))
             if(nrow(filteredWithTests) == 0){
                 filteredWithTests <- NULL
             }
@@ -1324,9 +1313,12 @@ server <- function(input, output, session) {
 
         if(length(nrow(filteredWithTests))>0 & !is.null(filteredWithTests)){
 
-            filteredWithBH_value <-filter(filteredWithTests,
-                                          BH_pvalues_adjusted >= min_pval, BH_pvalues_adjusted <= max_pval)
+            filteredWithBH_value <-dplyr::filter(filteredWithTests,
+                                          round(BH_pvalues_adjusted,4) >= round(min_pval,4) & round(BH_pvalues_adjusted,4) <= round(max_pval,4))
             
+            print(min_pval)
+            print(max_pval)
+            print(max(filteredWithTests$BH_pvalues_adjusted))
             if(nrow(filteredWithBH_value) == 0){
                 filteredWithBH_value <- NULL
                 
@@ -1394,7 +1386,8 @@ server <- function(input, output, session) {
           dataset$mirna1 <- stringr::str_replace(dataset$mirna1,"mir","miR")
           dataset$mirna2 <- stringr::str_replace(dataset$mirna2,"mir","miR")
           dataset <- dataset %>%
-            dplyr::mutate(across(where(is.numeric),round,4))
+              dplyr::mutate(across(where(is.numeric),round,4))
+          
           
         }
         else{
@@ -1899,6 +1892,7 @@ sourceTargetInput <- reactive({
     switch (input$dataset,
             "ACC"=ACC_source_target,
             "BLCA" = BLCA_source_target,
+            "BRCA" = BRCA_source_target,
             "CESC"=CESC_source_target,
             "CHOL"=CHOL_source_target,
             "COAD"=COAD_source_target,
@@ -1935,6 +1929,7 @@ nodeAttributeInput <- reactive({
     switch (input$dataset,
             "ACC" = ACC_node_attr,
             "BLCA" = BLCA_node_attr,
+            "BRCA" = BRCA_node_attr,
             "CESC"=CESC_node_attr,
             "CHOL"=CHOL_node_attr,
             "COAD"=COAD_node_attr,
@@ -1982,6 +1977,7 @@ cancerSpecificNetworkNodeEdge <- reactive({
     splittedSourceTargetFilteringDUMMY1_2 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA1,"/",splittedSourceTargetFilteringMIRNA2))
     splittedSourceTargetFilteringDUMMY2_1 <- gsub(" ","",paste(splittedSourceTargetFilteringMIRNA2,"/",splittedSourceTargetFilteringMIRNA1))
     
+
     for (i in 1:nrow(DatasetRoundDigits())){
       concated <- rbind(concated, filter(sourceTargetInput(), ((tolower(sourceTargetInput()$source)==tolower(splittedSourceTargetFilteringMIRNA1[i]) & (tolower(sourceTargetInput()$target) == tolower(splittedSourceTargetFilteringDUMMY1_2[i]) |tolower(sourceTargetInput()$target) == tolower(splittedSourceTargetFilteringDUMMY2_1[i]) ))|
                                                                  (tolower(sourceTargetInput()$source)==tolower(splittedSourceTargetFilteringMIRNA2[i]) & (tolower(sourceTargetInput()$target) == tolower(splittedSourceTargetFilteringDUMMY1_2[i]) | tolower(sourceTargetInput()$target) == tolower(splittedSourceTargetFilteringDUMMY2_1[i])))|
@@ -2053,19 +2049,26 @@ output$vNetwork <- renderVisNetwork({
     nodes$color.border <- "rgb(153,153,153)"
     
     if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){
+        if("miRNA1_pvalue" %in% colnames(DatasetRoundDigits())){
+            
+        }
+        else{
+            # nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+            #                                 filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, 3,1)
+            # 
+            # nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+            #                                  filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
+            # 
+            nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+                                             ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+                                                    "rgb(153,153,153)"))
+            nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+                                         ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+                                                "rgb(153,153,153)"))
+            
+        }
       
-      nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
-                                    filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, 3,1)
       
-      nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
-                                     filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
-      
-      nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-                                       ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-                                              "rgb(153,153,153)"))
-      nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-                                   ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-                                          "rgb(153,153,153)"))
       
     }
     

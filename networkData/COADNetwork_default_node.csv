@@ -1,4 +1,4 @@
-"info","is_mrna_tf","name","selected","shared name","updown"
+"info","is_mrna_tf","name","selected","shared.name","updown"
 "mirna",,"mir-30b-5p","false","mir-30b-5p","mirna"
 "dummy",,"","false","mir-30b-5p/mir-494-3p","dummy"
 "dummy",,"","false","mir-30b-5p/mir-548f-3p","dummy"
