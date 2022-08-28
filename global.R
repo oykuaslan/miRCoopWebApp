@@ -50,188 +50,188 @@ cancerNames <- c("ACC","BLCA","BRCA","CESC","CHOL","COAD","DLBC","ESCA","HNSC","
 
 
 ####################################################################################################
-ACC_allData <- read_csv("finalDTDataWBHCorrection/ACC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-ACC <- ACC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted")]
+ACC_allData <- read_csv("miRNAClusterandFamily/ACC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+ACC <- ACC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 ACC_BH_pvalues_adjusted_min = min(ACC$BH_pvalues_adjusted)
 ACC_BH_pvalues_adjusted_max = max(ACC$BH_pvalues_adjusted)
 
-BLCA_allData <- read_csv("finalDTDataWBHCorrection/BLCA.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-BLCA <- BLCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+BLCA_allData <- read_csv("miRNAClusterandFamily/BLCA.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+BLCA <- BLCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 BLCA_BH_pvalues_adjusted_min = min(BLCA$BH_pvalues_adjusted)
 BLCA_BH_pvalues_adjusted_max = max(BLCA$BH_pvalues_adjusted)
 
-BRCA_allData <- read_csv("finalDTDataWBHCorrection/BRCA.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-BRCA <- BRCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+BRCA_allData <- read_csv("miRNAClusterandFamily/BRCA.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+BRCA <- BRCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 BRCA_BH_pvalues_adjusted_min = min(BRCA$BH_pvalues_adjusted)
 BRCA_BH_pvalues_adjusted_max = max(BRCA$BH_pvalues_adjusted)
 
-CESC_allData <- read_csv("finalDTDataWBHCorrection/CESC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-CESC <- CESC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+CESC_allData <- read_csv("miRNAClusterandFamily/CESC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+CESC <- CESC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 CESC_BH_pvalues_adjusted_min = min(CESC$BH_pvalues_adjusted)
 CESC_BH_pvalues_adjusted_max = max(CESC$BH_pvalues_adjusted)
 
-CHOL_allData <- read_csv("finalDTDataWBHCorrection/CHOL.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-CHOL <- CHOL_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+CHOL_allData <- read_csv("miRNAClusterandFamily/CHOL.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+CHOL <- CHOL_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 CHOL_BH_pvalues_adjusted_min = min(CHOL$BH_pvalues_adjusted)
 CHOL_BH_pvalues_adjusted_max = max(CHOL$BH_pvalues_adjusted)
 
-COAD_allData <- read_csv("finalDTDataWBHCorrection/COAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-COAD <- COAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+COAD_allData <- read_csv("miRNAClusterandFamily/COAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+COAD <- COAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 COAD_BH_pvalues_adjusted_min = min(COAD$BH_pvalues_adjusted)
 COAD_BH_pvalues_adjusted_max = max(COAD$BH_pvalues_adjusted)
 
-DLBC_allData <- read_csv("finalDTDataWBHCorrection/DLBC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-DLBC <- DLBC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted")]
+DLBC_allData <- read_csv("miRNAClusterandFamily/DLBC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+DLBC <- DLBC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 DLBC_BH_pvalues_adjusted_min = min(DLBC$BH_pvalues_adjusted)
 DLBC_BH_pvalues_adjusted_max = max(DLBC$BH_pvalues_adjusted)
 
-ESCA_allData <- read_csv("finalDTDataWBHCorrection/ESCA.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-ESCA <- ESCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+ESCA_allData <- read_csv("miRNAClusterandFamily/ESCA.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+ESCA <- ESCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 ESCA_BH_pvalues_adjusted_min = min(ESCA$BH_pvalues_adjusted)
 ESCA_BH_pvalues_adjusted_max = max(ESCA$BH_pvalues_adjusted)
 
-HNSC_allData <- read_csv("finalDTDataWBHCorrection/HNSC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-HNSC <- HNSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+HNSC_allData <- read_csv("miRNAClusterandFamily/HNSC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+HNSC <- HNSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 HNSC_BH_pvalues_adjusted_min = min(HNSC$BH_pvalues_adjusted)
 HNSC_BH_pvalues_adjusted_max = max(HNSC$BH_pvalues_adjusted)
 
-KICH_allData <- read_csv("finalDTDataWBHCorrection/KICH.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-KICH <- KICH_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+KICH_allData <- read_csv("miRNAClusterandFamily/KICH.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+KICH <- KICH_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 KICH_BH_pvalues_adjusted_min = min(KICH$BH_pvalues_adjusted)
 KICH_BH_pvalues_adjusted_max = max(KICH$BH_pvalues_adjusted)
 
-KIRC_allData <- read_csv("finalDTDataWBHCorrection/KIRC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-KIRC <- KIRC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+KIRC_allData <- read_csv("miRNAClusterandFamily/KIRC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+KIRC <- KIRC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 KIRC_BH_pvalues_adjusted_min = min(KIRC$BH_pvalues_adjusted)
 KIRC_BH_pvalues_adjusted_max = max(KIRC$BH_pvalues_adjusted)
 
-KIRP_allData <- read_csv("finalDTDataWBHCorrection/KIRP.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-KIRP <- KIRP_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+KIRP_allData <- read_csv("miRNAClusterandFamily/KIRP.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+KIRP <- KIRP_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 KIRP_BH_pvalues_adjusted_min = min(KIRP$BH_pvalues_adjusted)
 KIRP_BH_pvalues_adjusted_max = max(KIRP$BH_pvalues_adjusted)
 
-LGG_allData <- read_csv("finalDTDataWBHCorrection/LGG.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-LGG <- LGG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted")]
+LGG_allData <- read_csv("miRNAClusterandFamily/LGG.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+LGG <- LGG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 LGG_BH_pvalues_adjusted_min = min(LGG$BH_pvalues_adjusted)
 LGG_BH_pvalues_adjusted_max = max(LGG$BH_pvalues_adjusted)
 
-LIHC_allData <- read_csv("finalDTDataWBHCorrection/LIHC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-LIHC <- LIHC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+LIHC_allData <- read_csv("miRNAClusterandFamily/LIHC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+LIHC <- LIHC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 LIHC_BH_pvalues_adjusted_min = min(LIHC$BH_pvalues_adjusted)
 LIHC_BH_pvalues_adjusted_max = max(LIHC$BH_pvalues_adjusted)
 
-LUAD_allData <- read_csv("finalDTDataWBHCorrection/LUAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-LUAD <- LUAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+LUAD_allData <- read_csv("miRNAClusterandFamily/LUAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+LUAD <- LUAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 LUAD_BH_pvalues_adjusted_min = min(LUAD$BH_pvalues_adjusted)
 LUAD_BH_pvalues_adjusted_max = max(LUAD$BH_pvalues_adjusted)
 
-LUSC_allData <- read_csv("finalDTDataWBHCorrection/LUSC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-LUSC <- LUSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+LUSC_allData <- read_csv("miRNAClusterandFamily/LUSC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+LUSC <- LUSC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 LUSC_BH_pvalues_adjusted_min = min(LUSC$BH_pvalues_adjusted)
 LUSC_BH_pvalues_adjusted_max = max(LUSC$BH_pvalues_adjusted)
 
-MESO_allData <- read_csv("finalDTDataWBHCorrection/MESO.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-MESO <- MESO_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted")]
+MESO_allData <- read_csv("miRNAClusterandFamily/MESO.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+MESO <- MESO_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 MESO_BH_pvalues_adjusted_min = min(MESO$BH_pvalues_adjusted)
 MESO_BH_pvalues_adjusted_max = max(MESO$BH_pvalues_adjusted)
 
-OV_allData <- read_csv("finalDTDataWBHCorrection/OV.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-OV <- OV_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted")]
+OV_allData <- read_csv("miRNAClusterandFamily/OV.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+OV <- OV_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 OV_BH_pvalues_adjusted_min = min(OV$BH_pvalues_adjusted)
 OV_BH_pvalues_adjusted_max = max(OV$BH_pvalues_adjusted)
 
-PAAD_allData <- read_csv("finalDTDataWBHCorrection/PAAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-PAAD <- PAAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+PAAD_allData <- read_csv("miRNAClusterandFamily/PAAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+PAAD <- PAAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 PAAD_BH_pvalues_adjusted_min = min(PAAD$BH_pvalues_adjusted)
 PAAD_BH_pvalues_adjusted_max = max(PAAD$BH_pvalues_adjusted)
 
-PCPG_allData <- read_csv("finalDTDataWBHCorrection/PCPG.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-PCPG <- PCPG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+PCPG_allData <- read_csv("miRNAClusterandFamily/PCPG.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+PCPG <- PCPG_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 PCPG_BH_pvalues_adjusted_min = min(PCPG$BH_pvalues_adjusted)
 PCPG_BH_pvalues_adjusted_max = max(PCPG$BH_pvalues_adjusted)
 
-PRAD_allData <- read_csv("finalDTDataWBHCorrection/PRAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-PRAD <- PRAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+PRAD_allData <- read_csv("miRNAClusterandFamily/PRAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+PRAD <- PRAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 PRAD_BH_pvalues_adjusted_min = min(PRAD$BH_pvalues_adjusted)
 PRAD_BH_pvalues_adjusted_max = max(PRAD$BH_pvalues_adjusted)
 
-READ_allData <- read_csv("finalDTDataWBHCorrection/READ.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-READ <- READ_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+READ_allData <- read_csv("miRNAClusterandFamily/READ.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+READ <- READ_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 READ_BH_pvalues_adjusted_min = min(READ$BH_pvalues_adjusted)
 READ_BH_pvalues_adjusted_max = max(READ$BH_pvalues_adjusted)
 
-SARC_allData <- read_csv("finalDTDataWBHCorrection/SARC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-SARC <- SARC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+SARC_allData <- read_csv("miRNAClusterandFamily/SARC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+SARC <- SARC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 SARC_BH_pvalues_adjusted_min = min(SARC$BH_pvalues_adjusted)
 SARC_BH_pvalues_adjusted_max = max(SARC$BH_pvalues_adjusted)
 
-SKCM_allData <- read_csv("finalDTDataWBHCorrection/SKCM.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-SKCM <- SKCM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+SKCM_allData <- read_csv("miRNAClusterandFamily/SKCM.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+SKCM <- SKCM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 SKCM_BH_pvalues_adjusted_min = min(SKCM$BH_pvalues_adjusted)
 SKCM_BH_pvalues_adjusted_max = max(SKCM$BH_pvalues_adjusted)
 
-STAD_allData <- read_csv("finalDTDataWBHCorrection/STAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-STAD <- STAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+STAD_allData <- read_csv("miRNAClusterandFamily/STAD.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+STAD <- STAD_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 STAD_BH_pvalues_adjusted_min = min(STAD$BH_pvalues_adjusted)
 STAD_BH_pvalues_adjusted_max = max(STAD$BH_pvalues_adjusted)
 
-TGCT_allData <- read_csv("finalDTDataWBHCorrection/TGCT.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-TGCT <- TGCT_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted")]
+TGCT_allData <- read_csv("miRNAClusterandFamily/TGCT.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+TGCT <- TGCT_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 TGCT_BH_pvalues_adjusted_min = min(TGCT$BH_pvalues_adjusted)
 TGCT_BH_pvalues_adjusted_max = max(TGCT$BH_pvalues_adjusted)
 
-THCA_allData <- read_csv("finalDTDataWBHCorrection/THCA.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-THCA <- THCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+THCA_allData <- read_csv("miRNAClusterandFamily/THCA.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+THCA <- THCA_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 THCA_BH_pvalues_adjusted_min = min(THCA$BH_pvalues_adjusted)
 THCA_BH_pvalues_adjusted_max = max(THCA$BH_pvalues_adjusted)
 
-THYM_allData <- read_csv("finalDTDataWBHCorrection/THYM.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-THYM <- THYM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+THYM_allData <- read_csv("miRNAClusterandFamily/THYM.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+THYM <- THYM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 THYM_BH_pvalues_adjusted_min = min(THYM$BH_pvalues_adjusted)
 THYM_BH_pvalues_adjusted_max = max(THYM$BH_pvalues_adjusted)
 
-UCEC_allData <- read_csv("finalDTDataWBHCorrection/UCEC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-UCEC <- UCEC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted")]
+UCEC_allData <- read_csv("miRNAClusterandFamily/UCEC.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+UCEC <- UCEC_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","miRNA1_pvalue","miRNA1_logFC","miRNA2_pvalue","miRNA2_logFC","mRNA_pvalue","mRNA_logFC","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 UCEC_BH_pvalues_adjusted_min = min(UCEC$BH_pvalues_adjusted)
 UCEC_BH_pvalues_adjusted_max = max(UCEC$BH_pvalues_adjusted)
 
-UCS_allData <- read_csv("finalDTDataWBHCorrection/UCS.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-UCS <- UCS_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted")]
+UCS_allData <- read_csv("miRNAClusterandFamily/UCS.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+UCS <- UCS_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 UCS_BH_pvalues_adjusted_min = min(UCS$BH_pvalues_adjusted)
 UCS_BH_pvalues_adjusted_max = max(UCS$BH_pvalues_adjusted)
 
-UVM_allData <- read_csv("finalDTDataWBHCorrection/UVM.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
-UVM <- UVM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted")]
+UVM_allData <- read_csv("miRNAClusterandFamily/UVM.csv",show_col_types = FALSE)%>%dplyr::filter(BH_rejected == TRUE)
+UVM <- UVM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster_XY_Z","is_mrna_tf","mirna1Literature","mirna2Literature","mrnaLiterature","miRNA1_mRNA_DB","miRNA2_mRNA_DB","BH_pvalues_adjusted","miRNA1Family","miRNA2Family","miRNA1Cluster","miRNA2Cluster")]
 
 UVM_BH_pvalues_adjusted_min = min(UVM$BH_pvalues_adjusted)
 UVM_BH_pvalues_adjusted_max = max(UVM$BH_pvalues_adjusted)

@@ -375,11 +375,11 @@ function(input, output, session) {
       }
       
       
-      hideList1 <- c(7,8,9,10,11)
-      hideList2 <- c(7,8,9,10,11,12,13,14,15,16,17)
-      hideList3 <- c(7,8,9,10,11,12,13)
-      hideList4 <- c(7,8,9)
-      hideList5 <-c(7,8,9,10,11,12,13,14,15)
+      hideList1 <- c(7,8,9,10,11,13,14,15,16)
+      hideList2 <- c(7,8,9,10,11,12,13,14,15,16,17,19,20,21,22)
+      hideList3 <- c(7,8,9,10,11,12,13,15,16,17,18)
+      hideList4 <- c(7,8,9,11,12,13,14)
+      hideList5 <-c(7,8,9,10,11,12,13,14,15,17,18,19,20)
       
       ifelse(input$dataset=="ACC" || input$dataset=="DLBC" || input$dataset=="LGG" || input$dataset=="MESO" || input$dataset=="OV" || input$dataset=="UCS" || input$dataset=="UVM", columnHideList <-hideList1,
              ifelse(input$dataset=="BLCA" || input$dataset=="CESC" || input$dataset=="CHOL" || input$dataset=="ESCA" || input$dataset=="HNSC" || input$dataset=="KICH" || input$dataset=="KIRC" || input$dataset=="KIRP" || input$dataset=="LIHC" || input$dataset=="LUAD" || input$dataset=="LUSC" || input$dataset=="PAAD" || input$dataset=="PCPG" || input$dataset=="PRAD" || input$dataset=="SKCM" || input$dataset=="STAD" || input$dataset=="THCA" || input$dataset=="UCEC"|| input$dataset=="BRCA", columnHideList <-hideList2,
@@ -464,12 +464,34 @@ function(input, output, session) {
         a(infoBtn('question'), onclick="customHref('Glossary')")
       ) %>% as.character()
       
+      miRNA1Family <-  tags$span(
+        "miRNA1 Family",
+        a(infoBtn('question'), onclick="customHref('Glossary')")
+      ) %>% as.character()
       
-      nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,BH_pvalues, "miRNA-mRNA Expressions")
-      nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,BH_pvalues,"miRNA-mRNA Expressions")
-      nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,mRNApvalue,mRNALogFC,BH_pvalues,"miRNA-mRNA Expressions" )
-      nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase,BH_pvalues, "miRNA-mRNA Expressions")
-      nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,BH_pvalues,"miRNA-mRNA Expressions")
+      miRNA2Family <-  tags$span(
+        "miRNA2 Family",
+        a(infoBtn('question'), onclick="customHref('Glossary')")
+      ) %>% as.character()
+      
+      miRNA1Cluster <-  tags$span(
+        "miRNA1 Cluster",
+        a(infoBtn('question'), onclick="customHref('Glossary')")
+      ) %>% as.character()
+      
+      miRNA2Cluster <-  tags$span(
+        "miRNA2 Cluster",
+        a(infoBtn('question'), onclick="customHref('Glossary')")
+      ) %>% as.character()
+      
+      
+      
+      
+      nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue,"is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,BH_pvalues, miRNA1Family, miRNA2Family, miRNA1Cluster,  miRNA2Cluster,"miRNA-mRNA Expressions")
+      nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,BH_pvalues, miRNA1Family, miRNA2Family, miRNA1Cluster,  miRNA2Cluster,"miRNA-mRNA Expressions")
+      nameList3 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, mirna2Literature, mRNALiterature, miRNA1mRNADatabase, miRNA2mRNADatabase,mRNApvalue,mRNALogFC,BH_pvalues, miRNA1Family, miRNA2Family, miRNA1Cluster,  miRNA2Cluster,"miRNA-mRNA Expressions" )
+      nameList4 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase,BH_pvalues, miRNA1Family, miRNA2Family, miRNA1Cluster,  miRNA2Cluster, "miRNA-mRNA Expressions")
+      nameList5 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", tripletvalue, " is mRNA TF", mirna1Literature, miRNA1mRNADatabase, miRNA2mRNADatabase, miRNA1pvalue, miRNA1LogFC, miRNA2pvalue, miRNA2LogFC, mRNApvalue, mRNALogFC,BH_pvalues, miRNA1Family, miRNA2Family, miRNA1Cluster,  miRNA2Cluster,"miRNA-mRNA Expressions")
       
       # nameList1 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", "tripletvalue","is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase","miRNA-mRNA Expressions")
       # nameList2 <- c("Entrez ID", "HGNC Symbol","miRNA1", "miRNA2", "tripletvalue", " is mRNA TF", "mirna1Literature", "mirna2Literature", "mRNALiterature", "miRNA1mRNADatabase", "miRNA2mRNADatabase", "miRNA1pvalue", "miRNA1LogFC", "miRNA2pvalue", "miRNA2LogFC", "mRNApvalue", "mRNALogFC","miRNA-mRNA Expressions")
