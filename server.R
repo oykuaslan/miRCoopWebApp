@@ -265,9 +265,6 @@ function(input, output, session) {
       filteredWithBH_value <-dplyr::filter(filteredWithTests,
                                            round(BH_pvalues_adjusted,4) >= round(min_pval,4) & round(BH_pvalues_adjusted,4) <= round(max_pval,4))
       
-      print(min_pval)
-      print(max_pval)
-      print(max(filteredWithTests$BH_pvalues_adjusted))
       if(nrow(filteredWithBH_value) == 0){
         filteredWithBH_value <- NULL
         
@@ -297,10 +294,6 @@ function(input, output, session) {
     #     filteredWithBH_rejected <- NULL
     # }
     
-    print(nrow(datasetInput()))
-    print(nrow(dataset1))
-    print(nrow(filteredWithTests))
-    print(nrow(filteredWithBH_value))
     return (filteredWithBH_value)
     
   })
@@ -974,9 +967,11 @@ function(input, output, session) {
     
   })
   
+  
   output$vNetwork <- renderVisNetwork({
     
     if(!is.null(DatasetRoundDigits())){
+      
       # combmi1mi2mrna <- unique(c(gsub("hsa-", "",tolower(DatasetRoundDigits()$mirna1)),gsub("hsa-", "",tolower(DatasetRoundDigits()$mirna2)),DatasetRoundDigits()$hgnc_symbol))
       # orListForNetworkFiltering <- rep("|",length(combmi1mi2mrna))
       # networkFilteringList <- paste(c(rbind(orListForNetworkFiltering, matrix(combmi1mi2mrna,ncol = length(orListForNetworkFiltering)))[-1]),collapse = '')
@@ -1016,32 +1011,124 @@ function(input, output, session) {
       edges$color <- "rgb(153,153,153)"
       edges$length <- 3
       
-      nodes$color.background <- "rgb(153,153,153)"
-      nodes$color.border <- "rgb(153,153,153)"
       
-      if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){
-        if("miRNA1_pvalue" %in% colnames(DatasetRoundDigits())){
-          
+      if(input$dataset =='ACC' || input$dataset =='DLBC' || input$dataset =='LGG' || input$dataset =='MESO' || input$dataset =='OV' ||
+         input$dataset =='TGCT' || input$dataset =='UCS' || input$dataset =='UVM'){
+        coloring <- input$colorGroup1
+      }
+      
+      if(input$dataset =='BLCA' || input$dataset =='BRCA' || input$dataset =='CESC' || input$dataset =='CHOL' ||
+         input$dataset =='COAD' || input$dataset =='ESCA' || input$dataset =='HNSC' || input$dataset =='KICH' || input$dataset =='KIRC' ||
+         input$dataset =='KIRP' || input$dataset =='LIHC' || input$dataset =='LUAD' || input$dataset =='LUSC' || input$dataset =='PAAD' ||
+         input$dataset =='PCPG' || input$dataset =='PRAD' || input$dataset =='READ' || input$dataset =='SARC' || input$dataset =='SKCM' ||
+         input$dataset =='STAD' || input$dataset =='THCA' || input$dataset =='THYM' || input$dataset =='UCEC'){
+        
+        coloring <- input$colorGroup2
+      }
+      
+      print(coloring)
+
+      if(coloring =="Differential Expression Analysis"){
+        
+        if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){
+          #if("miRNA1_pvalue" %in% colnames(DatasetRoundDigits())){
+            nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+                                             ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+                                                    "rgb(153,153,153)"))
+            nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+                                         ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+                                                "rgb(153,153,153)"))
+          #}
+          # else{
+          #   # nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+          #   #                                 filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, 3,1)
+          #   #
+          #   # nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+          #   #                                  filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
+          #   #
+          #   nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+          #                                    ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+          #                                           "rgb(153,153,153)"))
+          #   nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+          #                                ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+          #                                       "rgb(153,153,153)"))
+          # }
         }
         else{
-          # nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
-          #                                 filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, 3,1)
-          # 
-          # nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
-          #                                  filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
-          # 
-          nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-                                           ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-                                                  "rgb(153,153,153)"))
-          nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-                                       ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-                                              "rgb(153,153,153)"))
+          nodes$color.background <-  "rgb(153,153,153)"
+          nodes$color.border <- "rgb(153,153,153)"
           
         }
         
+      }
+      
+      if(coloring =="miRNA Family"){
         
+        uniqueMirnaFamily <- unique(c(DatasetRoundDigits()$miRNA1Family, DatasetRoundDigits()$miRNA2Family, NA))
+        palette <- distinctColorPalette(length(uniqueMirnaFamily))
+        familyWithPalette <- paste(uniqueMirnaFamily, palette)
+        familyWithPaletteDf <- as.data.frame(familyWithPalette)%>%separate(familyWithPalette, c("family", "FamilyColor"), " ")
+        
+        nodeAttribute <- nodeAttributeInput()
+        merged <- sqldf::sqldf("SELECT nodeAttribute.*, FamilyColor from nodeAttribute left join familyWithPaletteDf on nodeAttribute.miRfamily = familyWithPaletteDf.family")
+        #merged <- merge(nodeAttributeInput(),familyWithPaletteDf, by.x = "miRfamily", by.y = "family", all.x = TRUE, all.y = FALSE, sort = FALSE)
+        merged["FamilyColor"][is.na(merged["FamilyColor"])] <- "rgb(153,153,153)"
+        
+        nodes$color.background <-filter(merged,merged$shared.name %in% intersectionSharedName)$FamilyColor
+        nodes$color.border <- filter(merged,merged$shared.name %in% intersectionSharedName)$FamilyColor
         
       }
+      
+      if(coloring =="miRNA Cluster"){
+        
+        uniqueMirnaCluster <- unique(c(DatasetRoundDigits()$miRNA1Cluster, DatasetRoundDigits()$miRNA2Cluster, NA))
+        palette <- distinctColorPalette(length(uniqueMirnaCluster))
+        clusterWithPalette <- paste(uniqueMirnaCluster, palette)
+        clusterWithPaletteDf <- as.data.frame(clusterWithPalette)%>%separate(clusterWithPalette, c("cluster", "ClusterColor"), " ")
+        
+        nodeAttribute <- nodeAttributeInput()
+        merged <- sqldf::sqldf("SELECT nodeAttribute.*, ClusterColor from nodeAttribute left join clusterWithPaletteDf on nodeAttribute.mirnaCluster = clusterWithPaletteDf.cluster")
+        #merged <- merge(nodeAttributeInput(),familyWithPaletteDf, by.x = "miRfamily", by.y = "family", all.x = TRUE, all.y = FALSE, sort = FALSE)
+        merged["ClusterColor"][is.na(merged["ClusterColor"])] <- "rgb(153,153,153)"
+        
+        nodes$color.background <-filter(merged,merged$shared.name %in% intersectionSharedName)$ClusterColor
+        nodes$color.border <- filter(merged,merged$shared.name %in% intersectionSharedName)$ClusterColor
+        
+
+      }
+      
+      
+      
+      #nodes$color.background <- "rgb(153,153,153)"
+      #nodes$color.border <- "rgb(153,153,153)"
+      
+
+      
+      # 
+      # if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){
+      #   if("miRNA1_pvalue" %in% colnames(DatasetRoundDigits())){
+      #     nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+      #                                      ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+      #                                             "rgb(153,153,153)"))
+      #     nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+      #                                  ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+      #                                         "rgb(153,153,153)"))
+      #   }
+      #   else{
+      #     # nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+      #     #                                 filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, 3,1)
+      #     # 
+      #     # nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
+      #     #                                  filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
+      #     # 
+      #     nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+      #                                      ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+      #                                             "rgb(153,153,153)"))
+      #     nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
+      #                                  ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
+      #                                         "rgb(153,153,153)"))
+      #   }
+      # }
       
       
       if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)) > 0){
@@ -1102,6 +1189,7 @@ function(input, output, session) {
     
   })
   
+
   ##################################################################################################    
   
   commonMirnaNetworkNodeEdge <- reactive({

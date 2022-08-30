@@ -344,7 +344,160 @@ fluidPage(
                                       tabPanel("Table", br(),
                                                DT::dataTableOutput("table", height = "800px")),
                                       
-                                      tabPanel("Network", shinycustomloader::withLoader(visNetworkOutput("vNetwork", height = "100vh"),type = "html",loader="loader3"),
+                                      tabPanel("Network",
+                                               conditionalPanel(condition = "input.dataset == 'ACC' || input.dataset == 'DLBC' ||
+                                                                input.dataset == 'LGG' || input.dataset == 'MESO' || input.dataset == 'OV' || input.dataset == 'TGCT'  ||
+                                                                input.dataset == 'UCS' || input.dataset == 'UVM'",
+                                                                selectInput("colorGroup1", "Color Nodes Based on :",
+                                                                            c("miRNA Family", "miRNA Cluster"),selected = NULL)
+                                                                ),
+                                               
+                                               conditionalPanel(condition = "input.dataset == 'BLCA' || input.dataset == 'BRCA' || input.dataset == 'CESC' ||
+                                                                input.dataset == 'CHOL' ||  input.dataset == 'COAD' ||  input.dataset == 'ESCA' || input.dataset == 'HNSC' ||
+                                                                input.dataset == 'KICH' || input.dataset == 'KIRC' || input.dataset == 'KIRP' || input.dataset == 'LIHC' ||
+                                                                input.dataset == 'LUAD' || input.dataset == 'LUSC' || input.dataset == 'PAAD' || input.dataset == 'PCPG' ||
+                                                                input.dataset == 'PRAD' || input.dataset == 'READ' || input.dataset == 'SARC' || input.dataset == 'SKCM' ||
+                                                                input.dataset == 'STAD' || input.dataset == 'THCA' || input.dataset == 'THYM' || input.dataset == 'UCEC'
+                                                                ",
+                                                                selectInput("colorGroup2", "Color Nodes Based on :",
+                                                                            c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"),selected = NULL)
+                                               ),
+
+                                               
+                                               # conditionalPanel(condition = "input.dataset == 'ACC'",
+                                               #                  selectInput("colorGroup1", "Color Nodes Based on :",
+                                               #                              c("miRNA Family", "miRNA Cluster"),selected = NULL,multiple = F)
+                                               # ),
+                                               # 
+                                               # conditionalPanel(condition = "input.dataset == 'BRCA'",
+                                               #                  selectInput("colorGroup2", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"),selected = NULL,multiple = F)
+                                               # ),
+                                               # 
+                                               # conditionalPanel(condition = "input.dataset == 'ACC'",
+                                               #                  selectInput("color_ACC", "Color Nodes Based on :",
+                                               #                              c("","miRNA Family", "miRNA Cluster"),selected = NULL,multiple = F)
+                                               # ),
+                                               # 
+                                               # conditionalPanel(condition = "input.dataset == 'BRCA'",
+                                               #                  selectInput("color_BRCA", "Color Nodes Based on :",
+                                               #                              c("","Differential Expression Analysis","miRNA Family", "miRNA Cluster"),selected = NULL,multiple = F)
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'CESC'",
+                                               #                  selectInput("color_CESC", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'CHOL'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'COAD'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'DLBC'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'ESCA'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'HNSC'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'KICH'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'KIRC'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'KIRP'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'LGG'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'LIHC'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'LUAD'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'LUSC'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'MESO'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'OV'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'PAAD'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'PCPG'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'PRAD'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'READ'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'SARC'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'SKCM'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'STAD'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'TGCT'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'THCA'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'THYM'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'UCEC'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("Differential Expression Analysis","miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'UCS'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # conditionalPanel(condition = "input.dataset == 'UVM'",
+                                               #                  selectInput("color", "Color Nodes Based on :",
+                                               #                              c("miRNA Family", "miRNA Cluster"))
+                                               # ),
+                                               # selectInput("color", "Color Nodes Based on :",
+                                               #             c("Differential Expression Analysis", "miRNA Family", "miRNA Cluster")),
+                                               shinycustomloader::withLoader(visNetworkOutput("vNetwork", height = "100vh"),type = "html",loader="loader3"),
                                                div(align = "right", downloadButton("downloadNodeTable", "Download Node Table"),
                                                    downloadButton("downloadEdgeTable", "Download Edge Table")),
                                                br(),

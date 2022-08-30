@@ -25,7 +25,8 @@ library(data.table)
 library(readxl)
 library(heatmaply)
 library(plotly)
-
+library(randomcoloR)
+library(tidyr)
 
 
 infoBtn <- function(id) {
@@ -242,97 +243,97 @@ UVM_BH_pvalues_adjusted_max = max(UVM$BH_pvalues_adjusted)
 concated <- data.frame(source=c(),target=c())
 
 ACC_source_target <- read.table("networkData/ACC_source_target.csv", header = TRUE, sep = ";")
-ACC_node_attr <- read.table("networkData/ACC_generalNetwork_default_node.csv", header = TRUE, sep = ",")
+ACC_node_attr <- read.table("networkDataWClusterFamily/ACC.csv", header = TRUE, sep = ",")
 
 BLCA_source_target <- read.table("networkData/BLCA_source_target_new.csv", header=TRUE, sep = ";" )
-BLCA_node_attr <- read.table("networkData/BLCA_node_attr_significantmirnas.csv", header = T, sep = ",")
+BLCA_node_attr <- read.table("networkDataWClusterFamily/BLCA.csv", header = T, sep = ",")
 
 BRCA_source_target <- read.table("networkData/BRCA_source_target.csv", header=TRUE, sep = ";" )
-BRCA_node_attr <- read.table("networkData/BRCA_general_network_default_node.csv", header = T, sep = ",")
+BRCA_node_attr <- read.table("networkDataWClusterFamily/BRCA.csv", header = T, sep = ",")
 
 CESC_source_target <- read.table("networkData/CESC_source_target_info.csv", header=TRUE, sep = ";" )
-CESC_node_attr <- read.table("networkData/CESC_node_attr_significantmirnas.csv", header = T, sep = ",")
+CESC_node_attr <- read.table("networkDataWClusterFamily/CESC.csv", header = T, sep = ",")
 
 CHOL_source_target <- read.table("networkData/CHOL_source_target.csv", header=TRUE, sep = ";" )
-CHOL_node_attr <- read.table("networkData/CHOL_node_attr_significantmirnas.csv", header = T, sep = ",")
+CHOL_node_attr <- read.table("networkDataWClusterFamily/CHOL.csv", header = T, sep = ",")
 
 COAD_source_target <- read.table("networkData/COAD_source_target_info.csv", header=TRUE, sep = ";" )
-COAD_node_attr <- read.table("networkData/COADNetwork_default_node.csv", header = T, sep = ",")
+COAD_node_attr <- read.table("networkDataWClusterFamily/COAD.csv", header = T, sep = ",")
 
 DLBC_source_target <- read.table("networkData/DLBC_source_target.csv", header=TRUE, sep = ";" )
-DLBC_node_attr <- read.table("networkData/DLBC_generalNetwork_default_node.csv", header = T, sep = ",")
+DLBC_node_attr <- read.table("networkDataWClusterFamily/DLBC.csv", header = T, sep = ",")
 
 ESCA_source_target <- read.table("networkData/ESCA_source_target.csv", header=TRUE, sep = ";" )
-ESCA_node_attr <- read.table("networkData/ESCA_node_attr_significantmirnas.csv", header = T, sep = ",")
+ESCA_node_attr <- read.table("networkDataWClusterFamily/ESCA.csv", header = T, sep = ",")
 
 HNSC_source_target <- read.table("networkData/HNSC_source_target.csv", header=TRUE, sep = ";" )
-HNSC_node_attr <- read.table("networkData/HNSC_node_attr_significantmirnas.csv", header = T, sep = ",")
+HNSC_node_attr <- read.table("networkDataWClusterFamily/HNSC.csv", header = T, sep = ",")
 
 KICH_source_target <- read.table("networkData/KICH_source_target.csv", header=TRUE, sep = ";" )
-KICH_node_attr <- read.table("networkData/KICH_node_attr_significantmirnas.csv", header = T, sep = ",")
+KICH_node_attr <- read.table("networkDataWClusterFamily/KICH.csv", header = T, sep = ",")
 
 KIRC_source_target <- read.table("networkData/KIRC_source_target.csv", header=TRUE, sep = ";" )
-KIRC_node_attr <- read.table("networkData/KIRC_node_attr_significantmirnas.csv", header = T, sep = ",")
+KIRC_node_attr <- read.table("networkDataWClusterFamily/KIRC.csv", header = T, sep = ",")
 
 KIRP_source_target <- read.table("networkData/KIRP_source_target.csv", header=TRUE, sep = ";" )
-KIRP_node_attr <- read.table("networkData/KIRP_node_attr_significantmirnas.csv", header = T, sep = ",")
+KIRP_node_attr <- read.table("networkDataWClusterFamily/KIRP.csv", header = T, sep = ",")
 
 LIHC_source_target <- read.table("networkData/LIHC_source_target.csv", header=TRUE, sep = ";" )
-LIHC_node_attr <- read.table("networkData/LIHC_node_attr_significantmirnas.csv", header = T, sep = ",")
+LIHC_node_attr <- read.table("networkDataWClusterFamily/LIHC.csv", header = T, sep = ",")
 
 LGG_source_target <- read.table("networkData/LGG_source_target_info.csv", header=TRUE, sep = ";" )
-LGG_node_attr <- read.table("networkData/LGG_GeneralNetwork_default_node.csv", header = T, sep = ",")
+LGG_node_attr <- read.table("networkDataWClusterFamily/LGG.csv", header = T, sep = ",")
 
 LUAD_source_target <- read.table("networkData/LUAD_source_target.csv", header=TRUE, sep = ";" )
-LUAD_node_attr <- read.table("networkData/LUAD_node_attr_significantmirnas.csv", header = T, sep = ",")
+LUAD_node_attr <- read.table("networkDataWClusterFamily/LUAD.csv", header = T, sep = ",")
 
 LUSC_source_target <- read.table("networkData/LUSC_source_target.csv", header=TRUE, sep = ";" )
-LUSC_node_attr <- read.table("networkData/LUSC_node_attr_significantmirnas.csv", header = T, sep = ",")
+LUSC_node_attr <- read.table("networkDataWClusterFamily/LUSC.csv", header = T, sep = ",")
 
 MESO_source_target <- read.table("networkData/MESO_source_target.csv", header=TRUE, sep = ";" )
-MESO_node_attr <- read.table("networkData/MESO_generalNetwork_default_node.csv", header = T, sep = ",")
+MESO_node_attr <- read.table("networkDataWClusterFamily/MESO.csv", header = T, sep = ",")
 
 OV_source_target <- read.table("networkData/OV_source_target.csv", header=TRUE, sep = ";" )
-OV_node_attr <- read.table("networkData/OV_generalNetwork_default_node.csv", header = T, sep = ",")
+OV_node_attr <- read.table("networkDataWClusterFamily/OV.csv", header = T, sep = ",")
 
 PAAD_source_target <- read.table("networkData/PAAD_source_target.csv", header=TRUE, sep = ";" )
-PAAD_node_attr <- read.table("networkData/PAAD_node_attr_significantmirnas.csv", header = T, sep = ",")
+PAAD_node_attr <- read.table("networkDataWClusterFamily/PAAD.csv", header = T, sep = ",")
 
 PCPG_source_target <- read.table("networkData/PCPG_source_target.csv", header=TRUE, sep = ";" )
-PCPG_node_attr <- read.table("networkData/PCPG_node_attr_significantmirnas.csv", header = T, sep = ",")
+PCPG_node_attr <- read.table("networkDataWClusterFamily/PCPG.csv", header = T, sep = ",")
 
 PRAD_source_target <- read.table("networkData/PRAD_source_target.csv", header = TRUE, sep = ";")
-PRAD_node_attr <- read.table("networkData/PRAD_node_attr_significantmirnas.csv", header = TRUE, sep = ",")
+PRAD_node_attr <- read.table("networkDataWClusterFamily/PRAD.csv", header = TRUE, sep = ",")
 
 READ_source_target <- read.table("networkData/READ_source_target.csv", header=TRUE, sep = ";" )
-READ_node_attr <- read.table("networkData/READ_generalNetwork_default_node.csv", header = T, sep = ",")
+READ_node_attr <- read.table("networkDataWClusterFamily/READ.csv", header = T, sep = ",")
 
 SARC_source_target <- read.table("networkData/SARC_source_target.csv", header=TRUE, sep = ";" )
-SARC_node_attr <- read.table("networkData/SARC_generalNetwork_default_node.csv", header = T, sep = ",")
+SARC_node_attr <- read.table("networkDataWClusterFamily/SARC.csv", header = T, sep = ",")
 
 SKCM_source_target <- read.table("networkData/SKCM_source_target.csv", header=TRUE, sep = ";" )
-SKCM_node_attr <- read.table("networkData/SKCM_node_attr_significantmirnas.csv", header = T, sep = ",")
+SKCM_node_attr <- read.table("networkDataWClusterFamily/SKCM.csv", header = T, sep = ",")
 
 STAD_source_target <- read.table("networkData/STAD_source_target_info.csv", header=TRUE, sep = ";" )
-STAD_node_attr <- read.table("networkData/STAD_node_attr_significantmirnas.csv", header = T, sep = ",")
+STAD_node_attr <- read.table("networkDataWClusterFamily/STAD.csv", header = T, sep = ",")
 
 TGCT_source_target <- read.table("networkData/TGCT_source_target.csv", header=TRUE, sep = ";" )
-TGCT_node_attr <- read.table("networkData/TGCT_generalNetwork_default_node.csv", header = T, sep = ",")
+TGCT_node_attr <- read.table("networkDataWClusterFamily/TGCT.csv", header = T, sep = ",")
 
 THCA_source_target <- read.table("networkData/THCA_source_target.csv", header=TRUE, sep = ";" )
-THCA_node_attr <- read.table("networkData/THCA_node_attr_significantmirnas.csv", header = T, sep = ",")
+THCA_node_attr <- read.table("networkDataWClusterFamily/THCA.csv", header = T, sep = ",")
 
 THYM_source_target <- read.table("networkData/THYM_source_target.csv", header=TRUE, sep = ";" )
-THYM_node_attr <- read.table("networkData/THYM_node_attr_significantmirnas.csv", header = T, sep = ",")
+THYM_node_attr <- read.table("networkDataWClusterFamily/THYM.csv", header = T, sep = ",")
 
 UCEC_source_target <- read.table("networkData/UCEC_source_target.csv", header=TRUE, sep = ";" )
-UCEC_node_attr <- read.table("networkData/UCEC_node_attr_significantmirnas.csv", header = T, sep = ",")
+UCEC_node_attr <- read.table("networkDataWClusterFamily/UCEC.csv", header = T, sep = ",")
 
 UCS_source_target <- read.table("networkData/UCS_source_target.csv", header=TRUE, sep = ";" )
-UCS_node_attr <- read.table("networkData/UCS_generalNetwork_default_node.csv", header = TRUE, sep = ",")
+UCS_node_attr <- read.table("networkDataWClusterFamily/UCS.csv", header = TRUE, sep = ",")
 
 UVM_source_target <- read.table("networkData/UVM_source_target.csv", header=TRUE, sep = ";" )
-UVM_node_attr <- read.table("networkData/UVM_generalNetwork_default_node.csv", header = T, sep = ",")
+UVM_node_attr <- read.table("networkDataWClusterFamily/UVM.csv", header = T, sep = ",")
 
 
 commonMirnaPairs_node_attr <- read_csv("networkData/commonMirnaPairsAfterReRunNode.csv")
