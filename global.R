@@ -436,7 +436,7 @@ commonMirnaAbove50 <- as.data.frame(commonMirnaAbove50)
 mRNACountsScatter <- read_delim("dataset/stats/mRNACountsScatterAfterBHCorrection.csv", 
                                 delim = ",", escape_double = FALSE, trim_ws = TRUE)
 
-miRNACountsScatter <- read_delim("dataset/stats/miRNACountsScatterAfterBHcorrection.csv", 
+miRNACountsScatter <- read_delim("dataset/stats/miRNACountsScatterAfterBHCorrection.csv", 
                                  delim = ",", escape_double = FALSE, trim_ws = TRUE)
 
 ####################################################################################################
