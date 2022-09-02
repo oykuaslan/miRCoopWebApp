@@ -1073,9 +1073,14 @@ function(input, output, session) {
         merged <- sqldf::sqldf("SELECT nodeAttribute.*, FamilyColor from nodeAttribute left join familyWithPaletteDf on nodeAttribute.miRfamily = familyWithPaletteDf.family")
         #merged <- merge(nodeAttributeInput(),familyWithPaletteDf, by.x = "miRfamily", by.y = "family", all.x = TRUE, all.y = FALSE, sort = FALSE)
         merged["FamilyColor"][is.na(merged["FamilyColor"])] <- "rgb(153,153,153)"
+        print(merged)
         
         nodes$color.background <-filter(merged,merged$shared.name %in% intersectionSharedName)$FamilyColor
         nodes$color.border <- filter(merged,merged$shared.name %in% intersectionSharedName)$FamilyColor
+  
+        
+        nodes$title <- ifelse(filter(merged,merged$shared.name %in% intersectionSharedName)$info == "mirna",  paste("<p><b>Family: </b></p>", filter(merged,merged$shared.name %in% intersectionSharedName)$miRfamily)," ")
+
         
       }
       
@@ -1093,6 +1098,9 @@ function(input, output, session) {
         
         nodes$color.background <-filter(merged,merged$shared.name %in% intersectionSharedName)$ClusterColor
         nodes$color.border <- filter(merged,merged$shared.name %in% intersectionSharedName)$ClusterColor
+        
+        nodes$title <- ifelse(filter(merged,merged$shared.name %in% intersectionSharedName)$info == "mirna",  paste("<p><b>Cluster: </b></p>", filter(merged,merged$shared.name %in% intersectionSharedName)$mirnaCluster)," ")
+        
         
 
       }
