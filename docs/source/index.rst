@@ -1,10 +1,7 @@
-Welcome to Lumache's documentation!
+miRCoop
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+`miRCoop https://ieeexplore.ieee.org/document/9311836`, is a method that finds potentially synergistic pairs through kernel interaction tests on matched gene expression levels of mRNAs and miRNAs. Now, we present an updated miRCoop pipeline, miRCoop v2, a faster version with a 30 speed up in runtime, which allowed us to apply it on 31 different TCGA cancers .
 
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
