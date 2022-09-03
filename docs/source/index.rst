@@ -20,12 +20,6 @@ how to :ref:`installation` the project.
 Contents
 --------
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Medthods & Dataset
-
-   methods_dataset/methods
-   methods_dataset/dataset
     
 .. toctree::
    :maxdepth: 1
