@@ -22,5 +22,6 @@ Contents
 
 .. toctree::
 
-   usage
-   api
+   methods
+   dataset
+   miRCoop Web Application
