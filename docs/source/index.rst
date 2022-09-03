@@ -26,7 +26,16 @@ Contents
 
    methods_dataset/methods
    methods_dataset/dataset
-    
+
+.. toctree::
+   :maxdepth: 1
+   :caption: miRCoop Web Application
+
+   webapp/cancer_spec_analys
+   webapp/pan_cancer_analys
+   webapp/stats
+
+   
 .. toctree::
    :maxdepth: 1
    :caption: Appendix
