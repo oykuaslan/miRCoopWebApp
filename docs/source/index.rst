@@ -21,7 +21,15 @@ Contents
 --------
 
 .. toctree::
+   :maxdepth: 1
+   :caption: Medthods & Dataset
 
-   methods
-   dataset
-   miRCoop Web Application
+   methods_dataset/methods
+   methods_dataset/dataset
+    
+.. toctree::
+   :maxdepth: 1
+   :caption: Appendix
+
+   appendix/glossary
+   appendix/references
