@@ -16,4 +16,14 @@ The datatable essentially builds on the identified triplets, miRNA pairs and the
   :scale: 50 %
   :align: center
   :alt: My Text
+  
+  Figure 2. Main panel for triplets. Here BRCA is selected as the cancer type.
 
+One og the filtering applied in algorithm step 2 was to group patients according to the expression level of the miRNA pair, measuring the difference as log fold change, and continuing with those above a certain threshold. Here, the two patient groups are compared by the level of miRNA pair. We expect the mRNA levels of these two groups(both miRNAs upregulated - both miRNAs downregulated) to be significantly different from each other. The difference between these groups can be observed with a boxplot from 'miRNA-mRNA Expressions' column. 
+
+.. figure:: ../../figures/cancer_specific/5.png
+  :scale: 50 %
+  :align: center
+  :alt: My Text
+  
+  Figure 3. Example boxplot. 
