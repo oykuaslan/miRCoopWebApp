@@ -30,7 +30,8 @@ Contents
 .. toctree::
    :maxdepth: 1
    :caption: miRCoop Web Application
-
+   
+   webapp/intro
    webapp/cancer_spec_analys
    webapp/pan_cancer_analys
    webapp/stats
