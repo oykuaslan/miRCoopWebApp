@@ -19,7 +19,7 @@ The distribution of miRNAs and mRNAs, which have a higher overall frequency than
 
   Figure 2.
   
-.. figure:: ../../figures/stats/3.png
+.. figure:: ../../figures/stats/4.png
   :scale: 50 %
   :align: center
   :alt: My Text
