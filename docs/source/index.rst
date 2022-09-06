@@ -10,7 +10,7 @@ miRCoop v2
 
   Figure 1. General miRCoop and miRCoop Web Application pipeline
 
-Check out the :doc:`usage` section for further information, including
+Check out the :doc:`usage` section for further information, including  :doc:`methods_dataset/methods`
 how to :ref:`installation` the project.
 
 .. note::
