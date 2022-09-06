@@ -36,3 +36,14 @@ One of the filtering applied in algorithm step 2 was to group patients according
   :alt: My Text
   
   Figure 4. Example boxplot. 
+  
+Triplet networks can be visualised interactively for a specific cancer. In networks, diamonds are mRNAs, circles are miRNAs of the triplets. The small grey nodes are dummy nodes to connect the miRNAs to the target mRNA. If an mRNA in a triplet is also a TF, its shape alters from diamond to square. Coloring the nodes can be done in three different way: based on differential expression analysis(up or down regulation), based on miRNA Family information or based on miRNA Cluster information. When the user applies filtering to the data, the network is reconstructed accordingly.
+
+.. figure:: ../../figures/cancer_specific/7.png
+  :scale: 50 %
+  :align: center
+  :alt: My Text
+  
+  Figure 4. Interactive triplet network
+
+
