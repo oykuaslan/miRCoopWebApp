@@ -11,19 +11,11 @@ miRCoop v2
   Figure 1. General miRCoop and miRCoop Web Application pipeline
 
 .. note::
-  
-  Required data files
-  -------------------
 
-  PyGenePlexus provides helper functions for setting up the necessary files in
-  order to run the pipeline using a custom network. The required files are:
+  Related links
 
-  #. ``NodeOrder_{your_net_name}.txt`` Network node ordering
-      A text file with a single column containing all genes present in the
-      network. The ordering of nodes in this file serves as the index map for the
-      network feature data.
-  #. ``Data_{feature_type}_{your_net_name}.npy`` A numpy array of the chosen network
-      representation (rows are genes ordered by NodeOrder file, columns are features).
+  # `miRCoop web application <http://mircoop.sabanciuniv.edu>`_
+  # `miRCoop Paper <https://ieeexplore.ieee.org/document/9311836>`_,
 
 .. note::
 
