@@ -13,6 +13,7 @@ miRCoop v2
 .. note::
 
   Related links
+  
   #. `miRCoop web application <http://mircoop.sabanciuniv.edu>`_
   #. `miRCoop Paper <https://ieeexplore.ieee.org/document/9311836>`_
   #. miRCoop v2 Paper
