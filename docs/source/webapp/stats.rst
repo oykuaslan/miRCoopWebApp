@@ -37,7 +37,7 @@ The number of miRNA targets and the number miRNA existence in triplets, the numb
   
   The number of mRNAs in triplets in all cancers and the number of mRNA-target interactions are also presented to the users. 
   
-  .. figure:: ../../figures/stats/6.png
+.. figure:: ../../figures/stats/6.png
   :scale: 50 %
   :align: center
   :alt: My Text
