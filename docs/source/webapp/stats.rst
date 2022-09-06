@@ -25,3 +25,22 @@ The distribution of miRNAs and mRNAs, which have a higher overall frequency than
   :alt: My Text
 
   Figure 3.
+
+The number of miRNA targets and the number miRNA existence in triplets, the number of miRNAs in triplets in all cancers and the number of miRNA targets are represented to the users. 
+
+.. figure:: ../../figures/stats/5.png
+  :scale: 50 %
+  :align: center
+  :alt: My Text
+
+  Figure 4.
+  
+  The number of mRNAs in triplets in all cancers and the number of mRNA-target interactions are also presented to the users. 
+  
+  .. figure:: ../../figures/stats/6.png
+  :scale: 50 %
+  :align: center
+  :alt: My Text
+
+  Figure 4.
+  
