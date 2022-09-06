@@ -10,9 +10,6 @@ miRCoop v2
 
   Figure 1. General miRCoop and miRCoop Web Application pipeline
 
-Check out the :doc:`usage` section for further information, including  :doc:`methods_dataset/methods`
-how to :ref:`installation` the project.
-
 .. note::
 
    This project is under active development.
@@ -40,6 +37,7 @@ Contents
 .. toctree::
    :maxdepth: 1
    :caption: Appendix
-
+   
+   appendix/TCGA_projects
    appendix/glossary
    appendix/references
