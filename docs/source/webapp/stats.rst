@@ -42,5 +42,5 @@ The number of miRNA targets and the number miRNA existence in triplets, the numb
   :align: center
   :alt: My Text
 
-  Figure 4.
+  Figure 5.
   
