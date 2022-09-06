@@ -21,7 +21,7 @@ The datatable initially builds on the identified triplets, miRNA pairs and their
   
 Users have various options to filter the results in this section. Users can filter the identified triplets with their respective triplet p-value, corrected triplet p-value. Also users can filter by whether the mRNA in triplets targeted by the miRNA pair is a transcription factor.
 
-. figure:: ../../figures/cancer_specific/3.png
+.. figure:: ../../figures/cancer_specific/3.png
   :scale: 50 %
   :align: center
   :alt: My Text
