@@ -7,27 +7,21 @@ Predicted triplets can be investigated here. First, one of the 31 different canc
   :width: 700
   :alt: Alternative text
 
-.. image:: ../../figures/cancer_specific/1.png
-  :width: 700
-  :alt: My Text
-
   Figure 1. Main panel for triplets. Here BRCA is selected as the cancer type.
   
 The datatable initially builds on the identified triplets, miRNA pairs and their target mRNA, triplet p-values and corrected p-values with the Benjamini Hochberg procedure. The data has been enriched with the following additional information: experimental data source of miRNA and mRNA relationships, differential expression analysis results, literature support of cancer-miRNA and cancer-mRNA relationship, mRNA expressions of patients grouped by miRNA expression levels and transcription factor information. This additional information can be added/deattached to datatable from 'Column visibility' part. 
 
 .. image:: ../../figures/cancer_specific/2.png
   :width: 700
-  :align: center
-  :alt: My Text
+  :alt: Alternative text
   
-  Figure 2. 
+
   
 Users have various options to filter the results in this section. Users can filter the identified triplets with their respective triplet p-value, corrected triplet p-value. Also users can filter by whether the mRNA in triplets targeted by the miRNA pair is a transcription factor.
 
 .. image:: ../../figures/cancer_specific/3.png
   :width: 700
-  :align: center
-  :alt: My Text
+  :alt: Alternative text
   
   Figure 3. When triplets are filtered with mRNA. 
 
@@ -35,8 +29,7 @@ One of the filtering applied in algorithm step 2 was to group patients according
 
 .. image:: ../../figures/cancer_specific/5.png
   :width: 700
-  :align: center
-  :alt: My Text
+  :alt: Alternative text
   
   Figure 4. Example boxplot. 
   
@@ -44,8 +37,7 @@ Triplet networks can be visualised interactively for a specific cancer. In netwo
 
 .. image:: ../../figures/cancer_specific/7.png
   :width: 700
-  :align: center
-  :alt: My Text
+  :alt: Alternative text
   
   Figure 4. Interactive triplet network
 
