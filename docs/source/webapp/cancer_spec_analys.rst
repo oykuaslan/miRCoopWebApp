@@ -5,7 +5,6 @@ Predicted triplets can be investigated here. First, one of the 31 different canc
 
 .. image:: ../../figures/cancer_specific/1.png
   :width: 700
-  :align: center
   :alt: My Text
 
   Figure 1. Main panel for triplets. Here BRCA is selected as the cancer type.
