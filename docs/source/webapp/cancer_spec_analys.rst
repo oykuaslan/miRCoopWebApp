@@ -11,7 +11,7 @@ Predicted triplets can be investigated here. First, one of the 31 different canc
   
 The datatable initially builds on the identified triplets, miRNA pairs and their target mRNA, triplet p-values and corrected p-values with the Benjamini Hochberg procedure. The data has been enriched with the following additional information: experimental data source of miRNA and mRNA relationships, differential expression analysis results, literature support of cancer-miRNA and cancer-mRNA relationship, mRNA expressions of patients grouped by miRNA expression levels and transcription factor information. This additional information can be added/deattached to datatable from 'Column visibility' part. 
 
-.. image:: ../../figures/cancer_specific/2.png
+.. image:: ../figures/web-app-general.png
   :width: 700
   :alt: Alternative text
   
