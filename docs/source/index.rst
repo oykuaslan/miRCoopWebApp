@@ -11,7 +11,7 @@ miRCoop v2
   Figure 1. General miRCoop and miRCoop Web Application pipeline
   
 .. image:: ../figures/web-app-general.png
-  :width: 400
+  :width: 800
   :alt: Alternative text
 
 .. note::
