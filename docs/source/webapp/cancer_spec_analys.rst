@@ -3,7 +3,7 @@ Cancer Specific Analysis
 ========
 Predicted triplets can be investigated here. First, one of the 31 different cancer types included in the study is selected from the cancer type section. After the 'cancer type' is selected in the left panel, the miRCoop triplets and synergistic miRNA pairs identified for that cancer are presented to the user in the main panel.
 
-.. image:: ../../figures/cancer_specific/1.png
+.. figure:: ../../figures/cancer_specific/1.png
   :width: 400
   :alt: Alternative text
 
@@ -11,7 +11,7 @@ Predicted triplets can be investigated here. First, one of the 31 different canc
   
 The datatable initially builds on the identified triplets, miRNA pairs and their target mRNA, triplet p-values and corrected p-values with the Benjamini Hochberg procedure. The data has been enriched with the following additional information: experimental data source of miRNA and mRNA relationships, differential expression analysis results, literature support of cancer-miRNA and cancer-mRNA relationship, mRNA expressions of patients grouped by miRNA expression levels and transcription factor information. This additional information can be added/deattached to datatable from 'Column visibility' part. 
 
-.. image:: ../../figures/cancer_specific/1.png
+.. figure:: ../../figures/cancer_specific/1.png
   :width: 700
   :alt: Alternative text
   
@@ -19,7 +19,7 @@ The datatable initially builds on the identified triplets, miRNA pairs and their
   
 Users have various options to filter the results in this section. Users can filter the identified triplets with their respective triplet p-value, corrected triplet p-value. Also users can filter by whether the mRNA in triplets targeted by the miRNA pair is a transcription factor.
 
-.. image:: ../../figures/cancer_specific/3.png
+.. figure:: ../../figures/cancer_specific/3.png
   :width: 700
   :alt: Alternative text
   
@@ -27,7 +27,7 @@ Users have various options to filter the results in this section. Users can filt
 
 One of the filtering applied in algorithm step 2 was to group patients according to the expression level of the miRNA pair, measuring the difference as log fold change, and continuing with those above a certain threshold. Here, the two patient groups are compared by the level of miRNA pair. We expect the mRNA levels of these two groups(both miRNAs upregulated - both miRNAs downregulated) to be significantly different from each other. The difference between these groups can be observed with a boxplot from 'miRNA-mRNA Expressions' column. 
 
-.. image:: ../../figures/cancer_specific/5.png
+.. figure:: ../../figures/cancer_specific/5.png
   :width: 700
   :alt: Alternative text
   
@@ -35,7 +35,7 @@ One of the filtering applied in algorithm step 2 was to group patients according
   
 Triplet networks can be visualised interactively for a specific cancer. In networks, diamonds are mRNAs, circles are miRNAs of the triplets. The small grey nodes are dummy nodes to connect the miRNAs to the target mRNA. If an mRNA in a triplet is also a TF, its shape alters from diamond to square. Coloring the nodes can be done in three different way: based on differential expression analysis(up or down regulation), based on miRNA Family information or based on miRNA Cluster information. When the user applies filtering to the data, the network is reconstructed accordingly.
 
-.. image:: ../../figures/cancer_specific/7.png
+.. figure:: ../../figures/cancer_specific/7.png
   :width: 700
   :alt: Alternative text
   
