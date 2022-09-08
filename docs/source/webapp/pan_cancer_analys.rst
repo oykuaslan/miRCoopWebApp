@@ -3,6 +3,10 @@ Pan-cancer Anaysis
 ========
 Users can view pan-cancer miRNA pairs and pan-cancer miRCoop triplets via selecting the respective sections. Filtering based on cancer type, number of cancer count, miRNA and mRNA for pairs and triplets can be performed from the left side panel. 
 
+.. image:: ../../figures/pan_cancer/1.png
+  :width: 400
+  :alt: Alternative text
+  
 .. figure:: ../../figures/pan_cancer/1.png
   :scale: 50 %
   :align: center
