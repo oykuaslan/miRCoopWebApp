@@ -15,7 +15,7 @@ The datatable initially builds on the identified triplets, miRNA pairs and their
   :width: 700
   :alt: Alternative text
   
-
+   Figure 2. Main panel for triplets. Here BRCA is selected as the cancer type.
   
 Users have various options to filter the results in this section. Users can filter the identified triplets with their respective triplet p-value, corrected triplet p-value. Also users can filter by whether the mRNA in triplets targeted by the miRNA pair is a transcription factor.
 
