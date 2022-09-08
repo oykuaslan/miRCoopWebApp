@@ -13,8 +13,6 @@ Users can view pan-cancer miRNA pairs and pan-cancer miRCoop triplets via select
   :alt: My Text
 
   Figure 1. Main panel for Pan-cancer Triplets. 
-  
-  
 .. image:: ../../figures/pan_cancer/3.png
   :width: 400
   :alt: Alternative text
