@@ -15,7 +15,7 @@ Users can view pan-cancer miRNA pairs and pan-cancer miRCoop triplets via select
   Figure 1. Main panel for Pan-cancer Triplets. 
   
 .. figure:: ../../figures/pan_cancer/3.png
-  :width: 400
+  :width: 1000
   :alt: Alternative text
 
   Figure 2. Main panel for Pan-cancer synergistic miRNA pairs. Filtering is applied with miRNAs and pairs that are common in more than 3 cancers.  
