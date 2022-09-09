@@ -1,7 +1,7 @@
 
 Cancer Specific Analysis
 ========
-Predicted triplets can be investigated here. First, one of the 31 different cancer types included in the study is selected from the cancer type section. After the 'cancer type' is selected in the left panel, the miRCoop triplets and synergistic miRNA pairs identified for that cancer are presented to the user in the main panel.
+Users can investigate predicted triplets here. First, users can select a cancer type from 31 different TCGA cancer types included in the study from the cancer type section. After the 'cancer type' is selected in the left panel, the miRCoop triplets and synergistic miRNA pairs identified for that cancer are presented to the user in the main panel.
 
 .. figure:: ../../figures/cancer_specific/1.png
   :width: 400
@@ -9,13 +9,13 @@ Predicted triplets can be investigated here. First, one of the 31 different canc
 
   Figure 1. Main panel for triplets. Here BRCA is selected as the cancer type.
   
-The datatable initially builds on the identified triplets, miRNA pairs and their target mRNA, triplet p-values and corrected p-values with the Benjamini Hochberg procedure. The data has been enriched with the following additional information: experimental data source of miRNA and mRNA relationships, differential expression analysis results, literature support of cancer-miRNA and cancer-mRNA relationship, mRNA expressions of patients grouped by miRNA expression levels and transcription factor information. This additional information can be added/deattached to datatable from 'Column visibility' part. 
+The datatable in the main panel initially builds on the identified triplets, miRNA pairs and their target mRNA, triplet p-values and corrected p-values with the Benjamini Hochberg procedure. The data has been enriched with the following additional information: experimental data source of miRNA and mRNA relationships, differential expression analysis results, literature support of cancer-miRNA and cancer-mRNA relationship, mRNA expressions of patients grouped by miRNA expression levels and transcription factor information. This additional information can be added/deattached to datatable from 'Column visibility' part. 
 
-.. figure:: ../../figures/cancer_specific/1.png
+.. figure:: ../../figures/cancer_specific/2.png
   :width: 700
   :alt: Alternative text
   
-   Figure 2. Main panel for triplets. Here BRCA is selected as the cancer type.
+   Figure 2. Additional information can be added to the main datatable
   
 Users have various options to filter the results in this section. Users can filter the identified triplets with their respective triplet p-value, corrected triplet p-value. Also users can filter by whether the mRNA in triplets targeted by the miRNA pair is a transcription factor.
 
@@ -23,7 +23,7 @@ Users have various options to filter the results in this section. Users can filt
   :width: 700
   :alt: Alternative text
   
-  Figure 3. When triplets are filtered with mRNA. 
+  Figure 3. Triplets are filtered with mRNA. 
 
 One of the filtering applied in algorithm step 2 was to group patients according to the expression level of the miRNA pair, measuring the difference as log fold change, and continuing with those above a certain threshold. Here, the two patient groups are compared by the level of miRNA pair. We expect the mRNA levels of these two groups(both miRNAs upregulated - both miRNAs downregulated) to be significantly different from each other. The difference between these groups can be observed with a boxplot from 'miRNA-mRNA Expressions' column. 
 
