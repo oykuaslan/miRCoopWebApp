@@ -39,6 +39,6 @@ Triplet networks can be visualised interactively for a specific cancer. In netwo
   :width: 700
   :alt: Alternative text
   
-  Figure 4. Interactive triplet network
+  Figure 4. Interactive triplet network for PRAD.
 
 
