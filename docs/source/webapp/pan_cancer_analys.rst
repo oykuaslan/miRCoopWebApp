@@ -1,21 +1,23 @@
 
 Pan-cancer Anaysis
 ========
-Users can view pan-cancer miRNA pairs and pan-cancer miRCoop triplets via selecting the respective sections. Filtering based on cancer type, number of cancer count, miRNA and mRNA for pairs and triplets can be performed from the left side panel. 
+Users can view pan-cancer miRNA pairs and pan-cancer miRCoop triplets via selecting the respective sections: 
 
-.. image:: ../../figures/pan_cancer/1.png
-  :width: 700
+.. figure:: ../../figures/pan_cancer/1.png
+  :width: 800
   :alt: Alternative text
   
+Various filtering options provided to users: Users can filter pan-cancer triplets and synergistic pairs based on cancer type, number of cancer count, miRNA and mRNA from the left side panel. 
+
 .. figure:: ../../figures/pan_cancer/3.png
   :width: 800
   :alt: Alternative text
 
   Figure 2. Main panel for Pan-cancer synergistic miRNA pairs. Filtering is applied with miRNAs and pairs that are common in more than 3 cancers.  
 
-Here, interactive networks of pan-cancer miRNA pairs and triplets can be generated with network tab like in the Cancer Specific Triplets section. 
+Here, users can generate interactive networks of pan-cancer miRNA pairs and triplets with network tab like in the Cancer Specific Triplets section. When user applies filtering from the left panel, the network reconstructed accordingly.
 
 .. figure:: ../../figures/pan_cancer/4.png
-  :scale: 50 %
+  :width: 800
   :align: center
   :alt: My Text
