@@ -4,7 +4,7 @@ Cancer Specific Analysis
 Users can investigate predicted triplets here. First, users can select a cancer type from 31 different TCGA cancer types included in the study from the cancer type section. After the 'cancer type' is selected in the left panel, the miRCoop triplets and synergistic miRNA pairs identified for that cancer are presented to the user in the main panel.
 
 .. figure:: ../../figures/cancer_specific/1.png
-  :width: 400
+  :width: 700
   :alt: Alternative text
 
   Figure 1. Main panel for triplets. Here BRCA is selected as the cancer type.
@@ -33,7 +33,7 @@ One of the filtering applied in algorithm step 2 was to group patients according
   
   Figure 4. Example boxplot. 
   
-Triplet networks can be visualised interactively for a specific cancer. In networks, diamonds are mRNAs, circles are miRNAs of the triplets. The small grey nodes are dummy nodes to connect the miRNAs to the target mRNA. If an mRNA in a triplet is also a TF, its shape alters from diamond to square. Coloring the nodes can be done in three different way: based on differential expression analysis(up or down regulation), based on miRNA Family information or based on miRNA Cluster information. When the user applies filtering to the data, the network is reconstructed accordingly.
+Triplet networks can be visualised interactively for a specific cancer. In networks, diamonds are mRNAs, circles are miRNAs of the triplets. The small grey nodes are dummy nodes to connect the miRNAs to the target mRNA. If an mRNA in a triplet is also a TF, its shape alters from diamond to square. Coloring the nodes can be done in three different ways: based on differential expression analysis(based on up or down regulation), based on miRNA Family information or based on miRNA Cluster information. When the user applies filtering to the data, the network is reconstructed accordingly.
 
 .. figure:: ../../figures/cancer_specific/7.png
   :width: 700
