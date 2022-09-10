@@ -29,9 +29,9 @@ Contents
 .. toctree::
    :maxdepth: 1
    :caption: Methods & Dataset
-
-   methods_dataset/methods
+    
    methods_dataset/dataset
+   methods_dataset/methods
 
 .. toctree::
    :maxdepth: 1
