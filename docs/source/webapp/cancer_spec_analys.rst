@@ -23,7 +23,7 @@ Users have various options to filter the results in this section. Users can filt
   :width: 700
   :alt: Alternative text
   
-  Figure 3. Triplets are filtered with mRNA. 
+  Figure 3. Triplets in BRCA are filtered with mRNA. 
 
 One of the filtering applied in algorithm step 2 was to group patients according to the expression level of the miRNA pair, measuring the difference as log fold change, and continuing with those above a certain threshold. Here, the two patient groups are compared by the level of miRNA pair. We expect the mRNA levels of these two groups(both miRNAs upregulated - both miRNAs downregulated) to be significantly different from each other. The difference between these groups can be observed with a boxplot from 'miRNA-mRNA Expressions' column. 
 
