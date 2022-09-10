@@ -15,7 +15,7 @@ The datatable in the main panel initially builds on the identified triplets, miR
   :width: 700
   :alt: Alternative text
   
-   Figure 2. Additional information can be added to the main datatable
+   Figure 2. Additional information can be added to the main datatable from Column Visibility part.
   
 Users have various options to filter the results in this section. Users can filter the identified triplets with their respective triplet p-value, corrected triplet p-value. Also users can filter by whether the mRNA in triplets targeted by the miRNA pair is a transcription factor.
 
@@ -31,7 +31,7 @@ One of the filtering applied in algorithm step 2 was to group patients according
   :width: 700
   :alt: Alternative text
   
-  Figure 4. Example boxplot. 
+  Figure 4. Example boxplot of mRNA expression level grouped by miRNA expression level. 
   
 Triplet networks can be visualised interactively for a specific cancer. In networks, diamonds are mRNAs, circles are miRNAs of the triplets. The small grey nodes are dummy nodes to connect the miRNAs to the target mRNA. If an mRNA in a triplet is also a TF, its shape alters from diamond to square. Coloring the nodes can be done in three different ways: based on differential expression analysis(based on up or down regulation), based on miRNA Family information or based on miRNA Cluster information. When the user applies filtering to the data, the network is reconstructed accordingly.
 
@@ -43,4 +43,10 @@ Triplet networks can be visualised interactively for a specific cancer. In netwo
   
 When the user colors the networks according to family or cluster information, if s/he wants to see which family/cluster the miRNA node belongs to, it is sufficient to hover the mouse over the node. Family information will be displayed in coloring with family, cluster information will be displayed in coloring with cluster.
 
+.. figure:: ../../figures/cancer_specific/8.png
+  :width: 700
+  :alt: Alternative text
+  
+  Figure 4. Family/Cluster information of the miRNA can be seen when hovered to node. 
+  
 
