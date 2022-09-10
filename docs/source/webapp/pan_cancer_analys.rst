@@ -21,7 +21,7 @@ Various filtering options provided to users: Users can filter pan-cancer triplet
   :width: 700
   :alt: Alternative text
 
-  Figure 2. Main panel for Pan-cancer synergistic miRNA pairs. Filtering is applied with miRNAs and pairs that are common in more than 3 cancers.  
+  Figure 3. Main panel for Pan-cancer synergistic miRNA pairs. Filtering is applied with miRNAs and pairs that are common in more than 3 cancers.  
 
 Here, users can generate interactive networks of pan-cancer miRNA pairs and triplets with network tab like in the Cancer Specific Triplets section. When user applies filtering from the left panel, the network reconstructed accordingly.
 
@@ -29,3 +29,5 @@ Here, users can generate interactive networks of pan-cancer miRNA pairs and trip
   :width: 700
   :align: center
   :alt: My Text
+  
+  Figure 4. Interactive network for pan-cancer synergistic miRNA pairs.
