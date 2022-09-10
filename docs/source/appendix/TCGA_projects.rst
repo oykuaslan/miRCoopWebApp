@@ -91,10 +91,10 @@ Abbreviations and Full Names of TCGA Projects
     Uterine Corpus Endometrial Carcinoma
     
   UCS
-    Testicular Germ Cell Tumors
+    Uterine Carcinosarcoma
     
   UVM
-   Thyroid carcinoma
+   Uveal Melanoma
     
  
  
