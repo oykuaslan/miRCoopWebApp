@@ -25,17 +25,17 @@ The distribution of miRNAs and mRNAs, which have a higher overall frequency than
 The number of miRNA targets vs the number miRNA existence in triplets are represented to the users. Users can clearly see the information when they hovers to the points. To illustrate, the miRNA miR-125-5p has 996 targets and it is seen in 58 triplets.
 
 .. figure:: ../../figures/stats/6.png
-  :scale: 50 %
+  :width: 700
   :align: center
   :alt: My Text
 
   Figure 4.
   
-  The number of mRNAs in triplets in all cancers and the number of mRNA-target interactions are also presented to the users. Users can clearly see the information when they hovers to the points. To illustrate, the mRNA CCND2 has 296 target interactions and it is seen in 38 triplets.
+The number of mRNAs in triplets in all cancers and the number of mRNA-target interactions are also presented to the users. Users can clearly see the information when they hovers to the points. To illustrate, the mRNA CCND2 has 296 target interactions and it is seen in 38 triplets.
 
   
 .. figure:: ../../figures/stats/5.png
-  :scale: 50 %
+  :width: 700
   :align: center
   :alt: My Text
 
