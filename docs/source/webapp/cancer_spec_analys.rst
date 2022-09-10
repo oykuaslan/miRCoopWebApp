@@ -40,5 +40,7 @@ Triplet networks can be visualised interactively for a specific cancer. In netwo
   :alt: Alternative text
   
   Figure 4. Interactive triplet network for PRAD. Network coloring option selected as differential expression analysis. 
+  
+When the user colors the networks according to family or cluster information, if s/he wants to see which family/cluster the miRNA node belongs to, it is sufficient to hover the mouse over the node. Family information will be displayed in coloring with family, cluster information will be displayed in coloring with cluster.
 
 
