@@ -26,18 +26,15 @@ The number of miRNA targets vs the number miRNA existence in triplets are repres
 
 .. figure:: ../../figures/stats/6.png
   :width: 700
-  :align: center
   :alt: My Text
 
-  Figure 4.
+  Figure 4. The number of miRNAs that target the mRNA plotted against the number of triplets the miRNA is found in. 
   
 The number of mRNAs in triplets in all cancers and the number of mRNA-target interactions are also presented to the users. Users can clearly see the information when they hovers to the points. To illustrate, the mRNA CCND2 has 296 target interactions and it is seen in 38 triplets.
 
-  
 .. figure:: ../../figures/stats/5.png
   :width: 700
-  :align: center
   :alt: My Text
 
-  Figure 5.
+  Figure 5. The number of mRNAs the miRNA targets plotted against the number of triplets the mRNA is found in. 
   
