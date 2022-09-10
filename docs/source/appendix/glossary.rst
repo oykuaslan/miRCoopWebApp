@@ -27,3 +27,9 @@ Glossary
     
   miRNA-mRNA Database
     Experimental data source of miRNA and mRNA relationships
+  
+  miRNA Literature
+    Whether there is evidence in the literature regarding the importance of any of the miRNAs in the triplets is presented.
+  
+  mRNA Literature
+    Whether there is evidence in the literature regarding the importance of mRNAs in the triplets is presented.
