@@ -10,7 +10,7 @@ The experimentally validated miRNA targets were obtained from three different da
   * `TarBase v7.0 <https://dianalab.e-ce.uth.gr/html/diana/web/index.php?r=tarbasev8/index/>`_
   * `miRecords v4.0 <http://c1.accurascience.com/miRecords/>`_
 
-The experimentally validated miRNA targets were then intersected with TargetScan in order to obtain the binding regions.
+The experimentally validated miRNA targets were then intersected with `TargetScan <https://www.targetscan.org/vert_80/>`_ in order to obtain the binding regions.
 
 Expression data and Pre-processing
 ----------------------------
