@@ -9,6 +9,6 @@ Step 2: Expression Filter
 --------
 Potential triplets obtained from Step 1 were eliminated according to the expression profiles of miRNAs and mRNAs. The rationale for the exclusion of the potential triplets is based on this assumption: The mRNA expression level is expected to be lower when both miRNAs are upregulated compared to when both miRNAs are downregulated. To eliminate the candidate triplets that follow this, samples are divided into two different subgroups: the first group consists of samples in which both miRNAs are upregulated, the second group includes samples where both miRNAs are downregulated. To test the significance of mRNA expression levels between the first and second groups, the one-sided Wilcoxon rank-sum test is applied(Wilcoxon, 1945).  
 
-Step 3
+Step 3:  Statistical Interaction Tests on RNA Expression Data 
 --------
 Statistical interaction tests were performed on miRNA and mRNA expression data for each potential triplet candidate that passes through Step 2. The expression level of the two miRNAs was defined by the random variables X and Y, and the expression level of the mRNA was defined by the random variable Z. We are interested in cases where miRNAs are pairwise independent with mRNAs but form a mutually dependent triplet. The independence of X and Z and Y and Z was tested with the Two Variable test. dditionally, Three Variable Kernel Interaction Test was applied to the triplets and only the triplets in which the null hypothesis is rejected was considered.(Sejdinovic, 2013). 
