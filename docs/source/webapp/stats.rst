@@ -8,7 +8,7 @@ Users can view some statistics regarding the dataset and results. Counts across 
 
   Figure 1. Total counts for all cancer types. 
 
-The distribution of miRNAs and mRNAs, which have a higher overall frequency than others was examined in order to analyse whether these miRNAs and mRNAs are seen in a specific cancer or are distributed in multiple different cancer types. miRNAs and mRNAs that have total participation more than 30 and 15 in all miRCoop triplets are shown in figures respectively. Values are normalised with the total number of triplets in the cancer. 
+The distribution of miRNAs and mRNAs, which have a higher overall frequency than others was examined in order to analyse whether these miRNAs and mRNAs are seen in a specific cancer or are distributed in multiple different cancer types. miRNAs and mRNAs that have total participation more than 30 and 15 in all miRCoop triplets are shown in figures respectively. Values are normalised with the total number of triplets in the cancer. When user hovers the mouse to the desired cell, s/he can see the miRNA/mRNA, cancer type and it's respective value explicitly.
 
 .. figure:: ../../figures/stats/2.png
   :width: 700
