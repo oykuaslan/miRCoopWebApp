@@ -1541,10 +1541,10 @@ function(input, output, session) {
       family = "Ubuntu",
       size = 13)
     
-    fig <- plot_ly(miRCoopTotalCounts, x = ~CancerType, y = ~N.Triplets, type = 'bar', name = '# Triplets', marker = list(color = 'rgb(7,68,135)'))
-    fig <- fig %>% add_trace(y = ~N.miRNAPairs, name = '# miRNA Pairs', marker = list(color = 'rgb(251,85,100)'))
-    fig <- fig %>% add_trace(y = ~N.miRNAs, name = '# miRNAs',marker = list(color = 'rgb(255,166,0)'))
-    fig <- fig %>% add_trace(y = ~N.mRNAs, name = '# mRNAs', marker = list(color = 'rgb(165,67,149)'))
+    fig <- plot_ly(miRCoopTotalCounts, x = ~CancerType, y = ~N.Triplets, type = 'bar', name = '# Triplets', marker = list(color = 'rgb(140,69,130)'))
+    fig <- fig %>% add_trace(y = ~N.miRNAPairs, name = '# miRNA Pairs', marker = list(color = 'rgb(224,161,72)'))
+    fig <- fig %>% add_trace(y = ~N.miRNAs, name = '# miRNAs',marker = list(color = 'rgb(207,94,90)'))
+    fig <- fig %>% add_trace(y = ~N.mRNAs, name = '# mRNAs', marker = list(color = 'rgb(41,62,109)'))
     fig <- fig %>% layout(title = 'Counts Across All Cancer Types',yaxis = list(title = 'Count'), barmode = 'group', xaxis = list(title = 'Cancer Type'),font=t)
     
   })
