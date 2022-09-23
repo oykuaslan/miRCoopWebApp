@@ -1312,15 +1312,60 @@ function(input, output, session) {
     nodes <- commonMirnaNetworkNodeEdge()$nodes
     edges <- commonMirnaNetworkNodeEdge()$edges
     nodes$shape <- "dot"
-    nodes$size <- 20
+    nodes$size <- 30
     nodes$color.background <- "rgb(153,153,153)"
     nodes$color.border <- "rgb(153,153,153)"
     
     edges$color <- "rgb(153,153,153)"
-    edges$length <- 15
+    edges$length <- 3
+    
+    coloring <- input$colorCommonMirna
+    if(coloring =="miRNA Family"){
+      
+      uniqueMirnaFamily <- unique(c(commonMirnaPairs_node_attr$miRNAFamily, NA))
+      palette <- distinctColorPalette(length(uniqueMirnaFamily))
+      familyWithPalette <- paste(uniqueMirnaFamily, palette)
+      familyWithPaletteDf <- as.data.frame(familyWithPalette)%>%separate(familyWithPalette, c("family", "FamilyColor"), " ")
+      
+      nodeAttribute <- commonMirnaPairs_node_attr
+      merged <- sqldf::sqldf("SELECT nodeAttribute.*, FamilyColor from nodeAttribute left join familyWithPaletteDf on nodeAttribute.miRNAFamily = familyWithPaletteDf.family")
+      #merged <- merge(nodeAttributeInput(),familyWithPaletteDf, by.x = "miRfamily", by.y = "family", all.x = TRUE, all.y = FALSE, sort = FALSE)
+      merged["FamilyColor"][is.na(merged["FamilyColor"])] <- "rgb(153,153,153)"
+
+      #nodes$color.background <-filter(merged,merged$shared_name %in% intersectionSharedName)$FamilyColor
+      #nodes$color.border <- filter(merged,merged$shared_name %in% intersectionSharedName)$FamilyColor
+      nodes$color.background <-merged$FamilyColor
+      nodes$color.border <- merged$FamilyColor
+      
+      nodes$title <- paste("<p><b>Family: </b></p>", merged$miRNAFamily)
+      
+      
+    }
+    
+    if(coloring =="miRNA Cluster"){
+
+      uniqueMirnaCluster <- unique(c(commonMirnaPairs_node_attr$clusterString, NA))
+      palette <- distinctColorPalette(length(uniqueMirnaCluster))
+      clusterWithPalette <- paste(uniqueMirnaCluster, palette)
+      clusterWithPaletteDf <- as.data.frame(clusterWithPalette)%>%separate(clusterWithPalette, c("cluster", "ClusterColor"), " ")
+
+      nodeAttribute <- commonMirnaPairs_node_attr
+      merged <- sqldf::sqldf("SELECT nodeAttribute.*, ClusterColor from nodeAttribute left join clusterWithPaletteDf on nodeAttribute.clusterString = clusterWithPaletteDf.cluster")
+      #merged <- merge(nodeAttributeInput(),familyWithPaletteDf, by.x = "miRfamily", by.y = "family", all.x = TRUE, all.y = FALSE, sort = FALSE)
+      merged["ClusterColor"][is.na(merged["ClusterColor"])] <- "rgb(153,153,153)"
+
+      nodes$color.background <-merged$ClusterColor
+      nodes$color.border <- merged$ClusterColor
+
+      nodes$title <- paste("<p><b>Cluster: </b></p>", merged$clusterString)
+      
+    }
+
+    
+    
     visNetwork(nodes, edges)%>%
-      visIgraphLayout() %>% visEdges(font = list(align="horizontal", color="black", size=20, face="Ubuntu"))%>%
-      visNodes(font = list(color="black", size=30, face="Ubuntu"))
+      visIgraphLayout() %>% visEdges(font = list(align="horizontal", color="black", size=25, face="Ubuntu"))%>%
+      visNodes(font = list(color="black", size=35, face="Ubuntu"))
     
     
   })

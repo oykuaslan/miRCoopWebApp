@@ -336,7 +336,10 @@ UVM_source_target <- read.table("networkData/UVM_source_target.csv", header=TRUE
 UVM_node_attr <- read.table("networkDataWClusterFamily/UVM.csv", header = T, sep = ",")
 
 
-commonMirnaPairs_node_attr <- read_csv("networkData/commonMirnaPairsAfterReRunNode.csv")
+#commonMirnaPairs_node_attr <- read_csv("networkData/commonMirnaPairsAfterReRunNode.csv")
+commonMirnaPairs_node_attr <- read_delim("networkData/common_mirna_pair_withclusterandfamily.csv", 
+                                         delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
 commonTriplets_node_attr <- read_csv("networkData/commonTripletsAfterReRunNode.csv")
 
 commonTriplet_source_target <- read_delim("networkData/commonTriplet_source_target.csv", 
