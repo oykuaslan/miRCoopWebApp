@@ -328,10 +328,10 @@ fluidPage(
                                      # 
                                      # hr(),
                                      checkboxGroupInput(inputId = "is_mrna_tf",
-                                                        label = "Is mRNA TF?",
-                                                        choiceNames = c("mRNA is TF", "mRNA is not TF"),
-                                                        choiceValues = c("True","False"),
-                                                        selected = c("True","False")),
+                                                        label = "Filter out:",
+                                                        choiceNames = c("mRNAs that are not TF"),
+                                                        choiceValues = c("True"),
+                                                        selected = NULL),
                                      downloadButton("downloadData", "Download")
                                      
                                      

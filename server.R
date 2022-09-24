@@ -230,7 +230,7 @@ function(input, output, session) {
     
     if(length(nrow(dataset1 >0)) & !is.null(dataset1)){
       
-      if(length(tolower(input$is_mrna_tf)) !=2){
+      if(length(tolower(input$is_mrna_tf)) !=0){
         dataset1 <- filter(concated,tolower(is_mrna_tf) %in% tolower(input$is_mrna_tf))
         if(nrow(dataset1) == 0){
           dataset1 <- NULL
