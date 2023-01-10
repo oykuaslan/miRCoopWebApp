@@ -236,6 +236,17 @@ UVM <- UVM_allData[,c("entrezgene_id","hgnc_symbol","mirna1","mirna2","Lancaster
 
 UVM_BH_pvalues_adjusted_min = min(UVM$BH_pvalues_adjusted)
 UVM_BH_pvalues_adjusted_max = max(UVM$BH_pvalues_adjusted)
+
+####################################################################################################
+
+ACCType3_allData <- read.csv("dataset/TF_Type3Results/ACC_Type3Pval001.csv")
+ACC_Type3 <- ACCType3_allData[,c("miRNA1", "miRNA2", "TF", "Target", "ModeOfRegulation")] %>% distinct()
+
+DLBCType3_allData <- read.csv("dataset/TF_Type3Results/DLBC_Type3Pval001.csv")
+DLBC_Type3 <- DLBCType3_allData[,c("miRNA1", "miRNA2", "TF", "Target", "ModeOfRegulation")] %>% distinct()
+
+KICHType3_allData <- read.csv("dataset/TF_Type3Results/KICH_Type3Pval001.csv")
+KICH_Type3 <- KICHType3_allData[,c("miRNA1", "miRNA2", "TF", "Target", "ModeOfRegulation")] %>% distinct()
 ####################################################################################################
 
 
@@ -443,57 +454,22 @@ miRNACountsScatter <- read_delim("dataset/stats/miRNACountsScatterAfterBHCorrect
                                  delim = ",", escape_double = FALSE, trim_ws = TRUE)
 
 ####################################################################################################
-bslib_mircooptriplet_theme <- bs_theme(
-  #version = 5, 
-  bg = "#FFFFFF",
-  fg = "#000000",
-  bootswatch = "united",
-  primary = "#AC2E2C",
-  secondary = "#ED403D",
-  success = "#00A5DF",
-  info = "#00A5DF",
-  warning = "#FFF100",
-  danger = "#FF00E3",
-  base_font = "Readex Pro",
-  heading_font = "Readex Pro",
-  code_font = "Readex Pro",
-  "input-border-color" = "#ED403D",
-  "border-radius" =  ".70rem"
-)
 
 bslib_sabanci20_theme <- bs_theme(
   #version = 5,  
-  bg = "#FFFFFF",
-  fg = "#000000",
-  bootswatch = "united",
-  primary = "#074487",
-  secondary = "#179E93",
-  success = "#00A5DF",
-  info = "#00A5DF",
-  warning = "#FFF100",
-  danger = "#FF00E3",
-  base_font = font_google("Ubuntu", local = TRUE) ,
-  heading_font = font_google("Ubuntu", local = TRUE),
-  code_font = font_google("Ubuntu", local = TRUE) ,
-  "input-border-color" = "#179E93",
-  "border-radius" =  ".70rem"
-)
-
-bslib_locus_theme <- bs_theme(
-  #version = 5, 
-  bg = "#F6F6F7",
-  fg = "#000000",
-  bootswatch = "united",
-  primary = "#357EBDFF",
-  secondary = "#8491B4FF",
-  success = "#00FBF4",
-  info = "#00FBF4",
-  warning = "#FFF100",
-  danger = "#FF00E3",
-  base_font = c("Titillium Web"),
-  heading_font = c("Titillium Web"),
-  code_font = c("Titillium Web"),
-  "input-border-color" = "#EEA236FF",
-  "border-radius" =  ".70rem"
+  # bg = "#FFFFFF",
+  # fg = "#000000",
+  # bootswatch = "united",
+  #primary = "#074487",
+  #secondary = "#179E93",
+  #success = "#00A5DF",
+  # info = "#00A5DF",
+  # warning = "#FFF100",
+  # danger = "#FF00E3",
+  base_font = font_google("Roboto", local = TRUE) ,
+  heading_font = font_google("Roboto", local = TRUE),
+  code_font = font_google("Roboto", local = TRUE) ,
+  #"input-border-color" = "#179E93",
+  #"border-radius" =  ".70rem"
 )
 

@@ -1038,21 +1038,7 @@ function(input, output, session) {
             nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
                                          ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
                                                 "rgb(153,153,153)"))
-          #}
-          # else{
-          #   # nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
-          #   #                                 filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, 3,1)
-          #   #
-          #   # nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
-          #   #                                  filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
-          #   #
-          #   nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-          #                                    ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-          #                                           "rgb(153,153,153)"))
-          #   nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-          #                                ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-          #                                       "rgb(153,153,153)"))
-          # }
+          
         }
         else{
           nodes$color.background <-  "rgb(153,153,153)"
@@ -1107,38 +1093,6 @@ function(input, output, session) {
       
       
       
-      #nodes$color.background <- "rgb(153,153,153)"
-      #nodes$color.border <- "rgb(153,153,153)"
-      
-
-      
-      # 
-      # if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown)) > 0){
-      #   if("miRNA1_pvalue" %in% colnames(DatasetRoundDigits())){
-      #     nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-      #                                      ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-      #                                             "rgb(153,153,153)"))
-      #     nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-      #                                  ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-      #                                         "rgb(153,153,153)"))
-      #   }
-      #   else{
-      #     # nodes$borderWidth <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
-      #     #                                 filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, 3,1)
-      #     # 
-      #     # nodes$color.border <- ifelse(!is.na(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance) &
-      #     #                                  filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$significance < 0.05, "black","rgb(153,153,153)")
-      #     # 
-      #     nodes$color.background <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-      #                                      ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-      #                                             "rgb(153,153,153)"))
-      #     nodes$color.border <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="up", "rgb(255,102,102)",
-      #                                  ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$updown) =="down","rgb(153,204,255)",
-      #                                         "rgb(153,153,153)"))
-      #   }
-      # }
-      
-      
       if(length(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)) > 0){
         nodes$shape <- ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$is_mrna_tf)=="true","square",
                               ifelse(tolower(filter(nodeAttributeInput(),nodeAttributeInput()$shared.name %in% intersectionSharedName)$info)=="mrna","diamond",
@@ -1174,21 +1128,25 @@ function(input, output, session) {
         
         
         visNetwork(nodes, edges) %>%
-          visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 180,useGroups = F)%>%visIgraphLayout()
+          visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 180,useGroups = F)%>%
+          visNodes(font = list(color="black", size=40, face="Ubuntu"))%>%
+          visIgraphLayout()%>% 
+          visInteraction(navigationButtons = TRUE)
       }
       else{
         lnodes <- data.frame(label=c("Legend","mRNA","mRNA is TF","miRNA"),
                              shape=c("text","diamond","square","dot"),
                              size =c(25,30,30,25),
                              font.size=c(50,25,25,25),
-                             font.face=c("Ubuntu","Ubuntu","Ubuntu","Ubuntu"),
+                             font.face=c("Roboto","Roboto","Roboto","Roboto"),
                              color.background=c("rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)"),
                              color.border=c("rgb(153,153,153)", "rgb(153,153,153)","rgb(153,153,153)","rgb(153,153,153)")
         )
         visNetwork(nodes, edges) %>%
           visLegend(addNodes = lnodes,width = 0.1, position = "right",zoom=F,stepY = 120,useGroups = F)%>%
           visIgraphLayout()%>%
-          visNodes(font = list(color="black", size=40, face="Ubuntu"))
+          visNodes(font = list(color="black", size=40, face="Roboto"))%>% 
+          visInteraction(navigationButtons = TRUE)
       }
       
     }
@@ -1302,8 +1260,9 @@ function(input, output, session) {
     
     visNetwork(nodes, edges)%>%
       visIgraphLayout()%>% 
-      visEdges(font = list(align="horizontal", color="black", size=20, face="Ubuntu"))%>%
-      visNodes(font = list(color="black", size=20, face="Ubuntu"))
+      visEdges(font = list(align="horizontal", color="black", size=20, face="Roboto"))%>%
+      visNodes(font = list(color="black", size=30, face="Roboto"))%>% 
+      visInteraction(navigationButtons = TRUE)
   })
   
   
@@ -1364,8 +1323,10 @@ function(input, output, session) {
     
     
     visNetwork(nodes, edges)%>%
-      visIgraphLayout() %>% visEdges(font = list(align="horizontal", color="black", size=25, face="Ubuntu"))%>%
-      visNodes(font = list(color="black", size=35, face="Ubuntu"))
+      visIgraphLayout() %>% 
+      visEdges(font = list(align="horizontal", color="black", size=25, face="Roboto"))%>%
+      visNodes(font = list(color="black", size=35, face="Roboto"))%>% 
+      visInteraction(navigationButtons = TRUE)
     
     
   })
@@ -1522,6 +1483,57 @@ function(input, output, session) {
                   ))
   })
   
+  
+  ##################################################################################################    
+  
+  datasetInputTF <- reactive({
+    switch(input$CancerSpecificSynergyModulesCancer, 
+           "ACC" = ACC_Type3,
+           # "BLCA"=BLCA,
+           # "BRCA"=BRCA,
+           # "CESC"=CESC,
+           # "CHOL"=CHOL,
+           # "COAD"=COAD,
+           "DLBC"=DLBC_Type3,
+           # "ESCA"=ESCA,
+           # "HNSC"=HNSC,
+            "KICH"=KICH_Type3
+           # "KIRC"=KIRC,
+           # "KIRP"=KIRP,
+           # "LGG"=LGG,
+           # "LIHC"=LIHC,
+           # "LUAD"=LUAD,
+           # "LUSC"=LUSC,
+           # "MESO"=MESO,
+           # "OV"=OV,
+           # "PAAD"=PAAD,
+           # "PCPG"=PCPG,
+           # "PRAD"=PRAD,
+           # "READ"=READ,
+           # "SARC"=SARC,
+           # "SKCM"=SKCM,
+           # "STAD"=STAD,
+           # "TGCT"=TGCT,
+           # "THCA"=THCA,
+           # "THYM"=THYM,
+           # "UCEC"=UCEC,
+           # "UCS"=UCS,
+           # "UVM"=UVM
+    )
+  })
+  
+  output$CancerSpecificSynergyModulesType3 <- DT::renderDataTable({
+    
+    
+    
+    
+    DT::datatable(datasetInputTF(),
+                  options = list(
+                    columnDefs = list(
+                      list(className = "dt-center", targets = "_all")
+                    )
+                  ))
+  })
   ##################################################################################################    
   
   output$TCGAAbbrv <- renderTable({
@@ -1538,14 +1550,14 @@ function(input, output, session) {
   output$totalCountsPlot <- renderPlotly({
     
     t <- list(
-      family = "Ubuntu",
-      size = 13)
+      family = "Roboto Slab",
+      size = 14)
     
     fig <- plot_ly(miRCoopTotalCounts, x = ~CancerType, y = ~N.Triplets, type = 'bar', name = '# Triplets', marker = list(color = 'rgb(140,69,130)'))
     fig <- fig %>% add_trace(y = ~N.miRNAPairs, name = '# miRNA Pairs', marker = list(color = 'rgb(224,161,72)'))
     fig <- fig %>% add_trace(y = ~N.miRNAs, name = '# miRNAs',marker = list(color = 'rgb(207,94,90)'))
     fig <- fig %>% add_trace(y = ~N.mRNAs, name = '# mRNAs', marker = list(color = 'rgb(41,62,109)'))
-    fig <- fig %>% layout(title = 'Counts Across All Cancer Types',yaxis = list(title = 'Count'), barmode = 'group', xaxis = list(title = 'Cancer Type'),font=t)
+    fig <- fig %>% layout(yaxis = list(title = 'Count'), barmode = 'group', xaxis = list(title = 'Cancer Type'),font=t)
     
   })
   
@@ -1562,9 +1574,12 @@ function(input, output, session) {
     
   })
   t1 <- list(
-    family = "Ubuntu",
-    size = 15)
+    family = "Roboto Slab",
+    size = 14)
   output$MirnaScatterPlot <- renderPlotly({
+    t1 <- list(
+      family = "Roboto Slab",
+      size = 14)
     
     fig <- plot_ly(
       miRNACountsScatter, 
@@ -1577,6 +1592,9 @@ function(input, output, session) {
   })
   
   output$commonMrnaHeatmap <- renderPlotly({
+    t <- list(
+      family = "Roboto Slab",
+      size = 14)
     
     p <- heatmaply::heatmaply(as.matrix(as.data.table(commonMrnaAbove20),rownames = 1),
                               margins = c(0,0,50,0),
@@ -1589,13 +1607,15 @@ function(input, output, session) {
                               scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
                                 low = "white",
                                 high = "black"
-                              ))%>% layout(title = list(text=' Most frequent mRNAs across all cancers'))
-    
-    
-    
+                              )) %>% layout(font = t)
+                              #%>% layout(title = list(text=' Most frequent mRNAs across all cancers'))
   })
   
   output$commonMirnaHeatmap <- renderPlotly({
+    
+    t <- list(
+      family = "Roboto Slab",
+      size = 14)
     
     p <- heatmaply::heatmaply(as.matrix(as.data.table(commonMirnaAbove50),rownames = 1),
                               margins = c(5,5,50,0),
@@ -1609,7 +1629,8 @@ function(input, output, session) {
                               scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
                                 low = "white",
                                 high = "black"
-                              ))%>% layout(title = ' Most frequent miRNAs across all cancers')
+                              ))%>% layout(font = t)
+                                #layout(title = ' Most frequent miRNAs across all cancers')
     
     
     
