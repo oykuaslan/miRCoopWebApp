@@ -32,6 +32,7 @@ Contents
     
    methods_dataset/dataset
    methods_dataset/methods
+   synergy_modules/methods
    
 .. toctree::
    :maxdepth: 1
