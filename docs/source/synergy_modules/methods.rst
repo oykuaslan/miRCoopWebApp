@@ -1,1 +1,4 @@
-miRCoop Synergy Modules
+Methods
+=======
+
+Step 1: Identification of Candidate miRNA - mRNA Interactions
