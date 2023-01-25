@@ -22,6 +22,6 @@ When examining all cases, Wilcoxon rank-sum test was applied to test whether the
 
 Step 3:  Statistical Interaction Tests on RNA Expression Data
 --------
-
+We subject statistical interaction tests on RNA expression data for each potential synergy module that passes Step Two. First, miRNA1 and gene and miRNA2 and gene are pairwise independent of each other, for cases where one miRNA directly targets a common gene over a TF, and miRNA and TF acting on TF are pairwise dependent, and miRNA1-miRNA2- we want cases where the gene is mutually dependent triplets. Second, for cases where two miRNAs can regulate the expression of a common gene by binding to two different TFs, we want cases where miRNAs and TFs they target are interdependent, while the genes they target are independent of each other, and miRNA1-miRNA2-gene is triple-dependent. . Finally, for cases where two miRNAs can bind to a single TF to regulate the expression of the gene, we want cases where there is pairwise dependency between miRNAs and TF, pairwise independence between miRNAs and the gene, and where miRNA1-miRNA2-gene is dependent. Two Variable Testing for pairwise dependencies and kernel interaction tests for dependencies triplets are applied in tests for all cases.
 
 
