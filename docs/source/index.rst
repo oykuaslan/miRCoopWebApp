@@ -32,11 +32,18 @@ Contents
     
    methods_dataset/dataset
    methods_dataset/methods
-   synergy_modules/methods
+     
+.. toctree::
+   :maxdepth: 1
+   :caption: Methods & Dataset
+    
+   methods_dataset/dataset
+   methods_dataset/methods
    
 .. toctree::
    :maxdepth: 1
    :caption: miRCoop Synergy Modules
+   
    synergy_modules/methods
 
 .. toctree::
